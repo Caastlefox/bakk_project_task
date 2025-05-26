@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace bakk_project_task
         }
         private void LoadData()
         {
-            string connectionString = "Data Source=Clientdatabase.db;"; 
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString; ; 
 
             using (SqliteConnection conn = new SqliteConnection(connectionString))
             {

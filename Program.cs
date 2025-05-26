@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,22 +19,20 @@ namespace bakk_project_task
 
         static void Main()
         {
-            var connectionString = "Data Source=Clientdatabase.db";
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
             // Create the connection
             using (var connection = new SqliteConnection(connectionString))
             {
                 connection.Open();
-
+                var tableCmd = connection.CreateCommand();
                 // Debug truncate table
 #if DEBUG
-                var tableCmd = connection.CreateCommand();
                 tableCmd.CommandText =
                     @"
                 DROP TABLE IF EXISTS Clients ;
         ";
                 tableCmd.ExecuteNonQuery();
-#else
-                var tableCmd = connection.CreateCommand();
+
 #endif
                 // Create a table if it doesn’t exist
                 tableCmd.CommandText =
