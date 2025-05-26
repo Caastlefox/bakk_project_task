@@ -1,4 +1,9 @@
-﻿namespace bakk_project_task
+﻿using System; // Ensure this is included
+using System.Windows.Forms; // Ensure this is included
+using System.ComponentModel; // Add this to ensure System.ComponentModel.IContainer is recognized
+using System.Drawing; // Add this to ensure System.Drawing.SizeF is recognized
+
+namespace bakk_project_task
 {
     partial class MainMenuForm
     {
@@ -28,61 +33,68 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.EditClient = new System.Windows.Forms.Button();
-            this.NewClient = new System.Windows.Forms.Button();
-            this.Search = new System.Windows.Forms.Button();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.SuspendLayout();
+            EditClient = new Button();
+            NewClient = new Button();
+            Search = new Button();
+            dataGridView1 = new DataGridView();
+            ((ISupportInitialize)dataGridView1).BeginInit();
+            SuspendLayout();
             // 
             // EditClient
             // 
-            this.EditClient.Location = new System.Drawing.Point(299, 420);
-            this.EditClient.Name = "EditClient";
-            this.EditClient.Size = new System.Drawing.Size(202, 28);
-            this.EditClient.TabIndex = 2;
-            this.EditClient.Text = "Edytuj klienta";
-            this.EditClient.UseVisualStyleBackColor = true;
+            EditClient.Location = new Point(349, 485);
+            EditClient.Margin = new Padding(4, 3, 4, 3);
+            EditClient.Name = "EditClient";
+            EditClient.Size = new Size(236, 32);
+            EditClient.TabIndex = 2;
+            EditClient.Text = "Edytuj klienta";
+            EditClient.UseVisualStyleBackColor = true;
             // 
             // NewClient
             // 
-            this.NewClient.Location = new System.Drawing.Point(586, 420);
-            this.NewClient.Name = "NewClient";
-            this.NewClient.Size = new System.Drawing.Size(202, 28);
-            this.NewClient.TabIndex = 3;
-            this.NewClient.Text = "Dodaj nowego klienta";
-            this.NewClient.UseVisualStyleBackColor = true;
-            this.NewClient.Click += new System.EventHandler(this.button1_Click);
+            NewClient.Location = new Point(684, 485);
+            NewClient.Margin = new Padding(4, 3, 4, 3);
+            NewClient.Name = "NewClient";
+            NewClient.Size = new Size(236, 32);
+            NewClient.TabIndex = 3;
+            NewClient.Text = "Dodaj nowego klienta";
+            NewClient.UseVisualStyleBackColor = true;
+            NewClient.Click += button1_Click;
             // 
             // Search
             // 
-            this.Search.Location = new System.Drawing.Point(12, 420);
-            this.Search.Name = "Search";
-            this.Search.Size = new System.Drawing.Size(202, 27);
-            this.Search.TabIndex = 4;
-            this.Search.Text = "Szukaj";
-            this.Search.UseVisualStyleBackColor = true;
+            Search.Location = new Point(14, 485);
+            Search.Margin = new Padding(4, 3, 4, 3);
+            Search.Name = "Search";
+            Search.Size = new Size(236, 31);
+            Search.TabIndex = 4;
+            Search.Text = "Szukaj";
+            Search.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // dataGridView1
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(12, 33);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(775, 376);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(14, 11);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(907, 468);
+            dataGridView1.TabIndex = 5;
+            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
             // 
             // MainMenuForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.Search);
-            this.Controls.Add(this.NewClient);
-            this.Controls.Add(this.EditClient);
-            this.Name = "MainMenuForm";
-            this.Text = "Menu";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(933, 519);
+            Controls.Add(dataGridView1);
+            Controls.Add(Search);
+            Controls.Add(NewClient);
+            Controls.Add(EditClient);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "MainMenuForm";
+            Text = "Menu";
+            Load += MainMenuForm_Load;
+            ((ISupportInitialize)dataGridView1).EndInit();
+            ResumeLayout(false);
 
         }
 
@@ -90,7 +102,7 @@
         private System.Windows.Forms.Button EditClient;
         private System.Windows.Forms.Button NewClient;
         private System.Windows.Forms.Button Search;
-        private System.Windows.Forms.ListView listView1;
+        private DataGridView dataGridView1;
     }
 }
 

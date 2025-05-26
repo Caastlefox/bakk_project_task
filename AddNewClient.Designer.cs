@@ -1,4 +1,6 @@
-﻿namespace bakk_project_task
+﻿using System;
+using System.Windows.Forms;
+namespace bakk_project_task
 {
     partial class AddNewClient
     {
