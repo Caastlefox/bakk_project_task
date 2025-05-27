@@ -30,7 +30,7 @@ namespace bakk_project_task
                 int id = Convert.ToInt32(row.Cells["Id"].Value);
                 string? FirstName = row.Cells["FirstName"].Value?.ToString();
                 string? LastName = row.Cells["LastName"].Value?.ToString();
-                string? Email = row.Cells["Email"].Value?.ToString();   
+                string? Email = row.Cells["Email"].Value?.ToString();
                 string? Address = row.Cells["Address"].Value?.ToString();
                 string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
                 string? Status = row.Cells["Status"].Value?.ToString();
@@ -39,7 +39,7 @@ namespace bakk_project_task
                     return;
                 }
                 // Open edit dialog
-                var editForm = new AddNewClient(id, FirstName,LastName,Email,Address,PhoneNumber,Status);
+                var editForm = new AddNewClient(id, FirstName, LastName, Email, Address, PhoneNumber, Status);
                 editForm.FormClosed += AddNewClientFormClosed;
                 editForm.Show();
                 WindowFlags.NewClient = true;
@@ -97,5 +97,36 @@ namespace bakk_project_task
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void EditClient_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox5_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CleanFilters_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
