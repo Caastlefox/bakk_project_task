@@ -15,11 +15,18 @@ namespace bakk_project_task
 {
     public partial class MainMenuForm : Form
     {
+        private string? SearchFirstName = null;
+        private string? SearchLastName = null;
+        private string? SearchAddress = null;
+        private string? SearchPhoneNumber = null;
+        private string? SearchEmail = null;
+        private string? SearchStatus = null;
 
         public MainMenuForm()
         {
             InitializeComponent();
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
+            
         }
         private void DataGridView1_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
@@ -108,25 +115,45 @@ namespace bakk_project_task
 
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void SearchMailTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            this.SearchEmail = SearchMailTextBox.Text;
         }
 
-        private void textBox5_TextChanged(object sender, EventArgs e)
+        private void SearchAddressTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            this.SearchAddress = SearchAddressTextBox.Text;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void SearchFirstNameTextBox_TextChanged(object sender, EventArgs e)
         {
-
+            this.SearchFirstName = SearchFirstNameTextBox.Text;
         }
 
         private void CleanFilters_Click(object sender, EventArgs e)
         {
+            SearchFirstNameTextBox.Text = string.Empty;
+            SearchLastNameTextBox.Text = string.Empty;
+            SearchAddressTextBox.Text = string.Empty;
+            SearchPhoneNumberTextBox.Text = string.Empty;
+            SearchMailTextBox.Text = string.Empty;
+            SearchStatusTextBox.Text = string.Empty;
 
         }
 
+        private void SearchLastNameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.SearchLastName = SearchLastNameTextBox.Text;
+        }
+
+        private void SearchPhoneNumberTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.SearchPhoneNumber = SearchPhoneNumberTextBox.Text;
+        }
+
+        private void SearchStatusTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.SearchStatus = SearchStatusTextBox.Text;
+        }
     }
 }

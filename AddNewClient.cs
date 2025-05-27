@@ -16,9 +16,8 @@ namespace bakk_project_task
 {
     public partial class AddNewClient : Form
     {
-#pragma warning disable IDE0044
+
         private int? Id = null;
-#pragma warning restore IDE0044
         private string? Email = null;
         private string? FirstName = null;
         private string? LastName = null;

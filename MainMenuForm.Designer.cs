@@ -39,12 +39,12 @@ namespace bakk_project_task
             EditClient = new Button();
             ExitButton = new Button();
             CleanFilters = new Button();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            textBox5 = new TextBox();
-            textBox6 = new TextBox();
+            SearchFirstNameTextBox = new TextBox();
+            SearchMailTextBox = new TextBox();
+            SearchLastNameTextBox = new TextBox();
+            SearchPhoneNumberTextBox = new TextBox();
+            SearchAddressTextBox = new TextBox();
+            SearchStatusTextBox = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
@@ -67,10 +67,10 @@ namespace bakk_project_task
             // 
             // Search
             // 
-            Search.Location = new Point(727, 23);
+            Search.Location = new Point(727, 15);
             Search.Margin = new Padding(4, 3, 4, 3);
             Search.Name = "Search";
-            Search.Size = new Size(187, 33);
+            Search.Size = new Size(187, 41);
             Search.TabIndex = 4;
             Search.Text = "Szukaj";
             Search.UseVisualStyleBackColor = true;
@@ -106,69 +106,67 @@ namespace bakk_project_task
             // 
             // CleanFilters
             // 
-            CleanFilters.Location = new Point(727, 82);
+            CleanFilters.Location = new Point(727, 73);
             CleanFilters.Name = "CleanFilters";
-            CleanFilters.Size = new Size(187, 32);
+            CleanFilters.Size = new Size(187, 41);
             CleanFilters.TabIndex = 8;
             CleanFilters.Text = "Wyczyść Filtry";
             CleanFilters.UseVisualStyleBackColor = true;
             CleanFilters.Click += CleanFilters_Click;
             // 
-            // textBox1
+            // SearchFirstNameTextBox
             // 
-            textBox1.Location = new Point(25, 24);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(212, 32);
-            textBox1.TabIndex = 9;
-            textBox1.TextChanged += textBox1_TextChanged;
+            SearchFirstNameTextBox.Location = new Point(25, 33);
+            SearchFirstNameTextBox.Multiline = true;
+            SearchFirstNameTextBox.Name = "SearchFirstNameTextBox";
+            SearchFirstNameTextBox.Size = new Size(212, 23);
+            SearchFirstNameTextBox.TabIndex = 9;
+            SearchFirstNameTextBox.TextChanged += SearchFirstNameTextBox_TextChanged;
             // 
-            // textBox2
+            // SearchMailTextBox
             // 
-            textBox2.Location = new Point(494, 24);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(212, 32);
-            textBox2.TabIndex = 10;
-            textBox2.TextChanged += textBox2_TextChanged;
+            SearchMailTextBox.Location = new Point(494, 33);
+            SearchMailTextBox.Name = "SearchMailTextBox";
+            SearchMailTextBox.Size = new Size(212, 23);
+            SearchMailTextBox.TabIndex = 10;
+            SearchMailTextBox.TextChanged += SearchMailTextBox_TextChanged;
             // 
-            // textBox3
+            // SearchLastNameTextBox
             // 
-            textBox3.Location = new Point(25, 82);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(212, 32);
-            textBox3.TabIndex = 11;
+            SearchLastNameTextBox.Location = new Point(25, 91);
+            SearchLastNameTextBox.Name = "SearchLastNameTextBox";
+            SearchLastNameTextBox.Size = new Size(212, 23);
+            SearchLastNameTextBox.TabIndex = 11;
+            SearchLastNameTextBox.TextChanged += SearchLastNameTextBox_TextChanged;
             // 
-            // textBox4
+            // SearchPhoneNumberTextBox
             // 
-            textBox4.Location = new Point(257, 82);
-            textBox4.Multiline = true;
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(215, 32);
-            textBox4.TabIndex = 12;
+            SearchPhoneNumberTextBox.Location = new Point(257, 91);
+            SearchPhoneNumberTextBox.Name = "SearchPhoneNumberTextBox";
+            SearchPhoneNumberTextBox.Size = new Size(215, 23);
+            SearchPhoneNumberTextBox.TabIndex = 12;
+            SearchPhoneNumberTextBox.TextChanged += SearchPhoneNumberTextBox_TextChanged;
             // 
-            // textBox5
+            // SearchAddressTextBox
             // 
-            textBox5.Location = new Point(257, 24);
-            textBox5.Multiline = true;
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(215, 32);
-            textBox5.TabIndex = 13;
-            textBox5.TextChanged += textBox5_TextChanged;
+            SearchAddressTextBox.Location = new Point(257, 33);
+            SearchAddressTextBox.Name = "SearchAddressTextBox";
+            SearchAddressTextBox.Size = new Size(215, 23);
+            SearchAddressTextBox.TabIndex = 13;
+            SearchAddressTextBox.TextChanged += SearchAddressTextBox_TextChanged;
             // 
-            // textBox6
+            // SearchStatusTextBox
             // 
-            textBox6.Location = new Point(494, 82);
-            textBox6.Multiline = true;
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(212, 32);
-            textBox6.TabIndex = 14;
+            SearchStatusTextBox.Location = new Point(494, 91);
+            SearchStatusTextBox.Name = "SearchStatusTextBox";
+            SearchStatusTextBox.Size = new Size(212, 23);
+            SearchStatusTextBox.TabIndex = 14;
+            SearchStatusTextBox.TextChanged += SearchStatusTextBox_TextChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(25, 6);
+            label1.Location = new Point(25, 15);
             label1.Name = "label1";
             label1.Size = new Size(30, 15);
             label1.TabIndex = 15;
@@ -177,7 +175,7 @@ namespace bakk_project_task
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(25, 64);
+            label2.Location = new Point(25, 73);
             label2.Name = "label2";
             label2.Size = new Size(57, 15);
             label2.TabIndex = 16;
@@ -186,7 +184,7 @@ namespace bakk_project_task
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(257, 6);
+            label3.Location = new Point(257, 15);
             label3.Name = "label3";
             label3.Size = new Size(37, 15);
             label3.TabIndex = 17;
@@ -195,7 +193,7 @@ namespace bakk_project_task
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(257, 64);
+            label4.Location = new Point(257, 73);
             label4.Name = "label4";
             label4.Size = new Size(45, 15);
             label4.TabIndex = 18;
@@ -204,7 +202,7 @@ namespace bakk_project_task
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(494, 6);
+            label5.Location = new Point(494, 15);
             label5.Name = "label5";
             label5.Size = new Size(30, 15);
             label5.TabIndex = 19;
@@ -213,7 +211,7 @@ namespace bakk_project_task
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(494, 64);
+            label6.Location = new Point(494, 73);
             label6.Name = "label6";
             label6.Size = new Size(39, 15);
             label6.TabIndex = 20;
@@ -230,12 +228,12 @@ namespace bakk_project_task
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(textBox6);
-            Controls.Add(textBox5);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(SearchStatusTextBox);
+            Controls.Add(SearchAddressTextBox);
+            Controls.Add(SearchPhoneNumberTextBox);
+            Controls.Add(SearchLastNameTextBox);
+            Controls.Add(SearchMailTextBox);
+            Controls.Add(SearchFirstNameTextBox);
             Controls.Add(CleanFilters);
             Controls.Add(ExitButton);
             Controls.Add(EditClient);
@@ -259,12 +257,12 @@ namespace bakk_project_task
         private Button EditClient;
         private Button ExitButton;
         private Button CleanFilters;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private TextBox textBox5;
-        private TextBox textBox6;
+        private TextBox SearchFirstNameTextBox;
+        private TextBox SearchMailTextBox;
+        private TextBox SearchLastNameTextBox;
+        private TextBox SearchPhoneNumberTextBox;
+        private TextBox SearchAddressTextBox;
+        private TextBox SearchStatusTextBox;
         private Label label1;
         private Label label2;
         private Label label3;
