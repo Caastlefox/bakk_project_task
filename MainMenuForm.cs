@@ -26,7 +26,7 @@ namespace bakk_project_task
         {
             InitializeComponent();
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
-            
+
         }
         private void DataGridView1_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
@@ -53,7 +53,7 @@ namespace bakk_project_task
             }
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void AddNewClientButton_Click(object sender, EventArgs e)
         {
             if (!WindowFlags.NewClient)
             {
@@ -138,7 +138,7 @@ namespace bakk_project_task
             SearchPhoneNumberTextBox.Text = string.Empty;
             SearchMailTextBox.Text = string.Empty;
             SearchStatusTextBox.Text = string.Empty;
-
+            LoadData();
         }
 
         private void SearchLastNameTextBox_TextChanged(object sender, EventArgs e)
@@ -154,6 +154,45 @@ namespace bakk_project_task
         private void SearchStatusTextBox_TextChanged(object sender, EventArgs e)
         {
             this.SearchStatus = SearchStatusTextBox.Text;
+        }
+
+        private void Search_Click(object sender, EventArgs e)
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
+
+            using var conn = new SqliteConnection(connectionString);
+            conn.Open();
+#if NDEBUG
+            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as Numer Telefonu, Address as Adres, Status FROM Clients";
+#else
+            string sql = "SELECT * FROM Clients";
+#endif
+            sql += " WHERE 1=1";
+            sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
+            sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
+            sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
+            sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
+            sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+            sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
+            using var cmd = new SqliteCommand(sql, conn);
+
+            cmd.Parameters.AddWithValue("$firstname", this.SearchFirstName);
+            cmd.Parameters.AddWithValue("$lastname", this.SearchLastName);
+            cmd.Parameters.AddWithValue("$email", this.SearchEmail ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$address", this.SearchAddress ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$phonenumber", this.SearchPhoneNumber ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$status", this.SearchStatus ?? (object)DBNull.Value);
+            using var reader = cmd.ExecuteReader();
+
+            // Creates a DataTable to hold the data
+            var dt = new DataTable();
+
+            // Loads data directly from reader
+            dt.Load(reader);
+
+            // Binds data to DataGridView
+            dataGridView1.DataSource = dt;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace bakk_project_task
             NewClient.TabIndex = 3;
             NewClient.Text = "Dodaj nowego klienta";
             NewClient.UseVisualStyleBackColor = true;
-            NewClient.Click += Button1_Click;
+            NewClient.Click += AddNewClientButton_Click;
             // 
             // Search
             // 
@@ -74,6 +74,7 @@ namespace bakk_project_task
             Search.TabIndex = 4;
             Search.Text = "Szukaj";
             Search.UseVisualStyleBackColor = true;
+            Search.Click += Search_Click;
             // 
             // dataGridView1
             // 
