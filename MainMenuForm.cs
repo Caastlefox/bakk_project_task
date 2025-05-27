@@ -21,17 +21,24 @@ namespace bakk_project_task
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e)
         {
             if (!WindowFlags.NewClient)
             {
-                AddNewClient form = new AddNewClient();
+                var form = new AddNewClient();
+                form.FormClosed += AddNewClientFormClosed;
                 form.Show();
                 WindowFlags.NewClient = true;
             }
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
+        {
+            this.LoadData();
+            WindowFlags.NewClient = false; //INFO remember to replace global flag with local flag in AddNewClient.cs
+        }
+
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
@@ -40,33 +47,26 @@ namespace bakk_project_task
         {
             this.LoadData();
         }
-        private void LoadData()
+        public void LoadData()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString; ; 
+            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
 
-            using (SqliteConnection conn = new SqliteConnection(connectionString))
-            {
+            using var conn = new SqliteConnection(connectionString);
+            conn.Open();
 
-                conn.Open();
+            string sql = "SELECT FirstName, LastName, Email, PhoneNumber, Status FROM Clients";
+            using var cmd = new SqliteCommand(sql, conn);
+            using var reader = cmd.ExecuteReader();
 
-                string sql = "SELECT FirstName, LastName, Email, PhoneNumber, Status FROM Clients"; 
-                using (SqliteCommand cmd = new SqliteCommand(sql, conn))
-                {
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        // Creates a DataTable to hold the data
-                        DataTable dt = new DataTable();
+            // Creates a DataTable to hold the data
+            var dt = new DataTable();
 
-                        // Loads data directly from reader
-                        dt.Load(reader);
+            // Loads data directly from reader
+            dt.Load(reader);
 
-                        // Binds data to DataGridView
-                        dataGridView1.DataSource = dt;
-                        dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                    }
-                }
-            }
+            // Binds data to DataGridView
+            dataGridView1.DataSource = dt;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
     }
 }

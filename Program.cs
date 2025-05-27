@@ -21,23 +21,22 @@ namespace bakk_project_task
         {
             string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
             // Create the connection
-            using (var connection = new SqliteConnection(connectionString))
-            {
-                connection.Open();
-                var tableCmd = connection.CreateCommand();
-                // Debug truncate table
-#if DEBUG
-                tableCmd.CommandText =
-                    @"
-                DROP TABLE IF EXISTS Clients ;
-        ";
-                tableCmd.ExecuteNonQuery();
+            using var connection = new SqliteConnection(connectionString);
 
-#endif
-                // Create a table if it doesn’t exist
-                tableCmd.CommandText =
+            connection.Open();
+            var tableCmd = connection.CreateCommand();
+            // Debug truncate table
+#if DEBUG
+            tableCmd.CommandText =
                 @"
-                CREATE TABLE IF NOT EXISTS Clients (
+            DROP TABLE IF EXISTS Clients ;
+            ";
+            tableCmd.ExecuteNonQuery();
+#endif
+            // Create a table if it doesn’t exist
+            tableCmd.CommandText =
+            @"
+            CREATE TABLE IF NOT EXISTS Clients (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 FirstName TEXT NOT NULL,
                 LastName TEXT NOT NULL,
@@ -45,74 +44,31 @@ namespace bakk_project_task
                 Status TEXT,
                 Email TEXT
             );
-        ";
-                tableCmd.ExecuteNonQuery();
+            ";
+            tableCmd.ExecuteNonQuery();
 
-                // 4. Insert some data
-                var insertCmd = connection.CreateCommand();
-                insertCmd.CommandText =
-                @"
-            INSERT INTO Clients (FirstName, LastName, Email)
-            VALUES ($firstname, $lastname, $email);
-        ";
-                insertCmd.Parameters.AddWithValue("$firstname", "Alice");
-                insertCmd.Parameters.AddWithValue("$lastname", "Doe");
-                insertCmd.Parameters.AddWithValue("$email", "alice@example.com");
-                insertCmd.ExecuteNonQuery();
+            // 5. Read the data
+            var selectCmd = connection.CreateCommand();
+            selectCmd.CommandText = "SELECT Id, FirstName, LastName, Email FROM Clients;";
+            using var reader = selectCmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var id = reader.GetInt32(0);
+                var name = reader.GetString(1);
+                var email = reader.GetString(3);
 
-                // 5. Read the data
-                var selectCmd = connection.CreateCommand();
-                selectCmd.CommandText = "SELECT Id, FirstName, LastName Email FROM Clients;";
-                using (var reader = selectCmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var id = reader.GetInt32(0);
-                        var name = reader.GetString(1);
-                        var email = reader.GetString(2);
-
-                        Console.WriteLine($"ID: {id}, Name: {name}, Email: {email}");
-                    }
-                }
+                Console.WriteLine($"ID: {id}, Name: {name}, Email: {email}");
             }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenuForm());
-            /*
-             * 
-            // Create and save a new Blog
-            Console.Write("Enter a name for a new Blog: ");
-            var name = Console.ReadLine();
-
-            var blog = new Client { Name = name };
-            db.Blogs.Add(blog);
-            db.SaveChanges();
-
-            // Display all Blogs from the database
-            var query = from b in db.Blogs
-                        orderby b.Name
-                        select b;
-
-            Console.WriteLine("All blogs in the database:");
-            foreach (var item in query)
-            {
-                Console.WriteLine(item.Name);
-            }
-
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-
-
-            */
-
         }
     }
     public static class WindowFlags//critical for passing control between windows
     {
         public static bool NewClient { get; set; }
     }
-
-
 }
 
 /* 1.Path to the SQLite database file (will create if it doesn’t exist)

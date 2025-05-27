@@ -30,169 +30,189 @@ namespace bakk_project_task
         /// </summary>
         private void InitializeComponent()
         {
-            this.AddClient = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.SuspendLayout();
+            AddClient = new Button();
+            FirstNameTextBox = new TextBox();
+            LastNameTextBox = new TextBox();
+            AddressTextBox = new TextBox();
+            PhoneNumberTextBox = new TextBox();
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            EmailtextBox = new TextBox();
+            label6 = new Label();
+            checkBox1 = new CheckBox();
+            SuspendLayout();
             // 
             // AddClient
             // 
-            this.AddClient.Location = new System.Drawing.Point(12, 281);
-            this.AddClient.Name = "AddClient";
-            this.AddClient.Size = new System.Drawing.Size(310, 55);
-            this.AddClient.TabIndex = 0;
-            this.AddClient.Text = "Dodaj Klienta";
-            this.AddClient.UseVisualStyleBackColor = true;
-            this.AddClient.Click += new System.EventHandler(this.AddClient_Click);
+            AddClient.Location = new Point(14, 324);
+            AddClient.Margin = new Padding(4, 3, 4, 3);
+            AddClient.Name = "AddClient";
+            AddClient.Size = new Size(362, 63);
+            AddClient.TabIndex = 0;
+            AddClient.Text = "Dodaj Klienta";
+            AddClient.UseVisualStyleBackColor = true;
+            AddClient.Click += AddClient_Click;
             // 
-            // textBox1
+            // FirstNameTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 40);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(256, 20);
-            this.textBox1.TabIndex = 1;
+            FirstNameTextBox.Location = new Point(48, 46);
+            FirstNameTextBox.Margin = new Padding(4, 3, 4, 3);
+            FirstNameTextBox.Name = "FirstNameTextBox";
+            FirstNameTextBox.Size = new Size(298, 23);
+            FirstNameTextBox.TabIndex = 1;
+            FirstNameTextBox.TextChanged += FirstNameTextBox_TextChanged;
             // 
-            // textBox2
+            // LastNameTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(41, 79);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(256, 20);
-            this.textBox2.TabIndex = 2;
+            LastNameTextBox.Location = new Point(48, 91);
+            LastNameTextBox.Margin = new Padding(4, 3, 4, 3);
+            LastNameTextBox.Name = "LastNameTextBox";
+            LastNameTextBox.Size = new Size(298, 23);
+            LastNameTextBox.TabIndex = 2;
+            LastNameTextBox.TextChanged += LastNameTextBox_TextChanged;
             // 
-            // textBox3
+            // AddressTextBox
             // 
-            this.textBox3.Location = new System.Drawing.Point(41, 118);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(256, 20);
-            this.textBox3.TabIndex = 3;
+            AddressTextBox.Location = new Point(48, 136);
+            AddressTextBox.Margin = new Padding(4, 3, 4, 3);
+            AddressTextBox.Name = "AddressTextBox";
+            AddressTextBox.Size = new Size(298, 23);
+            AddressTextBox.TabIndex = 3;
+            AddressTextBox.TextChanged += AddressTextBox_TextChanged;
             // 
-            // textBox4
+            // PhoneNumberTextBox
             // 
-            this.textBox4.Location = new System.Drawing.Point(41, 157);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(256, 20);
-            this.textBox4.TabIndex = 4;
+            PhoneNumberTextBox.Location = new Point(48, 181);
+            PhoneNumberTextBox.Margin = new Padding(4, 3, 4, 3);
+            PhoneNumberTextBox.Name = "PhoneNumberTextBox";
+            PhoneNumberTextBox.Size = new Size(298, 23);
+            PhoneNumberTextBox.TabIndex = 4;
+            PhoneNumberTextBox.TextChanged += PhoneNumberTextBox_TextChanged;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(38, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Imię";
+            label1.AutoSize = true;
+            label1.Location = new Point(44, 28);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(30, 15);
+            label1.TabIndex = 5;
+            label1.Text = "Imię";
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(38, 102);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Adres";
+            label2.AutoSize = true;
+            label2.Location = new Point(44, 118);
+            label2.Margin = new Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new Size(37, 15);
+            label2.TabIndex = 6;
+            label2.Text = "Adres";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 63);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(53, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Nazwisko";
+            label3.AutoSize = true;
+            label3.Location = new Point(44, 73);
+            label3.Margin = new Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new Size(57, 15);
+            label3.TabIndex = 7;
+            label3.Text = "Nazwisko";
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(38, 180);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 13);
-            this.label4.TabIndex = 8;
-            this.label4.Text = "Email";
+            label4.AutoSize = true;
+            label4.Location = new Point(44, 208);
+            label4.Margin = new Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(36, 15);
+            label4.TabIndex = 8;
+            label4.Text = "Email";
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(38, 141);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(43, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Telefon";
+            label5.AutoSize = true;
+            label5.Location = new Point(44, 163);
+            label5.Margin = new Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(45, 15);
+            label5.TabIndex = 9;
+            label5.Text = "Telefon";
             // 
-            // textBox5
+            // EmailtextBox
             // 
-            this.textBox5.Location = new System.Drawing.Point(41, 196);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(256, 20);
-            this.textBox5.TabIndex = 10;
+            EmailtextBox.Location = new Point(48, 226);
+            EmailtextBox.Margin = new Padding(4, 3, 4, 3);
+            EmailtextBox.Name = "EmailtextBox";
+            EmailtextBox.Size = new Size(298, 23);
+            EmailtextBox.TabIndex = 10;
+            EmailtextBox.TextChanged += EmailtextBox_TextChanged;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(40, 219);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(37, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Status";
+            label6.AutoSize = true;
+            label6.Location = new Point(47, 253);
+            label6.Margin = new Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(39, 15);
+            label6.TabIndex = 12;
+            label6.Text = "Status";
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(41, 235);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(81, 17);
-            this.checkBox1.TabIndex = 13;
-            this.checkBox1.Text = "Potencjalny";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(48, 271);
+            checkBox1.Margin = new Padding(4, 3, 4, 3);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(88, 19);
+            checkBox1.TabIndex = 13;
+            checkBox1.Text = "Potencjalny";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += CheckBox1_CheckedChanged;
             // 
             // AddNewClient
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 343);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.AddClient);
-            this.Name = "AddNewClient";
-            this.Text = "Dodaj klienta";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(390, 396);
+            Controls.Add(checkBox1);
+            Controls.Add(label6);
+            Controls.Add(EmailtextBox);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Controls.Add(PhoneNumberTextBox);
+            Controls.Add(AddressTextBox);
+            Controls.Add(LastNameTextBox);
+            Controls.Add(FirstNameTextBox);
+            Controls.Add(AddClient);
+            Margin = new Padding(4, 3, 4, 3);
+            Name = "AddNewClient";
+            Text = "Dodaj klienta";
+            Load += AddNewClient_Load;
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button AddClient;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox FirstNameTextBox;
+        private System.Windows.Forms.TextBox LastNameTextBox;
+        private System.Windows.Forms.TextBox AddressTextBox;
+        private System.Windows.Forms.TextBox PhoneNumberTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox EmailtextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.CheckBox checkBox1;
     }
