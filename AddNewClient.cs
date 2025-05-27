@@ -23,11 +23,12 @@ namespace bakk_project_task
         private string? LastName = null;
         private string? Address = null;
         private string? PhoneNumber = null;
-
+        private string Status = "Aktualny";
         public AddNewClient()
         {
             InitializeComponent();
             this.Id = null;
+            
         }
         public AddNewClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
@@ -48,6 +49,14 @@ namespace bakk_project_task
         }
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
+            if (checkBox1.Checked)
+            {
+                this.Status = "Potencjalny";
+            }
+            else
+            {
+                this.Status = "Aktualny";
+            }
 
         }
 
@@ -80,8 +89,8 @@ namespace bakk_project_task
                 {
                     // New record
                     sql = @"
-                        INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber)
-                        VALUES ($firstname, $lastname, $email, $address, $phonenumber);
+                        INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
+                        VALUES ($firstname, $lastname, $email, $address, $phonenumber, $status);
                         ";
                 }
                 else
@@ -89,7 +98,7 @@ namespace bakk_project_task
                     // Existing record
                     sql = @"
                     UPDATE Clients SET FirstName = $firstname, LastName = $lastname,
-                    Email = $email, Address = $address, PhoneNumber = $phonenumber WHERE Id = $id
+                    Email = $email, Address = $address, PhoneNumber = $phonenumber, Status = $status WHERE Id = $id
                     ;";
                     
                 }
@@ -100,6 +109,7 @@ namespace bakk_project_task
                 Cmd.Parameters.AddWithValue("$email", this.Email ?? (object)DBNull.Value);
                 Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
                 Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
+                Cmd.Parameters.AddWithValue("$status", this.Status);
                 int rowsAffected = Cmd.ExecuteNonQuery();                
                 conn.Close();
             }

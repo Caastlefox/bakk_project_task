@@ -85,10 +85,10 @@ namespace bakk_project_task
 
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
-#if Ndebug
-            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as Numer Telefonu, Address as Adres, Status FROM Clients";
-#else
+#if DEBUG
             string sql = "SELECT * FROM Clients";
+#else
+            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
 
             using var cmd = new SqliteCommand(sql, conn);
@@ -162,10 +162,10 @@ namespace bakk_project_task
 
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
-#if NDEBUG
-            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as Numer Telefonu, Address as Adres, Status FROM Clients";
-#else
+#if DEBUG
             string sql = "SELECT * FROM Clients";
+#else
+            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
             sql += " WHERE 1=1";
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";

@@ -48,19 +48,6 @@ namespace bakk_project_task
             ";
             tableCmd.ExecuteNonQuery();
 
-            // 5. Read the data
-            var selectCmd = connection.CreateCommand();
-            selectCmd.CommandText = "SELECT Id, FirstName, LastName, Email FROM Clients;";
-            using var reader = selectCmd.ExecuteReader();
-            while (reader.Read())
-            {
-                var id = reader.GetInt32(0);
-                var name = reader.GetString(1);
-                var email = reader.GetString(3);
-
-                Console.WriteLine($"ID: {id}, Name: {name}, Email: {email}");
-            }
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainMenuForm());
