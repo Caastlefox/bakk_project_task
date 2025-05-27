@@ -137,7 +137,7 @@ namespace bakk_project_task
             SearchAddressTextBox.Text = string.Empty;
             SearchPhoneNumberTextBox.Text = string.Empty;
             SearchMailTextBox.Text = string.Empty;
-            SearchStatusTextBox.Text = string.Empty;
+            comboBox1.SelectedIndex = -1; // Clear the selected item in the combo box
             LoadData();
         }
 
@@ -151,10 +151,6 @@ namespace bakk_project_task
             this.SearchPhoneNumber = SearchPhoneNumberTextBox.Text;
         }
 
-        private void SearchStatusTextBox_TextChanged(object sender, EventArgs e)
-        {
-            this.SearchStatus = SearchStatusTextBox.Text;
-        }
 
         private void Search_Click(object sender, EventArgs e)
         {
@@ -176,12 +172,12 @@ namespace bakk_project_task
             sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
             using var cmd = new SqliteCommand(sql, conn);
 
-            cmd.Parameters.AddWithValue("$firstname", this.SearchFirstName);
-            cmd.Parameters.AddWithValue("$lastname", this.SearchLastName);
-            cmd.Parameters.AddWithValue("$email", this.SearchEmail ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$address", this.SearchAddress ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$phonenumber", this.SearchPhoneNumber ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$status", this.SearchStatus ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$firstname", '%' + this.SearchFirstName + '%');
+            cmd.Parameters.AddWithValue("$lastname", '%' + this.SearchLastName + '%');
+            cmd.Parameters.AddWithValue("$email", '%' + this.SearchEmail + '%' ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$address", '%' + this.SearchAddress + '%' ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$phonenumber", '%' + this.SearchPhoneNumber + '%' ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$status", '%' + this.SearchStatus + '%' ?? (object)DBNull.Value);
             using var reader = cmd.ExecuteReader();
 
             // Creates a DataTable to hold the data
@@ -193,6 +189,11 @@ namespace bakk_project_task
             // Binds data to DataGridView
             dataGridView1.DataSource = dt;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.SearchStatus = comboBox1.SelectedItem?.ToString();
         }
     }
 }

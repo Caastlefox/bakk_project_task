@@ -23,7 +23,7 @@ namespace bakk_project_task
         private string? LastName = null;
         private string? Address = null;
         private string? PhoneNumber = null;
-        private string Status = "Aktualny";
+        private string? Status = "Aktualny";
         public AddNewClient()
         {
             InitializeComponent();
@@ -33,7 +33,6 @@ namespace bakk_project_task
         public AddNewClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
-            // add window name change?
             // "this" used for clarity, can be omitted
             this.Id = id;
             this.FirstName = firstName;
@@ -41,11 +40,17 @@ namespace bakk_project_task
             this.Email = email;
             this.Address = address;
             this.PhoneNumber = phoneNumber;
+            this.Status = status;
+            
             this.FirstNameTextBox.Text = FirstName;
             this.LastNameTextBox.Text = LastName;
             this.EmailtextBox.Text = Email;
             this.AddressTextBox.Text = Address;
             this.PhoneNumberTextBox.Text = PhoneNumber;
+            if (Status != "Aktualny")
+            {
+                checkBox1.Checked = true;
+            }
         }
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
@@ -110,7 +115,7 @@ namespace bakk_project_task
                 Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
                 Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
                 Cmd.Parameters.AddWithValue("$status", this.Status);
-                int rowsAffected = Cmd.ExecuteNonQuery();                
+                Cmd.ExecuteNonQuery();                
                 conn.Close();
             }
             this.Close();

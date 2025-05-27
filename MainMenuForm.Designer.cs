@@ -44,13 +44,13 @@ namespace bakk_project_task
             SearchLastNameTextBox = new TextBox();
             SearchPhoneNumberTextBox = new TextBox();
             SearchAddressTextBox = new TextBox();
-            SearchStatusTextBox = new TextBox();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
+            comboBox1 = new ComboBox();
             ((ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -156,14 +156,6 @@ namespace bakk_project_task
             SearchAddressTextBox.TabIndex = 13;
             SearchAddressTextBox.TextChanged += SearchAddressTextBox_TextChanged;
             // 
-            // SearchStatusTextBox
-            // 
-            SearchStatusTextBox.Location = new Point(494, 91);
-            SearchStatusTextBox.Name = "SearchStatusTextBox";
-            SearchStatusTextBox.Size = new Size(212, 23);
-            SearchStatusTextBox.TabIndex = 14;
-            SearchStatusTextBox.TextChanged += SearchStatusTextBox_TextChanged;
-            // 
             // label1
             // 
             label1.AutoSize = true;
@@ -218,18 +210,28 @@ namespace bakk_project_task
             label6.TabIndex = 20;
             label6.Text = "Status";
             // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Items.AddRange(new object[] { "Aktualny", "Potencjalny" });
+            comboBox1.Location = new Point(494, 91);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(212, 23);
+            comboBox1.TabIndex = 21;
+            comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
+            // 
             // MainMenuForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(944, 643);
+            Controls.Add(comboBox1);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(SearchStatusTextBox);
             Controls.Add(SearchAddressTextBox);
             Controls.Add(SearchPhoneNumberTextBox);
             Controls.Add(SearchLastNameTextBox);
@@ -263,13 +265,13 @@ namespace bakk_project_task
         private TextBox SearchLastNameTextBox;
         private TextBox SearchPhoneNumberTextBox;
         private TextBox SearchAddressTextBox;
-        private TextBox SearchStatusTextBox;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
         private Label label6;
+        private ComboBox comboBox1;
     }
 }
 
