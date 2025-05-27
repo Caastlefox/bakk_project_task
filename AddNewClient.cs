@@ -25,7 +25,21 @@ namespace bakk_project_task
         {
             InitializeComponent();
         }
-
+        public AddNewClient(string firstName, string lastName, string email, string address, string phoneNumber, string status)
+        {
+            InitializeComponent();
+            // "this" used for clarity, can be omitted
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.Email = email;
+            this.Address = address;
+            this.PhoneNumber = phoneNumber;
+            this.FirstNameTextBox.Text = FirstName;
+            this.LastNameTextBox.Text = LastName;
+            this.EmailtextBox.Text = Email;
+            this.AddressTextBox.Text = Address;
+            this.PhoneNumberTextBox.Text = PhoneNumber;
+        }
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -57,8 +71,8 @@ namespace bakk_project_task
                 var insertCmd = conn.CreateCommand();
                 insertCmd.CommandText =
                 @"
-                INSERT INTO Clients (FirstName, LastName, Email)
-                VALUES ($firstname, $lastname, $email);
+                INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber)
+                VALUES ($firstname, $lastname, $email, $address, $phonenumber);
                 ";
                 insertCmd.Parameters.AddWithValue("$firstname", FirstName);
                 insertCmd.Parameters.AddWithValue("$lastname", LastName);

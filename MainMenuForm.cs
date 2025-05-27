@@ -19,6 +19,29 @@ namespace bakk_project_task
         public MainMenuForm()
         {
             InitializeComponent();
+            dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
+        }
+        private void DataGridView1_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0) // Make sure it's not header
+            {
+                // Get data from the clicked row
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                string? FirstName = row.Cells["FirstName"].Value?.ToString();
+                string? LastName = row.Cells["LastName"].Value?.ToString();
+                string? Email = row.Cells["Email"].Value?.ToString();   
+                string? Address = row.Cells["Address"].Value?.ToString();
+                string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
+                string? Status = row.Cells["Status"].Value?.ToString();
+
+                // Open edit dialog
+                var editForm = new AddNewClient(FirstName,LastName,Email,Address,PhoneNumber,Status);
+                // Reloads data if something was updated
+                if (editForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadData();
+                }
+            }
         }
 
         private void Button1_Click(object sender, EventArgs e)
@@ -54,7 +77,7 @@ namespace bakk_project_task
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
 
-            string sql = "SELECT FirstName, LastName, Email, PhoneNumber, Status FROM Clients";
+            string sql = "SELECT FirstName, LastName, Email, PhoneNumber, Address, Status FROM Clients";
             using var cmd = new SqliteCommand(sql, conn);
             using var reader = cmd.ExecuteReader();
 

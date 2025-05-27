@@ -41,8 +41,9 @@ namespace bakk_project_task
                 FirstName TEXT NOT NULL,
                 LastName TEXT NOT NULL,
                 PhoneNumber TEXT,
-                Status TEXT,
-                Email TEXT
+                Address TEXT,
+                Email TEXT,
+                Status TEXT
             );
             ";
             tableCmd.ExecuteNonQuery();
