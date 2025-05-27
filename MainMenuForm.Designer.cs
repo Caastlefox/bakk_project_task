@@ -33,29 +33,18 @@ namespace bakk_project_task
         /// </summary>
         private void InitializeComponent()
         {
-            EditClient = new Button();
             NewClient = new Button();
             Search = new Button();
             dataGridView1 = new DataGridView();
             ((ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // EditClient
-            // 
-            EditClient.Location = new Point(349, 485);
-            EditClient.Margin = new Padding(4, 3, 4, 3);
-            EditClient.Name = "EditClient";
-            EditClient.Size = new Size(236, 32);
-            EditClient.TabIndex = 2;
-            EditClient.Text = "Edytuj klienta";
-            EditClient.UseVisualStyleBackColor = true;
-            // 
             // NewClient
             // 
-            NewClient.Location = new Point(684, 485);
+            NewClient.Location = new Point(439, 485);
             NewClient.Margin = new Padding(4, 3, 4, 3);
             NewClient.Name = "NewClient";
-            NewClient.Size = new Size(236, 32);
+            NewClient.Size = new Size(481, 32);
             NewClient.TabIndex = 3;
             NewClient.Text = "Dodaj nowego klienta";
             NewClient.UseVisualStyleBackColor = true;
@@ -66,7 +55,7 @@ namespace bakk_project_task
             Search.Location = new Point(14, 485);
             Search.Margin = new Padding(4, 3, 4, 3);
             Search.Name = "Search";
-            Search.Size = new Size(236, 31);
+            Search.Size = new Size(417, 31);
             Search.TabIndex = 4;
             Search.Text = "Szukaj";
             Search.UseVisualStyleBackColor = true;
@@ -88,7 +77,6 @@ namespace bakk_project_task
             Controls.Add(dataGridView1);
             Controls.Add(Search);
             Controls.Add(NewClient);
-            Controls.Add(EditClient);
             Margin = new Padding(4, 3, 4, 3);
             Name = "MainMenuForm";
             Text = "Menu";
@@ -99,7 +87,6 @@ namespace bakk_project_task
         }
 
         #endregion
-        private System.Windows.Forms.Button EditClient;
         private System.Windows.Forms.Button NewClient;
         private System.Windows.Forms.Button Search;
         private DataGridView dataGridView1;

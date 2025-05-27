@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,20 +16,26 @@ namespace bakk_project_task
 {
     public partial class AddNewClient : Form
     {
-        private string Email = string.Empty;
-        private string FirstName = string.Empty;
-        private string LastName = string.Empty;
-        private string Address = string.Empty;
-        private string PhoneNumber = string.Empty;
+#pragma warning disable IDE0044
+        private int? Id = null;
+#pragma warning restore IDE0044
+        private string? Email = null;
+        private string? FirstName = null;
+        private string? LastName = null;
+        private string? Address = null;
+        private string? PhoneNumber = null;
 
         public AddNewClient()
         {
             InitializeComponent();
+            this.Id = null;
         }
-        public AddNewClient(string firstName, string lastName, string email, string address, string phoneNumber, string status)
+        public AddNewClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
+            // add window name change?
             // "this" used for clarity, can be omitted
+            this.Id = id;
             this.FirstName = firstName;
             this.LastName = lastName;
             this.Email = email;
@@ -68,47 +75,61 @@ namespace bakk_project_task
             //Insert data
             {
                 conn.Open();
-                var insertCmd = conn.CreateCommand();
-                insertCmd.CommandText =
-                @"
-                INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber)
-                VALUES ($firstname, $lastname, $email, $address, $phonenumber);
-                ";
-                insertCmd.Parameters.AddWithValue("$firstname", FirstName);
-                insertCmd.Parameters.AddWithValue("$lastname", LastName);
-                insertCmd.Parameters.AddWithValue("$email", Email ?? (object)DBNull.Value);
-                insertCmd.Parameters.AddWithValue("$address", Address ?? (object)DBNull.Value);
-                insertCmd.Parameters.AddWithValue("$phonenumber", PhoneNumber ?? (object)DBNull.Value);
-                insertCmd.ExecuteNonQuery();
+                var Cmd = conn.CreateCommand();
+                string sql;
+                if (Id == null)
+                {
+                    // New record
+                    sql = @"
+                        INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber)
+                        VALUES ($firstname, $lastname, $email, $address, $phonenumber);
+                        ";
+                }
+                else
+                {
+                    // Existing record
+                    sql = @"
+                    UPDATE Clients SET FirstName = $firstname, LastName = $lastname,
+                    Email = $email, Address = $address, PhoneNumber = $phonenumber WHERE Id = $id
+                    ;";
+                    
+                }
+                Cmd.CommandText = sql;
+                Cmd.Parameters.AddWithValue("$id", this.Id);
+                Cmd.Parameters.AddWithValue("$firstname", this.FirstName);
+                Cmd.Parameters.AddWithValue("$lastname", this.LastName);
+                Cmd.Parameters.AddWithValue("$email", this.Email ?? (object)DBNull.Value);
+                Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
+                Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
+                int rowsAffected = Cmd.ExecuteNonQuery();                
                 conn.Close();
-                
             }
             this.Close();
         }
 
         private void EmailtextBox_TextChanged(object sender, EventArgs e)
         {
-            Email = EmailtextBox.Text;
+            this.Email = EmailtextBox.Text;
         }
 
         private void FirstNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            FirstName = FirstNameTextBox.Text;
+            this.FirstName = FirstNameTextBox.Text;
         }
 
         private void LastNameTextBox_TextChanged(object sender, EventArgs e)
         {
-            LastName = LastNameTextBox.Text;
+            this.LastName = LastNameTextBox.Text;
         }
 
         private void AddressTextBox_TextChanged(object sender, EventArgs e)
         {
-            Address = AddressTextBox.Text;
+            this.Address = AddressTextBox.Text;
         }
 
         private void PhoneNumberTextBox_TextChanged(object sender, EventArgs e)
         {
-            PhoneNumber = PhoneNumberTextBox.Text;
+            this.PhoneNumber = PhoneNumberTextBox.Text;
         }
 
         private void AddNewClient_Load(object sender, EventArgs e)

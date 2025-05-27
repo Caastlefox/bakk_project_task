@@ -27,20 +27,22 @@ namespace bakk_project_task
             {
                 // Get data from the clicked row
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                int id = Convert.ToInt32(row.Cells["Id"].Value);
                 string? FirstName = row.Cells["FirstName"].Value?.ToString();
                 string? LastName = row.Cells["LastName"].Value?.ToString();
                 string? Email = row.Cells["Email"].Value?.ToString();   
                 string? Address = row.Cells["Address"].Value?.ToString();
                 string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
                 string? Status = row.Cells["Status"].Value?.ToString();
-
-                // Open edit dialog
-                var editForm = new AddNewClient(FirstName,LastName,Email,Address,PhoneNumber,Status);
-                // Reloads data if something was updated
-                if (editForm.ShowDialog() == DialogResult.OK)
+                if (FirstName == "" || LastName == "")
                 {
-                    LoadData();
+                    return;
                 }
+                // Open edit dialog
+                var editForm = new AddNewClient(id, FirstName,LastName,Email,Address,PhoneNumber,Status);
+                editForm.FormClosed += AddNewClientFormClosed;
+                editForm.Show();
+                WindowFlags.NewClient = true;
             }
         }
 
@@ -76,8 +78,12 @@ namespace bakk_project_task
 
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
+#if Ndebug
+            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as Numer Telefonu, Address as Adres, Status FROM Clients";
+#else
+            string sql = "SELECT * FROM Clients";
+#endif
 
-            string sql = "SELECT FirstName, LastName, Email, PhoneNumber, Address, Status FROM Clients";
             using var cmd = new SqliteCommand(sql, conn);
             using var reader = cmd.ExecuteReader();
 
