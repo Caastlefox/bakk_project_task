@@ -26,28 +26,59 @@ namespace bakk_project_task
             }
             connectionString = conn;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         public void AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
-            
-            using var connection = new SqliteConnection(connectionString);
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = @"
+            try
+            {
+                using var connection = new SqliteConnection(connectionString);
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"
                 INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
                 VALUES ($firstName, $lastName, $email, $address, $phoneNumber, $status);
-            ";
-            command.Parameters.AddWithValue("$firstName", firstName);
-            command.Parameters.AddWithValue("$lastName", lastName);
-            command.Parameters.AddWithValue("$email", email);
-            command.Parameters.AddWithValue("$address", address);
-            command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
-            command.Parameters.AddWithValue("$status", status);
-            command.ExecuteNonQuery();
-        }
+                ";
+                command.Parameters.AddWithValue("$firstName", firstName);
+                command.Parameters.AddWithValue("$lastName", lastName);
+                command.Parameters.AddWithValue("$email", email);
+                command.Parameters.AddWithValue("$address", address);
+                command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
+                command.Parameters.AddWithValue("$status", status);
+                command.ExecuteNonQuery();
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
 
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+        [SupportedOSPlatform("windows6.1")]
         public void UpdateClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
+            try
+            { 
             using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
             connection.Open();
             var command = connection.CreateCommand();
@@ -64,11 +95,41 @@ namespace bakk_project_task
             command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
             command.Parameters.AddWithValue("$status", status);
             command.ExecuteNonQuery();
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
         [SupportedOSPlatform("windows6.1")]
         public void LoadClient(DataGridView dataGridView)
         {
+            try
+            { 
             using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
             conn.Open();
             var command = conn.CreateCommand();
@@ -90,9 +151,40 @@ namespace bakk_project_task
             // Binds data to DataGridView
             dataGridView.DataSource = dt;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
+        [SupportedOSPlatform("windows6.1")]
         public void DeleteClient(int? id)
         {
+            try
+            {
             using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
             connection.Open();
             var command = connection.CreateCommand();
@@ -101,6 +193,34 @@ namespace bakk_project_task
             ";
             command.Parameters.AddWithValue("$id", id);
             command.ExecuteNonQuery();
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
     }
 }
