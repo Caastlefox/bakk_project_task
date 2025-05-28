@@ -27,12 +27,12 @@ namespace bakk_project_task
             connectionString = conn;
         }
         [SupportedOSPlatform("windows6.1")]
-        public void AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
-        {
+        public async Task AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        {   
             try
             {
                 using var connection = new SqliteConnection(connectionString);
-                connection.Open();
+                await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @"
                 INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
@@ -44,7 +44,12 @@ namespace bakk_project_task
                 command.Parameters.AddWithValue("$address", address);
                 command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
                 command.Parameters.AddWithValue("$status", status);
-                command.ExecuteNonQuery();
+                await command.ExecuteNonQueryAsync();
+                // Can make it into message, returns rows
+                //
+                // MessageBox.Show($"Inserted {rows} row(s)!", "Success",
+                // MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
             catch (SqliteException ex)
             {
@@ -75,12 +80,12 @@ namespace bakk_project_task
             }
         }
         [SupportedOSPlatform("windows6.1")]
-        public void UpdateClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public async Task UpdateClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             try
             { 
             using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-            connection.Open();
+            await connection.OpenAsync();
             var command = connection.CreateCommand();
             command.CommandText = @"
                 UPDATE Clients
@@ -94,7 +99,7 @@ namespace bakk_project_task
             command.Parameters.AddWithValue("$address", address);
             command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
             command.Parameters.AddWithValue("$status", status);
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             }
             catch (SqliteException ex)
             {
@@ -126,31 +131,33 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public void LoadClient(DataGridView dataGridView)
+        public async Task LoadClient(DataGridView dataGridView)
         {
             try
             { 
-            using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-            conn.Open();
-            var command = conn.CreateCommand();
+                using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
+                await conn.OpenAsync();
+                var command = conn.CreateCommand();
 #if DEBUG
-            string sql = "SELECT * FROM Clients";
+                string sql = "SELECT * FROM Clients";
 #else
-            string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+                string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
-            command.CommandText = sql;
-            using var cmd = new SqliteCommand(sql, conn);
-            using var reader = cmd.ExecuteReader();
+                command.CommandText = sql;
+                using var cmd = new SqliteCommand(sql, conn);
+                using var reader = await cmd.ExecuteReaderAsync();
 
-            // Creates a DataTable to hold the data
-            var dt = new DataTable();
+                var dt = new DataTable();
+                await reader.ReadAsync();
+               
+                dt.Load(reader);
 
-            // Loads data directly from reader
-            dt.Load(reader);
-
-            // Binds data to DataGridView
-            dataGridView.DataSource = dt;
-            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                   
+                dataGridView.DataSource = dt;
+                dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                
+                
+                //MessageBox.Show(result, "Query Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (SqliteException ex)
             {
@@ -181,18 +188,18 @@ namespace bakk_project_task
             }
         }
         [SupportedOSPlatform("windows6.1")]
-        public void DeleteClient(int? id)
+        public async Task DeleteClient(int? id)
         {
             try
             {
             using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-            connection.Open();
+            await connection.OpenAsync();
             var command = connection.CreateCommand();
             command.CommandText = @"
                 DELETE FROM Clients WHERE Id = $id;
             ";
             command.Parameters.AddWithValue("$id", id);
-            command.ExecuteNonQuery();
+            await command.ExecuteNonQueryAsync();
             }
             catch (SqliteException ex)
             {

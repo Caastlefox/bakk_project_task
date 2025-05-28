@@ -26,8 +26,4 @@ namespace bakk_project_task
             Application.Run(new MainMenuForm(clientsRepository));
         }
     }
-    public static class WindowFlags//critical for passing control between windows
-    {
-        public static bool NewClient { get; set; }
-    }
 }

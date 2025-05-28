@@ -52,31 +52,26 @@ namespace bakk_project_task
                 var editForm = new AddNewClient(clientsRepository,id, FirstName, LastName, Email, Address, PhoneNumber, Status);
                 editForm.FormClosed += AddNewClientFormClosed;
                 editForm.Show();
-                WindowFlags.NewClient = true;
             }
         }
 
         private void AddNewClientButton_Click(object sender, EventArgs e)
         {
-            if (!WindowFlags.NewClient)
-            {
-                var form = new AddNewClient(clientsRepository);
-                form.FormClosed += AddNewClientFormClosed;
-                form.Show();
-                WindowFlags.NewClient = true;
-            }
+            var form = new AddNewClient(clientsRepository);
+            form.FormClosed += AddNewClientFormClosed;
+            form.Show();
+
         }
 
-        private void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
+        private async void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
-            this.clientsRepository.LoadClient(dataGridView1);;
-            WindowFlags.NewClient = false; //INFO remember to replace global flag with local flag in AddNewClient.cs
+            await this.clientsRepository.LoadClient(dataGridView1);
         }
 
 
-        private void MainMenuForm_Load(object sender, EventArgs e)
+        private async void MainMenuForm_Load(object sender, EventArgs e)
         {
-            clientsRepository.LoadClient(dataGridView1);
+            await clientsRepository.LoadClient(dataGridView1);
         }
         
         private void ExitButton_Click(object sender, EventArgs e)
@@ -135,7 +130,7 @@ namespace bakk_project_task
             SearchPhoneNumberTextBox.Text = string.Empty;
             SearchMailTextBox.Text = string.Empty;
             comboBox1.SelectedIndex = -1; // Clear the selected item in the combo box
-            clientsRepository.LoadClient(dataGridView1);;
+            _ = clientsRepository.LoadClient(dataGridView1); // Explicitly discard the task
         }
 
         private void SearchLastNameTextBox_TextChanged(object sender, EventArgs e)

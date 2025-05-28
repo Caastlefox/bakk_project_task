@@ -72,7 +72,7 @@ namespace bakk_project_task
 
         }
 
-        private void AddClient_Click(object sender, EventArgs e)
+        private async void AddClient_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
             {
@@ -91,49 +91,14 @@ namespace bakk_project_task
             }
             if (Id == null)
             {
-                clientsRepository.AddClient(this.FirstName, this.LastName,
-                this.Email, this.Address, this.PhoneNumber, this.Status);
+                await clientsRepository.AddClient(this.FirstName, this.LastName,
+                    this.Email, this.Address, this.PhoneNumber, this.Status);
             }
-            else 
+            else
             {
-                clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                this.Email, this.Address, this.PhoneNumber, this.Status);
+                await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
+                    this.Email, this.Address, this.PhoneNumber, this.Status);
             }
-            //string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
-            //using (var conn = new SqliteConnection(connectionString))
-            ////Insert data
-            //{
-            //    conn.Open();
-            //    var Cmd = conn.CreateCommand();
-            //    string sql;
-            //    if (Id == null)
-            //    {
-            //        // New record
-            //        sql = @"
-            //            INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
-            //            VALUES ($firstname, $lastname, $email, $address, $phonenumber, $status);
-            //            ";
-            //    }
-            //    else
-            //    {
-            //        // Existing record
-            //        sql = @"
-            //        UPDATE Clients SET FirstName = $firstname, LastName = $lastname,
-            //        Email = $email, Address = $address, PhoneNumber = $phonenumber, Status = $status WHERE Id = $id
-            //        ;";
-                    
-            //    }
-            //    Cmd.CommandText = sql;
-            //    Cmd.Parameters.AddWithValue("$id", this.Id);
-            //    Cmd.Parameters.AddWithValue("$firstname", this.FirstName);
-            //    Cmd.Parameters.AddWithValue("$lastname", this.LastName);
-            //    Cmd.Parameters.AddWithValue("$email", this.Email ?? (object)DBNull.Value);
-            //    Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
-            //    Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
-            //    Cmd.Parameters.AddWithValue("$status", this.Status);
-            //    Cmd.ExecuteNonQuery();                
-            //    conn.Close();
-            //}
             this.Close();
         }
 
