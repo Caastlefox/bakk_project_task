@@ -19,38 +19,11 @@ namespace bakk_project_task
 
         static void Main()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
-            // Create the connection
-            using var connection = new SqliteConnection(connectionString);
-
-            connection.Open();
-            var tableCmd = connection.CreateCommand();
-            // Debug truncate table
-#if DEBUG
-            tableCmd.CommandText =
-                @"
-            DROP TABLE IF EXISTS Clients ;
-            ";
-            tableCmd.ExecuteNonQuery();
-#endif
-            // Create a table if it doesn’t exist
-            tableCmd.CommandText =
-            @"
-            CREATE TABLE IF NOT EXISTS Clients (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                FirstName TEXT NOT NULL,
-                LastName TEXT NOT NULL,
-                PhoneNumber TEXT,
-                Address TEXT,
-                Email TEXT,
-                Status TEXT
-            );
-            ";
-            tableCmd.ExecuteNonQuery();
+            var clientsRepository = new ClientsRepository();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainMenuForm());
+            Application.Run(new MainMenuForm(clientsRepository));
         }
     }
     public static class WindowFlags//critical for passing control between windows

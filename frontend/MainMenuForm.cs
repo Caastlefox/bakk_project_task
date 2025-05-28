@@ -6,10 +6,13 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace bakk_project_task
 {
@@ -21,12 +24,12 @@ namespace bakk_project_task
         private string? SearchPhoneNumber = null;
         private string? SearchEmail = null;
         private string? SearchStatus = null;
-
-        public MainMenuForm()
+        private ClientsRepository clientsRepository;
+        public MainMenuForm(ClientsRepository clientsRepository)
         {
             InitializeComponent();
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;
-
+            this.clientsRepository = clientsRepository;
         }
         private void DataGridView1_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
@@ -46,7 +49,7 @@ namespace bakk_project_task
                     return;
                 }
                 // Open edit dialog
-                var editForm = new AddNewClient(id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+                var editForm = new AddNewClient(clientsRepository,id, FirstName, LastName, Email, Address, PhoneNumber, Status);
                 editForm.FormClosed += AddNewClientFormClosed;
                 editForm.Show();
                 WindowFlags.NewClient = true;
@@ -57,7 +60,7 @@ namespace bakk_project_task
         {
             if (!WindowFlags.NewClient)
             {
-                var form = new AddNewClient();
+                var form = new AddNewClient(clientsRepository);
                 form.FormClosed += AddNewClientFormClosed;
                 form.Show();
                 WindowFlags.NewClient = true;
@@ -66,45 +69,16 @@ namespace bakk_project_task
 
         private void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
-            this.LoadData();
+            this.clientsRepository.LoadClient(dataGridView1);;
             WindowFlags.NewClient = false; //INFO remember to replace global flag with local flag in AddNewClient.cs
         }
 
-        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
 
         private void MainMenuForm_Load(object sender, EventArgs e)
         {
-            this.LoadData();
+            clientsRepository.LoadClient(dataGridView1);
         }
-        public void LoadData()
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
-
-            using var conn = new SqliteConnection(connectionString);
-            conn.Open();
-#if DEBUG
-            string sql = "SELECT * FROM Clients";
-#else
-            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
-#endif
-
-            using var cmd = new SqliteCommand(sql, conn);
-            using var reader = cmd.ExecuteReader();
-
-            // Creates a DataTable to hold the data
-            var dt = new DataTable();
-
-            // Loads data directly from reader
-            dt.Load(reader);
-
-            // Binds data to DataGridView
-            dataGridView1.DataSource = dt;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
+        
         private void ExitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -112,7 +86,30 @@ namespace bakk_project_task
 
         private void EditClient_Click(object sender, EventArgs e)
         {
+            DataGridViewRow? row = dataGridView1.CurrentRow;
+            if (row == null || row.Cells["Id"].Value == null)
+            {
+                MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
+            int id = Convert.ToInt32(row.Cells["Id"].Value);
+            string? FirstName = row.Cells["FirstName"].Value?.ToString();
+            string? LastName = row.Cells["LastName"].Value?.ToString();
+            string? Email = row.Cells["Email"].Value?.ToString();
+            string? Address = row.Cells["Address"].Value?.ToString();
+            string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
+            string? Status = row.Cells["Status"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
+            {
+                MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var editForm = new AddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+            editForm.FormClosed += AddNewClientFormClosed;
+            editForm.Show();
         }
 
         private void SearchMailTextBox_TextChanged(object sender, EventArgs e)
@@ -138,7 +135,7 @@ namespace bakk_project_task
             SearchPhoneNumberTextBox.Text = string.Empty;
             SearchMailTextBox.Text = string.Empty;
             comboBox1.SelectedIndex = -1; // Clear the selected item in the combo box
-            LoadData();
+            clientsRepository.LoadClient(dataGridView1);;
         }
 
         private void SearchLastNameTextBox_TextChanged(object sender, EventArgs e)
@@ -161,7 +158,7 @@ namespace bakk_project_task
 #if DEBUG
             string sql = "SELECT * FROM Clients";
 #else
-            string sql = "SELECT FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+            string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
             sql += " WHERE 1=1";
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";

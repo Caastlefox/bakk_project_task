@@ -4,13 +4,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+
 
 namespace bakk_project_task
 {
@@ -18,21 +22,24 @@ namespace bakk_project_task
     {
 
         private int? Id = null;
-        private string? Email = null;
-        private string? FirstName = null;
-        private string? LastName = null;
-        private string? Address = null;
-        private string? PhoneNumber = null;
+        private string? Email = "";
+        private string? FirstName = "";
+        private string? LastName = "";
+        private string? Address = "";
+        private string? PhoneNumber = "";
         private string? Status = "Aktualny";
-        public AddNewClient()
+        private ClientsRepository clientsRepository;
+        public AddNewClient(ClientsRepository clientsRepository)
         {
+            this.clientsRepository = clientsRepository;
             InitializeComponent();
             this.Id = null;
             
         }
-        public AddNewClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public AddNewClient(ClientsRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
+            this.clientsRepository = clientsRepository;
             // "this" used for clarity, can be omitted
             this.Id = id;
             this.FirstName = firstName;
@@ -82,42 +89,51 @@ namespace bakk_project_task
                 MessageBox.Show("Proszę podać poprawny numer telefonu.");
                 return;
             }
-
-            string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
-            using (var conn = new SqliteConnection(connectionString))
-            //Insert data
+            if (Id == null)
             {
-                conn.Open();
-                var Cmd = conn.CreateCommand();
-                string sql;
-                if (Id == null)
-                {
-                    // New record
-                    sql = @"
-                        INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
-                        VALUES ($firstname, $lastname, $email, $address, $phonenumber, $status);
-                        ";
-                }
-                else
-                {
-                    // Existing record
-                    sql = @"
-                    UPDATE Clients SET FirstName = $firstname, LastName = $lastname,
-                    Email = $email, Address = $address, PhoneNumber = $phonenumber, Status = $status WHERE Id = $id
-                    ;";
-                    
-                }
-                Cmd.CommandText = sql;
-                Cmd.Parameters.AddWithValue("$id", this.Id);
-                Cmd.Parameters.AddWithValue("$firstname", this.FirstName);
-                Cmd.Parameters.AddWithValue("$lastname", this.LastName);
-                Cmd.Parameters.AddWithValue("$email", this.Email ?? (object)DBNull.Value);
-                Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
-                Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
-                Cmd.Parameters.AddWithValue("$status", this.Status);
-                Cmd.ExecuteNonQuery();                
-                conn.Close();
+                clientsRepository.AddClient(this.FirstName, this.LastName,
+                this.Email, this.Address, this.PhoneNumber, this.Status);
             }
+            else 
+            {
+                clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
+                this.Email, this.Address, this.PhoneNumber, this.Status);
+            }
+            //string connectionString = ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString;
+            //using (var conn = new SqliteConnection(connectionString))
+            ////Insert data
+            //{
+            //    conn.Open();
+            //    var Cmd = conn.CreateCommand();
+            //    string sql;
+            //    if (Id == null)
+            //    {
+            //        // New record
+            //        sql = @"
+            //            INSERT INTO Clients (FirstName, LastName, Email, Address, PhoneNumber, Status)
+            //            VALUES ($firstname, $lastname, $email, $address, $phonenumber, $status);
+            //            ";
+            //    }
+            //    else
+            //    {
+            //        // Existing record
+            //        sql = @"
+            //        UPDATE Clients SET FirstName = $firstname, LastName = $lastname,
+            //        Email = $email, Address = $address, PhoneNumber = $phonenumber, Status = $status WHERE Id = $id
+            //        ;";
+                    
+            //    }
+            //    Cmd.CommandText = sql;
+            //    Cmd.Parameters.AddWithValue("$id", this.Id);
+            //    Cmd.Parameters.AddWithValue("$firstname", this.FirstName);
+            //    Cmd.Parameters.AddWithValue("$lastname", this.LastName);
+            //    Cmd.Parameters.AddWithValue("$email", this.Email ?? (object)DBNull.Value);
+            //    Cmd.Parameters.AddWithValue("$address", this.Address ?? (object)DBNull.Value);
+            //    Cmd.Parameters.AddWithValue("$phonenumber", this.PhoneNumber ?? (object)DBNull.Value);
+            //    Cmd.Parameters.AddWithValue("$status", this.Status);
+            //    Cmd.ExecuteNonQuery();                
+            //    conn.Close();
+            //}
             this.Close();
         }
 
