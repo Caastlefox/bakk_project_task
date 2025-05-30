@@ -36,7 +36,6 @@ namespace bakk_project_task
                 // Use standard Windows Forms UI
                 Application.Run(new MainMenuForm(clientsRepository));
             }
-            // Note: Can make this into if statement with config file
             
         }
     }

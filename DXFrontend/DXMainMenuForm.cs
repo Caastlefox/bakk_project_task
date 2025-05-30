@@ -31,8 +31,9 @@ namespace bakk_project_task
             this.clientsRepository = clientsRepository;
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void DXMainMenuForm_Load(object sender, EventArgs e)
         {
+            await clientsRepository.LoadClient(gridcontrol1);
 
         }
 
@@ -89,17 +90,43 @@ namespace bakk_project_task
 
         }
 
-        private void myTextEdit_EditValueChanged(object sender, EventArgs e)
+        private void SearchFirstName_EditValueChanged(object sender, EventArgs e)
+        {
+            this.SearchFirstName = FirstNameTextEdit.Text;
+        }
+
+
+        private void gridcontrol1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void textEdit4_EditValueChanged(object sender, EventArgs e)
+        private void SearchButton_Click(object sender, EventArgs e)
         {
-
+            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, SearchLastName, SearchAddress, SearchPhoneNumber, SearchEmail, SearchStatus);
         }
 
-        private void textEdit3_EditValueChanged(object sender, EventArgs e)
+        private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.SearchLastName = LastNameTextEdit.Text;
+        }
+
+        private void AdressTextEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            this.SearchAddress = AddressTextEdit.Text;
+        }
+
+        private void PhoneNumberTextEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            this.SearchPhoneNumber = PhoneNumberTextEdit.Text;
+        }
+
+        private void EmailTextEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            this.SearchEmail = EmailTextEdit.Text;
+        }
+
+        private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
 
         }

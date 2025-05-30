@@ -41,23 +41,29 @@ namespace bakk_project_task
             Exit = new SimpleButton();
             ClearFiltersButton = new SimpleButton();
             SearchButton = new SimpleButton();
-            myTextEdit = new TextEdit();
-            winExplorerView1 = new DevExpress.XtraGrid.Views.WinExplorer.WinExplorerView();
-            gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            FirstNameTextEdit = new TextEdit();
             gridcontrol1 = new GridControl();
-            textEdit1 = new TextEdit();
-            textEdit2 = new TextEdit();
-            textEdit3 = new TextEdit();
-            textEdit4 = new TextEdit();
-            textEdit5 = new TextEdit();
-            ((System.ComponentModel.ISupportInitialize)myTextEdit.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)winExplorerView1).BeginInit();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            LastNameTextEdit = new TextEdit();
+            PhoneNumberTextEdit = new TextEdit();
+            AddressTextEdit = new TextEdit();
+            EmailTextEdit = new TextEdit();
+            StatusCheckEdit = new CheckEdit();
+            ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit1.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit2.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit3.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit4.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit5.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
             SuspendLayout();
             // 
             // DeleteButton
@@ -111,116 +117,168 @@ namespace bakk_project_task
             SearchButton.Size = new Size(195, 34);
             SearchButton.TabIndex = 5;
             SearchButton.Text = "Szukaj";
+            SearchButton.Click += SearchButton_Click;
             // 
-            // myTextEdit
+            // FirstNameTextEdit
             // 
-            myTextEdit.Location = new Point(30, 24);
-            myTextEdit.Name = "myTextEdit";
-            myTextEdit.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            myTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            myTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            myTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            myTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            myTextEdit.Size = new Size(200, 34);
-            myTextEdit.TabIndex = 0;
-            myTextEdit.EditValueChanged += myTextEdit_EditValueChanged;
+            FirstNameTextEdit.Location = new Point(30, 24);
+            FirstNameTextEdit.Name = "FirstNameTextEdit";
+            FirstNameTextEdit.Properties.AdvancedModeOptions.Label = "Imię";
+            FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            FirstNameTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            FirstNameTextEdit.Size = new Size(200, 34);
+            FirstNameTextEdit.TabIndex = 0;
+            FirstNameTextEdit.EditValueChanged += SearchFirstName_EditValueChanged;
             // 
-            // winExplorerView1
+            // gridcontrol1
             // 
-            winExplorerView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn1 });
-            winExplorerView1.GridControl = gridcontrol1;
-            winExplorerView1.Name = "winExplorerView1";
+            gridcontrol1.BackgroundImageLayout = ImageLayout.None;
+            gridcontrol1.DataMember = "Clients";
+            gridcontrol1.ImeMode = ImeMode.NoControl;
+            gridcontrol1.Location = new Point(30, 112);
+            gridcontrol1.MainView = gridView1;
+            gridcontrol1.Name = "gridcontrol1";
+            gridcontrol1.Size = new Size(813, 400);
+            gridcontrol1.TabIndex = 0;
+            gridcontrol1.UseDisabledStatePainter = false;
+            gridcontrol1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            gridcontrol1.Click += gridcontrol1_Click;
+            gridcontrol1.DoubleClick += gridcontrol1_DoubleClick;
+            // 
+            // gridView1
+            // 
+            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2, gridColumn3, gridColumn4, gridColumn5, gridColumn6, gridColumn7, gridColumn1 });
+            gridView1.GridControl = gridcontrol1;
+            gridView1.Name = "gridView1";
+            gridView1.OptionsView.ShowGroupPanel = false;
+            // 
+            // gridColumn2
+            // 
+            gridColumn2.Caption = "gridColumn2";
+            gridColumn2.Name = "gridColumn2";
+            gridColumn2.Visible = true;
+            gridColumn2.VisibleIndex = 0;
+            // 
+            // gridColumn3
+            // 
+            gridColumn3.Caption = "gridColumn3";
+            gridColumn3.Name = "gridColumn3";
+            gridColumn3.Visible = true;
+            gridColumn3.VisibleIndex = 1;
+            // 
+            // gridColumn4
+            // 
+            gridColumn4.Caption = "gridColumn4";
+            gridColumn4.Name = "gridColumn4";
+            gridColumn4.Visible = true;
+            gridColumn4.VisibleIndex = 2;
+            // 
+            // gridColumn5
+            // 
+            gridColumn5.Caption = "gridColumn5";
+            gridColumn5.Name = "gridColumn5";
+            gridColumn5.Visible = true;
+            gridColumn5.VisibleIndex = 3;
+            // 
+            // gridColumn6
+            // 
+            gridColumn6.Caption = "gridColumn6";
+            gridColumn6.Name = "gridColumn6";
+            gridColumn6.Visible = true;
+            gridColumn6.VisibleIndex = 4;
+            // 
+            // gridColumn7
+            // 
+            gridColumn7.Caption = "gridColumn7";
+            gridColumn7.Name = "gridColumn7";
+            gridColumn7.Visible = true;
+            gridColumn7.VisibleIndex = 5;
             // 
             // gridColumn1
             // 
             gridColumn1.Caption = "gridColumn1";
             gridColumn1.Name = "gridColumn1";
             gridColumn1.Visible = true;
-            gridColumn1.VisibleIndex = 0;
+            gridColumn1.VisibleIndex = 6;
             // 
-            // gridcontrol1
+            // LastNameTextEdit
             // 
-            gridcontrol1.BackgroundImageLayout = ImageLayout.None;
-            gridcontrol1.ImeMode = ImeMode.NoControl;
-            gridcontrol1.Location = new Point(30, 112);
-            gridcontrol1.MainView = winExplorerView1;
-            gridcontrol1.Name = "gridcontrol1";
-            gridcontrol1.Size = new Size(813, 400);
-            gridcontrol1.TabIndex = 0;
-            gridcontrol1.UseDisabledStatePainter = false;
-            gridcontrol1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { winExplorerView1 });
-            gridcontrol1.DoubleClick += gridcontrol1_DoubleClick;
+            LastNameTextEdit.Location = new Point(30, 69);
+            LastNameTextEdit.Name = "LastNameTextEdit";
+            LastNameTextEdit.Properties.AdvancedModeOptions.Label = "Nazwisko";
+            LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            LastNameTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            LastNameTextEdit.Size = new Size(200, 34);
+            LastNameTextEdit.TabIndex = 6;
+            LastNameTextEdit.EditValueChanged += LastNameTextBox_EditValueChanged;
             // 
-            // textEdit1
+            // PhoneNumberTextEdit
             // 
-            textEdit1.Location = new Point(30, 69);
-            textEdit1.Name = "textEdit1";
-            textEdit1.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            textEdit1.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            textEdit1.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            textEdit1.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            textEdit1.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            textEdit1.Size = new Size(200, 34);
-            textEdit1.TabIndex = 6;
+            PhoneNumberTextEdit.Location = new Point(236, 69);
+            PhoneNumberTextEdit.Name = "PhoneNumberTextEdit";
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.Label = "Numer Telefonu";
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            PhoneNumberTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            PhoneNumberTextEdit.Size = new Size(200, 34);
+            PhoneNumberTextEdit.TabIndex = 7;
+            PhoneNumberTextEdit.EditValueChanged += PhoneNumberTextEdit_EditValueChanged;
             // 
-            // textEdit2
+            // AddressTextEdit
             // 
-            textEdit2.Location = new Point(236, 69);
-            textEdit2.Name = "textEdit2";
-            textEdit2.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            textEdit2.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            textEdit2.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            textEdit2.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            textEdit2.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            textEdit2.Size = new Size(200, 34);
-            textEdit2.TabIndex = 7;
+            AddressTextEdit.Location = new Point(236, 24);
+            AddressTextEdit.Name = "AddressTextEdit";
+            AddressTextEdit.Properties.AdvancedModeOptions.Label = "Adres";
+            AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            AddressTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            AddressTextEdit.Size = new Size(200, 34);
+            AddressTextEdit.TabIndex = 8;
+            AddressTextEdit.EditValueChanged += AdressTextEdit_EditValueChanged;
             // 
-            // textEdit3
+            // EmailTextEdit
             // 
-            textEdit3.Location = new Point(236, 24);
-            textEdit3.Name = "textEdit3";
-            textEdit3.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            textEdit3.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            textEdit3.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            textEdit3.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            textEdit3.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            textEdit3.Size = new Size(200, 34);
-            textEdit3.TabIndex = 8;
+            EmailTextEdit.Location = new Point(442, 23);
+            EmailTextEdit.Name = "EmailTextEdit";
+            EmailTextEdit.Properties.AdvancedModeOptions.Label = "Email";
+            EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            EmailTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            EmailTextEdit.Size = new Size(200, 34);
+            EmailTextEdit.TabIndex = 9;
+            EmailTextEdit.EditValueChanged += EmailTextEdit_EditValueChanged;
             // 
-            // textEdit4
+            // StatusCheckEdit
             // 
-            textEdit4.Location = new Point(442, 23);
-            textEdit4.Name = "textEdit4";
-            textEdit4.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            textEdit4.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            textEdit4.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            textEdit4.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            textEdit4.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            textEdit4.Size = new Size(200, 34);
-            textEdit4.TabIndex = 9;
-            // 
-            // textEdit5
-            // 
-            textEdit5.Location = new Point(442, 72);
-            textEdit5.Name = "textEdit5";
-            textEdit5.Properties.AdvancedModeOptions.Label = "Wpisz Imię";
-            textEdit5.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            textEdit5.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            textEdit5.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            textEdit5.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            textEdit5.Size = new Size(200, 34);
-            textEdit5.TabIndex = 10;
+            StatusCheckEdit.EditValue = null;
+            StatusCheckEdit.Location = new Point(442, 76);
+            StatusCheckEdit.Name = "StatusCheckEdit";
+            StatusCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            StatusCheckEdit.Properties.Caption = "Potencjalny";
+            StatusCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            StatusCheckEdit.Properties.ValueChecked = false;
+            StatusCheckEdit.Properties.ValueUnchecked = true;
+            StatusCheckEdit.Size = new Size(200, 20);
+            StatusCheckEdit.TabIndex = 34;
+            StatusCheckEdit.CheckedChanged += StatusCheckEdit_CheckedChanged;
             // 
             // DXMainMenuForm
             // 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(869, 573);
-            Controls.Add(textEdit5);
-            Controls.Add(textEdit4);
-            Controls.Add(textEdit3);
-            Controls.Add(textEdit2);
-            Controls.Add(textEdit1);
+            Controls.Add(StatusCheckEdit);
+            Controls.Add(EmailTextEdit);
+            Controls.Add(AddressTextEdit);
+            Controls.Add(PhoneNumberTextEdit);
+            Controls.Add(LastNameTextEdit);
             Controls.Add(SearchButton);
             Controls.Add(gridcontrol1);
             Controls.Add(ClearFiltersButton);
@@ -228,18 +286,18 @@ namespace bakk_project_task
             Controls.Add(AddClientButton);
             Controls.Add(EditClientButton);
             Controls.Add(DeleteButton);
-            Controls.Add(myTextEdit);
+            Controls.Add(FirstNameTextEdit);
             Name = "DXMainMenuForm";
             Text = "Form1";
-            Load += Form1_Load;
-            ((System.ComponentModel.ISupportInitialize)myTextEdit.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)winExplorerView1).EndInit();
+            Load += DXMainMenuForm_Load;
+            ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit1.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit2.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit3.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit4.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit5.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
             ResumeLayout(false);
 
         }
@@ -252,14 +310,21 @@ namespace bakk_project_task
         private SimpleButton ClearFiltersButton;
         private SimpleButton SearchButton;
         private TextEdit myTextEdit;
-        private DevExpress.XtraGrid.Views.WinExplorer.WinExplorerView winExplorerView1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private GridControl gridcontrol1;
-        private TextEdit textEdit1;
-        private TextEdit textEdit2;
-        private TextEdit textEdit3;
-        private TextEdit textEdit4;
-        private TextEdit textEdit5;
+        private TextEdit LastNameTextEdit;
+        private TextEdit PhoneNumberTextEdit;
+        private TextEdit AddressTextEdit;
+        private TextEdit EmailTextEdit;
+        private TextEdit FirstNameTextEdit;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn6;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private CheckEdit StatusCheckEdit;
     }
 }
 

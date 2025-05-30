@@ -65,7 +65,7 @@ namespace bakk_project_task
                 {
                     MessageBox.Show("Proszę podać poprawny numer telefonu.");
                     return;
-                }
+                }/*
                 if (Id == null)
                 {
                     await clientsRepository.AddClient(this.FirstName, this.LastName,
@@ -75,7 +75,7 @@ namespace bakk_project_task
                 {
                     await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
                         this.Email, this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
-                }
+                }*/
                 this.Close();
             }
             catch (Exception ex)
@@ -86,6 +86,11 @@ namespace bakk_project_task
 
 
         private void AddNewClient_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
 
         }

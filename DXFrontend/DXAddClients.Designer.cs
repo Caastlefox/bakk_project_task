@@ -31,102 +31,134 @@ namespace bakk_project_task
         private void InitializeComponent()
         {
             AddNewClient = new DevExpress.XtraEditors.SimpleButton();
-            textEdit1 = new DevExpress.XtraEditors.TextEdit();
-            textEdit2 = new DevExpress.XtraEditors.TextEdit();
-            textEdit3 = new DevExpress.XtraEditors.TextEdit();
-            textEdit4 = new DevExpress.XtraEditors.TextEdit();
-            textEdit5 = new DevExpress.XtraEditors.TextEdit();
-            textEdit6 = new DevExpress.XtraEditors.TextEdit();
-            ((System.ComponentModel.ISupportInitialize)textEdit1.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit2.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit3.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit4.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit5.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit6.Properties).BeginInit();
+            FirstNameTextBox = new DevExpress.XtraEditors.TextEdit();
+            LastNameTextBox = new DevExpress.XtraEditors.TextEdit();
+            AdressTextBox = new DevExpress.XtraEditors.TextEdit();
+            PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
+            EmailTextBox = new DevExpress.XtraEditors.TextEdit();
+            StatusCheckEdit = new DevExpress.XtraEditors.CheckEdit();
+            ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)AdressTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
             SuspendLayout();
             // 
             // AddNewClient
             // 
-            AddNewClient.Location = new System.Drawing.Point(12, 330);
+            AddNewClient.Location = new Point(12, 330);
             AddNewClient.Name = "AddNewClient";
-            AddNewClient.Size = new System.Drawing.Size(377, 63);
+            AddNewClient.Size = new Size(377, 63);
             AddNewClient.TabIndex = 27;
             AddNewClient.Text = "Dodaj Klienta";
             AddNewClient.Click += AddClient_Click;
             // 
-            // textEdit1
+            // FirstNameTextBox
             // 
-            textEdit1.Location = new System.Drawing.Point(24, 30);
-            textEdit1.Name = "textEdit1";
-            textEdit1.Size = new System.Drawing.Size(200, 20);
-            textEdit1.TabIndex = 28;
+            FirstNameTextBox.Location = new Point(12, 12);
+            FirstNameTextBox.Name = "FirstNameTextBox";
+            FirstNameTextBox.Properties.AdvancedModeOptions.Label = "Podaj Imię(obowiązkowe)";
+            FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            FirstNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            FirstNameTextBox.Size = new Size(377, 34);
+            FirstNameTextBox.TabIndex = 28;
             // 
-            // textEdit2
+            // LastNameTextBox
             // 
-            textEdit2.Location = new System.Drawing.Point(24, 65);
-            textEdit2.Name = "textEdit2";
-            textEdit2.Size = new System.Drawing.Size(200, 20);
-            textEdit2.TabIndex = 29;
+            LastNameTextBox.Location = new Point(12, 61);
+            LastNameTextBox.Name = "LastNameTextBox";
+            LastNameTextBox.Properties.AdvancedModeOptions.Label = "Podaj Nazwisko(obowiązkowe)";
+            LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            LastNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            LastNameTextBox.Size = new Size(377, 34);
+            LastNameTextBox.TabIndex = 29;
             // 
-            // textEdit3
+            // AdressTextBox
             // 
-            textEdit3.Location = new System.Drawing.Point(24, 101);
-            textEdit3.Name = "textEdit3";
-            textEdit3.Size = new System.Drawing.Size(200, 20);
-            textEdit3.TabIndex = 30;
+            AdressTextBox.Location = new Point(12, 111);
+            AdressTextBox.Name = "AdressTextBox";
+            AdressTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres";
+            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            AdressTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            AdressTextBox.Size = new Size(377, 34);
+            AdressTextBox.TabIndex = 30;
             // 
-            // textEdit4
+            // PhoneNumberTextBox
             // 
-            textEdit4.Location = new System.Drawing.Point(24, 138);
-            textEdit4.Name = "textEdit4";
-            textEdit4.Size = new System.Drawing.Size(200, 20);
-            textEdit4.TabIndex = 31;
+            PhoneNumberTextBox.Location = new Point(12, 160);
+            PhoneNumberTextBox.Name = "PhoneNumberTextBox";
+            PhoneNumberTextBox.Properties.AdvancedModeOptions.Label = "Podaj Numer Telefonu";
+            PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            PhoneNumberTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            PhoneNumberTextBox.Size = new Size(377, 34);
+            PhoneNumberTextBox.TabIndex = 31;
             // 
-            // textEdit5
+            // EmailTextBox
             // 
-            textEdit5.Location = new System.Drawing.Point(24, 178);
-            textEdit5.Name = "textEdit5";
-            textEdit5.Size = new System.Drawing.Size(200, 20);
-            textEdit5.TabIndex = 32;
+            EmailTextBox.Location = new Point(12, 208);
+            EmailTextBox.Name = "EmailTextBox";
+            EmailTextBox.Properties.AdvancedModeOptions.Label = "Podaj Numer Telefonu";
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            EmailTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            EmailTextBox.Size = new Size(377, 34);
+            EmailTextBox.TabIndex = 32;
             // 
-            // textEdit6
+            // StatusCheckEdit
             // 
-            textEdit6.Location = new System.Drawing.Point(24, 216);
-            textEdit6.Name = "textEdit6";
-            textEdit6.Size = new System.Drawing.Size(200, 20);
-            textEdit6.TabIndex = 33;
+            StatusCheckEdit.EditValue = null;
+            StatusCheckEdit.Location = new Point(12, 258);
+            StatusCheckEdit.Name = "StatusCheckEdit";
+            StatusCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            StatusCheckEdit.Properties.Caption = "Potencjalny";
+            StatusCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            StatusCheckEdit.Properties.ValueChecked = false;
+            StatusCheckEdit.Properties.ValueUnchecked = true;
+            StatusCheckEdit.Size = new Size(200, 20);
+            StatusCheckEdit.TabIndex = 33;
+            StatusCheckEdit.CheckedChanged += StatusCheckEdit_CheckedChanged;
             // 
             // DXAddNewClient
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(401, 405);
-            Controls.Add(textEdit6);
-            Controls.Add(textEdit5);
-            Controls.Add(textEdit4);
-            Controls.Add(textEdit3);
-            Controls.Add(textEdit2);
-            Controls.Add(textEdit1);
+            ClientSize = new Size(401, 405);
+            Controls.Add(EmailTextBox);
+            Controls.Add(PhoneNumberTextBox);
+            Controls.Add(AdressTextBox);
+            Controls.Add(LastNameTextBox);
+            Controls.Add(FirstNameTextBox);
             Controls.Add(AddNewClient);
+            Controls.Add(StatusCheckEdit);
             Name = "DXAddNewClient";
             Text = "Dane Klienta";
             Load += AddNewClient_Load;
-            ((System.ComponentModel.ISupportInitialize)textEdit1.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit2.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit3.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit4.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit5.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)textEdit6.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)AdressTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
         private DevExpress.XtraEditors.SimpleButton AddNewClient;
-        private DevExpress.XtraEditors.TextEdit textEdit1;
-        private DevExpress.XtraEditors.TextEdit textEdit2;
-        private DevExpress.XtraEditors.TextEdit textEdit3;
-        private DevExpress.XtraEditors.TextEdit textEdit4;
-        private DevExpress.XtraEditors.TextEdit textEdit5;
-        private DevExpress.XtraEditors.TextEdit textEdit6;
+        private DevExpress.XtraEditors.TextEdit FirstNameTextBox;
+        private DevExpress.XtraEditors.TextEdit LastNameTextBox;
+        private DevExpress.XtraEditors.TextEdit AdressTextBox;
+        private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
+        private DevExpress.XtraEditors.TextEdit EmailTextBox;
+        private DevExpress.XtraEditors.CheckEdit StatusCheckEdit;
     }
 }
