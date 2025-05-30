@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bakk_project_task", "bakk_p
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendClassLibrary", "BackendClassLibrary\BackendClassLibrary.csproj", "{CF12EFF0-806B-4BE8-B23E-6C1FA124BA1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DXFrontend", "DXFrontend\DXFrontend.csproj", "{F7B0E1BD-BE5E-4A3A-9E54-E8E22E287802}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CF12EFF0-806B-4BE8-B23E-6C1FA124BA1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF12EFF0-806B-4BE8-B23E-6C1FA124BA1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF12EFF0-806B-4BE8-B23E-6C1FA124BA1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7B0E1BD-BE5E-4A3A-9E54-E8E22E287802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7B0E1BD-BE5E-4A3A-9E54-E8E22E287802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7B0E1BD-BE5E-4A3A-9E54-E8E22E287802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7B0E1BD-BE5E-4A3A-9E54-E8E22E287802}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

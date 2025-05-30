@@ -3,20 +3,16 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>	  
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="main2.cs" />
-    <Compile Remove="Model.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="DevExpress.Win.Design" Version="24.2.7" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.5" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.5" />
+	<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.5" />	  
+    <ProjectReference Include="..\BackendClassLibrary\BackendClassLibrary.csproj" />
   </ItemGroup>
 
 </Project>

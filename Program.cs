@@ -23,7 +23,21 @@ namespace bakk_project_task
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainMenuForm(clientsRepository));
+            if (ConfigurationManager.AppSettings["UseDX"] == "true")
+            {
+                // Use DevExpress UI
+                Application.Run(new DXMainMenuForm(clientsRepository));
+                //DevExpress.Skins.SkinManager.EnableFormSkins();
+                //DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Office 2019 Colorful");
+                //skins
+            }
+            else
+            {
+                // Use standard Windows Forms UI
+                Application.Run(new MainMenuForm(clientsRepository));
+            }
+            // Note: Can make this into if statement with config file
+            
         }
     }
 }
