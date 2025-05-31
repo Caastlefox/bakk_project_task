@@ -263,6 +263,10 @@ namespace bakk_project_task
             StatusCheckEdit.EditValue = null;
             StatusCheckEdit.Location = new Point(442, 76);
             StatusCheckEdit.Name = "StatusCheckEdit";
+            StatusCheckEdit.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            StatusCheckEdit.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            StatusCheckEdit.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            StatusCheckEdit.Properties.AppearanceDisabled.Options.UseForeColor = true;
             StatusCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
             StatusCheckEdit.Properties.Caption = "Potencjalny";
             StatusCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;

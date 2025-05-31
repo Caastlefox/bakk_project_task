@@ -49,13 +49,14 @@ namespace bakk_project_task
 
         private void AddClientButton_Click(object sender, EventArgs e)
         {
-            var form = new DXAddNewClient(clientsRepository);
+            using var form = new DXAddNewClient(clientsRepository);
             form.FormClosed += AddNewClientFormClosed;
-            form.Show();
+            form.ShowDialog(this);
         }
 
         private void EditClientButton_Click(object sender, EventArgs e)
         {
+
             var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
             if (gridView == null || gridView.FocusedRowHandle < 0)
             {
@@ -75,10 +76,9 @@ namespace bakk_project_task
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+            using var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
             editForm.FormClosed += AddNewClientFormClosed;
-            editForm.Show();
+            editForm.ShowDialog();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -175,7 +175,8 @@ namespace bakk_project_task
             PhoneNumberTextEdit.Text = "";
             EmailTextEdit.Text = "";
             StatusCheckEdit.Checked = false;
-
+            SearchStatus = "";
+            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus);
         }
     }
 }
