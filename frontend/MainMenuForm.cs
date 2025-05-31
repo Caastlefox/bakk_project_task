@@ -24,7 +24,7 @@ namespace bakk_project_task
         private string? SearchPhoneNumber = null;
         private string? SearchEmail = null;
         private string? SearchStatus = null;
-        private ClientsRepository clientsRepository;
+        private readonly ClientsRepository clientsRepository;
         public MainMenuForm(ClientsRepository clientsRepository)
         {
             InitializeComponent();
@@ -154,7 +154,7 @@ namespace bakk_project_task
             this.SearchStatus = comboBox1.SelectedItem?.ToString();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

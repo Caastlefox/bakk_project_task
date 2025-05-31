@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraBars.Customization;
+using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -24,7 +26,7 @@ namespace bakk_project_task
         private string SearchPhoneNumber = "";
         private string SearchEmail = "";
         private string SearchStatus = "";
-        private ClientsRepository clientsRepository;
+        private readonly ClientsRepository clientsRepository;
         public DXMainMenuForm(ClientsRepository clientsRepository)
         {
             InitializeComponent();
@@ -54,23 +56,19 @@ namespace bakk_project_task
 
         private void EditClientButton_Click(object sender, EventArgs e)
         {
-            GridView view = sender as GridView;
-    DataRow dataRow = view.GetFocusedDataRow();
-            /*
-            //DataGridViewRow? row = gridcontrol1.CurrentRow;
-            if (row == null || row.Cells["Id"].Value == null)
+            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0)
             {
-                MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            int id = Convert.ToInt32(row.Cells["Id"].Value);
-            //string? FirstName = gridcontrol1.MainView; //row.Cells["FirstName"].Value?.ToString();
-            string? LastName = row.Cells["LastName"].Value?.ToString();
-            string? Email = row.Cells["Email"].Value?.ToString();
-            string? Address = row.Cells["Address"].Value?.ToString();
-            string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
-            string? Status = row.Cells["Status"].Value?.ToString();
+            int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+            string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
+            string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
+            string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
+            string? PhoneNumber  = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
+            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
+            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
 
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
             {
@@ -81,7 +79,6 @@ namespace bakk_project_task
             var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.Show();
-            */
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -93,7 +90,7 @@ namespace bakk_project_task
             await this.clientsRepository.LoadClient(gridcontrol1);
         }
 
-        private void gridcontrol1_DoubleClick(object sender, EventArgs e)
+        private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
             ////DataGridViewRow? row = dataGridView1.CurrentRow;
             //if (row == null || row.Cells["Id"].Value == null)
@@ -128,7 +125,7 @@ namespace bakk_project_task
         }
 
 
-        private void gridcontrol1_Click(object sender, EventArgs e)
+        private void Gridcontrol1_Click(object sender, EventArgs e)
         {
 
         }

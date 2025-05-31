@@ -145,8 +145,8 @@ namespace bakk_project_task
             gridcontrol1.TabIndex = 0;
             gridcontrol1.UseDisabledStatePainter = false;
             gridcontrol1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
-            gridcontrol1.Click += gridcontrol1_Click;
-            gridcontrol1.DoubleClick += gridcontrol1_DoubleClick;
+            gridcontrol1.Click += Gridcontrol1_Click;
+            gridcontrol1.DoubleClick += Gridcontrol1_DoubleClick;
             // 
             // gridView1
             // 
@@ -312,7 +312,6 @@ namespace bakk_project_task
         private SimpleButton Exit;
         private SimpleButton ClearFiltersButton;
         private SimpleButton SearchButton;
-        private TextEdit myTextEdit;
         private GridControl gridcontrol1;
         private TextEdit LastNameTextEdit;
         private TextEdit PhoneNumberTextEdit;

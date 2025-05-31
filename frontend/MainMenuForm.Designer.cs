@@ -83,7 +83,7 @@ namespace bakk_project_task
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(889, 468);
             dataGridView1.TabIndex = 5;
-            dataGridView1.CellContentClick += dataGridView1_CellContentClick;
+            dataGridView1.CellContentClick += DataGridView1_CellContentClick;
             // 
             // EditClient
             // 

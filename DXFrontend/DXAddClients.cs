@@ -14,14 +14,14 @@ namespace bakk_project_task
     public partial class DXAddNewClient : DevExpress.XtraEditors.XtraForm
     {
 
-        private int? Id;
-        private string Email = "";
-        private string FirstName = "";
-        private string LastName = "";
-        private string Address = "";
-        private string PhoneNumber = "";
-        private string Status = "Aktualny";
-        private ClientsRepository clientsRepository;
+        private readonly int? Id;
+        private string? Email = "";
+        private string? FirstName = "";
+        private string? LastName = "";
+        private string? Address = "";
+        private string? PhoneNumber = "";
+        private string? Status = "Aktualny";
+        private readonly ClientsRepository clientsRepository;
         public DXAddNewClient(ClientsRepository clientsRepository)
         {
             this.clientsRepository = clientsRepository;
@@ -29,7 +29,7 @@ namespace bakk_project_task
             this.Id = null;
 
         }
-        public DXAddNewClient(ClientsRepository clientsRepository, int? id, string firstName, string lastName, string email, string address, string phoneNumber, string status)
+        public DXAddNewClient(ClientsRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;
@@ -41,6 +41,20 @@ namespace bakk_project_task
             this.Address = address;
             this.PhoneNumber = phoneNumber;
             this.Status = status;
+
+            this.FirstNameTextBox.Text = firstName;
+            this.LastNameTextBox.Text = lastName;
+            this.EmailTextBox.Text = email;
+            this.AddressTextBox.Text = address;
+            this.PhoneNumberTextBox.Text = phoneNumber;
+            if (status != "Aktualny")
+            {
+                StatusCheckEdit.Checked = true;
+            }
+            else
+            {
+                StatusCheckEdit.Checked = false;
+            }
         }
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {

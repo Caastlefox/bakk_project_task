@@ -30,6 +30,7 @@ namespace bakk_project_task
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             AddNewClient = new DevExpress.XtraEditors.SimpleButton();
             FirstNameTextBox = new DevExpress.XtraEditors.TextEdit();
             LastNameTextBox = new DevExpress.XtraEditors.TextEdit();
@@ -37,12 +38,14 @@ namespace bakk_project_task
             PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
             EmailTextBox = new DevExpress.XtraEditors.TextEdit();
             StatusCheckEdit = new DevExpress.XtraEditors.CheckEdit();
+            behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(components);
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)behaviorManager1).BeginInit();
             SuspendLayout();
             // 
             // AddNewClient
@@ -62,6 +65,8 @@ namespace bakk_project_task
             FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             FirstNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            FirstNameTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            FirstNameTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             FirstNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             FirstNameTextBox.Size = new Size(377, 34);
             FirstNameTextBox.TabIndex = 28;
@@ -75,6 +80,8 @@ namespace bakk_project_task
             LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            LastNameTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            LastNameTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             LastNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             LastNameTextBox.Size = new Size(377, 34);
             LastNameTextBox.TabIndex = 29;
@@ -88,6 +95,8 @@ namespace bakk_project_task
             AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            AddressTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            AddressTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             AddressTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             AddressTextBox.Size = new Size(377, 34);
             AddressTextBox.TabIndex = 30;
@@ -101,6 +110,8 @@ namespace bakk_project_task
             PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            PhoneNumberTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            PhoneNumberTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             PhoneNumberTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             PhoneNumberTextBox.Size = new Size(377, 34);
             PhoneNumberTextBox.TabIndex = 31;
@@ -110,10 +121,12 @@ namespace bakk_project_task
             // 
             EmailTextBox.Location = new Point(12, 208);
             EmailTextBox.Name = "EmailTextBox";
-            EmailTextBox.Properties.AdvancedModeOptions.Label = "Podaj Numer Telefonu";
+            EmailTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres Email";
             EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            EmailTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            EmailTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             EmailTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             EmailTextBox.Size = new Size(377, 34);
             EmailTextBox.TabIndex = 32;
@@ -154,6 +167,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)behaviorManager1).EndInit();
             ResumeLayout(false);
         }
 
@@ -165,5 +179,6 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
         private DevExpress.XtraEditors.TextEdit EmailTextBox;
         private DevExpress.XtraEditors.CheckEdit StatusCheckEdit;
+        private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
     }
 }

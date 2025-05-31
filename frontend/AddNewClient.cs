@@ -21,14 +21,14 @@ namespace bakk_project_task
     public partial class AddNewClient : Form
     {
 
-        private int? Id = null;
+        private readonly int? Id = null;
         private string? Email = "";
         private string? FirstName = "";
         private string? LastName = "";
         private string? Address = "";
         private string? PhoneNumber = "";
         private string? Status = "Aktualny";
-        private ClientsRepository clientsRepository;
+        private readonly ClientsRepository clientsRepository;
         public AddNewClient(ClientsRepository clientsRepository)
         {
             this.clientsRepository = clientsRepository;
