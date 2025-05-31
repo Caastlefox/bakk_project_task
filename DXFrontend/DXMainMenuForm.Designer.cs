@@ -109,6 +109,7 @@ namespace bakk_project_task
             ClearFiltersButton.Size = new Size(195, 34);
             ClearFiltersButton.TabIndex = 4;
             ClearFiltersButton.Text = "Wyczyść Filtry";
+            ClearFiltersButton.Click += ClearFiltersButton_Click;
             // 
             // SearchButton
             // 
@@ -152,6 +153,8 @@ namespace bakk_project_task
             gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2, gridColumn3, gridColumn4, gridColumn5, gridColumn6, gridColumn7, gridColumn1 });
             gridView1.GridControl = gridcontrol1;
             gridView1.Name = "gridView1";
+            gridView1.OptionsBehavior.Editable = false;
+            gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
             gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn2

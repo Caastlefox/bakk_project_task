@@ -65,7 +65,7 @@ namespace bakk_project_task
                 {
                     MessageBox.Show("Proszę podać poprawny numer telefonu.");
                     return;
-                }/*
+                }
                 if (Id == null)
                 {
                     await clientsRepository.AddClient(this.FirstName, this.LastName,
@@ -75,7 +75,7 @@ namespace bakk_project_task
                 {
                     await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
                         this.Email, this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
-                }*/
+                }
                 this.Close();
             }
             catch (Exception ex)
@@ -92,7 +92,39 @@ namespace bakk_project_task
 
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
+            if (StatusCheckEdit.Checked)
+            {
+                this.Status = "Potencjalny";
+            }
+            else
+            {
+                this.Status = "Aktualny";
+            }
+        }
 
+        private void FirstNameTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.FirstName = FirstNameTextBox.Text;
+        }
+
+        private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.LastName = LastNameTextBox.Text;
+        }
+
+        private void AddressTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.Address = AddressTextBox.Text;
+        }
+
+        private void PhoneNumberTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.PhoneNumber = PhoneNumberTextBox.Text;
+        }
+
+        private void EmailTextBox_EditValueChanged(object sender, EventArgs e)
+        {
+            this.Email = EmailTextBox.Text;
         }
     }
 }

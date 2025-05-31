@@ -33,13 +33,13 @@ namespace bakk_project_task
             AddNewClient = new DevExpress.XtraEditors.SimpleButton();
             FirstNameTextBox = new DevExpress.XtraEditors.TextEdit();
             LastNameTextBox = new DevExpress.XtraEditors.TextEdit();
-            AdressTextBox = new DevExpress.XtraEditors.TextEdit();
+            AddressTextBox = new DevExpress.XtraEditors.TextEdit();
             PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
             EmailTextBox = new DevExpress.XtraEditors.TextEdit();
             StatusCheckEdit = new DevExpress.XtraEditors.CheckEdit();
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)AdressTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
@@ -65,6 +65,7 @@ namespace bakk_project_task
             FirstNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             FirstNameTextBox.Size = new Size(377, 34);
             FirstNameTextBox.TabIndex = 28;
+            FirstNameTextBox.EditValueChanged += FirstNameTextBox_EditValueChanged;
             // 
             // LastNameTextBox
             // 
@@ -77,18 +78,20 @@ namespace bakk_project_task
             LastNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             LastNameTextBox.Size = new Size(377, 34);
             LastNameTextBox.TabIndex = 29;
+            LastNameTextBox.EditValueChanged += LastNameTextBox_EditValueChanged;
             // 
-            // AdressTextBox
+            // AddressTextBox
             // 
-            AdressTextBox.Location = new Point(12, 111);
-            AdressTextBox.Name = "AdressTextBox";
-            AdressTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres";
-            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            AdressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            AdressTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            AdressTextBox.Size = new Size(377, 34);
-            AdressTextBox.TabIndex = 30;
+            AddressTextBox.Location = new Point(12, 111);
+            AddressTextBox.Name = "AddressTextBox";
+            AddressTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres";
+            AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            AddressTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            AddressTextBox.Size = new Size(377, 34);
+            AddressTextBox.TabIndex = 30;
+            AddressTextBox.EditValueChanged += AddressTextBox_EditValueChanged;
             // 
             // PhoneNumberTextBox
             // 
@@ -101,6 +104,7 @@ namespace bakk_project_task
             PhoneNumberTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             PhoneNumberTextBox.Size = new Size(377, 34);
             PhoneNumberTextBox.TabIndex = 31;
+            PhoneNumberTextBox.EditValueChanged += PhoneNumberTextBox_EditValueChanged;
             // 
             // EmailTextBox
             // 
@@ -113,6 +117,7 @@ namespace bakk_project_task
             EmailTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             EmailTextBox.Size = new Size(377, 34);
             EmailTextBox.TabIndex = 32;
+            EmailTextBox.EditValueChanged += EmailTextBox_EditValueChanged;
             // 
             // StatusCheckEdit
             // 
@@ -135,7 +140,7 @@ namespace bakk_project_task
             ClientSize = new Size(401, 405);
             Controls.Add(EmailTextBox);
             Controls.Add(PhoneNumberTextBox);
-            Controls.Add(AdressTextBox);
+            Controls.Add(AddressTextBox);
             Controls.Add(LastNameTextBox);
             Controls.Add(FirstNameTextBox);
             Controls.Add(AddNewClient);
@@ -145,7 +150,7 @@ namespace bakk_project_task
             Load += AddNewClient_Load;
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)AdressTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
@@ -156,7 +161,7 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.SimpleButton AddNewClient;
         private DevExpress.XtraEditors.TextEdit FirstNameTextBox;
         private DevExpress.XtraEditors.TextEdit LastNameTextBox;
-        private DevExpress.XtraEditors.TextEdit AdressTextBox;
+        private DevExpress.XtraEditors.TextEdit AddressTextBox;
         private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
         private DevExpress.XtraEditors.TextEdit EmailTextBox;
         private DevExpress.XtraEditors.CheckEdit StatusCheckEdit;
