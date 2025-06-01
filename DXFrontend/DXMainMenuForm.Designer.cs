@@ -52,18 +52,22 @@ namespace bakk_project_task
             gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             LastNameTextEdit = new TextEdit();
-            PhoneNumberTextEdit = new TextEdit();
             AddressTextEdit = new TextEdit();
             EmailTextEdit = new TextEdit();
             StatusCheckEdit = new CheckEdit();
+            blankEmail = new CheckEdit();
+            BlankPhoneCheckEdit = new CheckEdit();
+            PhoneNumberTextEdit = new TextEdit();
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)blankEmail.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)BlankPhoneCheckEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).BeginInit();
             SuspendLayout();
             // 
             // DeleteButton
@@ -128,6 +132,8 @@ namespace bakk_project_task
             FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             FirstNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            FirstNameTextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            FirstNameTextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             FirstNameTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             FirstNameTextEdit.Size = new Size(200, 34);
             FirstNameTextEdit.TabIndex = 0;
@@ -214,23 +220,12 @@ namespace bakk_project_task
             LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             LastNameTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            LastNameTextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            LastNameTextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             LastNameTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             LastNameTextEdit.Size = new Size(200, 34);
             LastNameTextEdit.TabIndex = 6;
             LastNameTextEdit.EditValueChanged += LastNameTextBox_EditValueChanged;
-            // 
-            // PhoneNumberTextEdit
-            // 
-            PhoneNumberTextEdit.Location = new Point(236, 69);
-            PhoneNumberTextEdit.Name = "PhoneNumberTextEdit";
-            PhoneNumberTextEdit.Properties.AdvancedModeOptions.Label = "Numer Telefonu";
-            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            PhoneNumberTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            PhoneNumberTextEdit.Size = new Size(200, 34);
-            PhoneNumberTextEdit.TabIndex = 7;
-            PhoneNumberTextEdit.EditValueChanged += PhoneNumberTextEdit_EditValueChanged;
             // 
             // AddressTextEdit
             // 
@@ -240,6 +235,8 @@ namespace bakk_project_task
             AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            AddressTextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            AddressTextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             AddressTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             AddressTextEdit.Size = new Size(200, 34);
             AddressTextEdit.TabIndex = 8;
@@ -247,12 +244,14 @@ namespace bakk_project_task
             // 
             // EmailTextEdit
             // 
-            EmailTextEdit.Location = new Point(442, 23);
+            EmailTextEdit.Location = new Point(442, 24);
             EmailTextEdit.Name = "EmailTextEdit";
             EmailTextEdit.Properties.AdvancedModeOptions.Label = "Email";
             EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
             EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             EmailTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            EmailTextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            EmailTextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             EmailTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
             EmailTextEdit.Size = new Size(200, 34);
             EmailTextEdit.TabIndex = 9;
@@ -276,11 +275,64 @@ namespace bakk_project_task
             StatusCheckEdit.TabIndex = 34;
             StatusCheckEdit.CheckedChanged += StatusCheckEdit_CheckedChanged;
             // 
+            // blankEmail
+            // 
+            blankEmail.EditValue = null;
+            blankEmail.Location = new Point(442, -2);
+            blankEmail.Name = "blankEmail";
+            blankEmail.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            blankEmail.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            blankEmail.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            blankEmail.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            blankEmail.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            blankEmail.Properties.Caption = "Pusty Email";
+            blankEmail.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            blankEmail.Properties.ValueChecked = false;
+            blankEmail.Properties.ValueUnchecked = true;
+            blankEmail.Size = new Size(200, 20);
+            blankEmail.TabIndex = 35;
+            blankEmail.CheckedChanged += blankEmail_CheckedChanged;
+            // 
+            // BlankPhoneCheckEdit
+            // 
+            BlankPhoneCheckEdit.EditValue = null;
+            BlankPhoneCheckEdit.Location = new Point(236, -2);
+            BlankPhoneCheckEdit.Name = "BlankPhoneCheckEdit";
+            BlankPhoneCheckEdit.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            BlankPhoneCheckEdit.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            BlankPhoneCheckEdit.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            BlankPhoneCheckEdit.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            BlankPhoneCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            BlankPhoneCheckEdit.Properties.Caption = "Pusty Telefon";
+            BlankPhoneCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            BlankPhoneCheckEdit.Properties.ValueChecked = false;
+            BlankPhoneCheckEdit.Properties.ValueUnchecked = true;
+            BlankPhoneCheckEdit.Size = new Size(200, 20);
+            BlankPhoneCheckEdit.TabIndex = 36;
+            BlankPhoneCheckEdit.CheckedChanged += BlankPhoneCheckEdit_CheckedChanged;
+            // 
+            // PhoneNumberTextEdit
+            // 
+            PhoneNumberTextEdit.Location = new Point(236, 69);
+            PhoneNumberTextEdit.Name = "PhoneNumberTextEdit";
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.Label = "Numer Telefonu";
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            PhoneNumberTextEdit.Properties.Appearance.Options.UseTextOptions = true;
+            PhoneNumberTextEdit.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            PhoneNumberTextEdit.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            PhoneNumberTextEdit.Size = new Size(200, 34);
+            PhoneNumberTextEdit.TabIndex = 7;
+            PhoneNumberTextEdit.EditValueChanged += PhoneNumberTextEdit_EditValueChanged;
+            // 
             // DXMainMenuForm
             // 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(869, 573);
+            Controls.Add(BlankPhoneCheckEdit);
+            Controls.Add(blankEmail);
             Controls.Add(StatusCheckEdit);
             Controls.Add(EmailTextEdit);
             Controls.Add(AddressTextEdit);
@@ -301,10 +353,12 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)blankEmail.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)BlankPhoneCheckEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).EndInit();
             ResumeLayout(false);
 
         }
@@ -318,7 +372,6 @@ namespace bakk_project_task
         private SimpleButton SearchButton;
         private GridControl gridcontrol1;
         private TextEdit LastNameTextEdit;
-        private TextEdit PhoneNumberTextEdit;
         private TextEdit AddressTextEdit;
         private TextEdit EmailTextEdit;
         private TextEdit FirstNameTextEdit;
@@ -331,6 +384,9 @@ namespace bakk_project_task
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private CheckEdit StatusCheckEdit;
+        private CheckEdit blankEmail;
+        private CheckEdit BlankPhoneCheckEdit;
+        private TextEdit PhoneNumberTextEdit;
     }
 }
 

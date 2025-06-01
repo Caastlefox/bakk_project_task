@@ -1,4 +1,5 @@
 ﻿using DevExpress.XtraBars.Customization;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Grid;
 using Microsoft.Data.Sqlite;
 using System;
@@ -38,8 +39,14 @@ namespace bakk_project_task
         {
             await clientsRepository.LoadClient(gridcontrol1);
             StatusCheckEdit.Checked = false;
-            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus);
-            //Merge the search call with loadclient call Load client is bugged(does not show the first row
+            gridcontrol1.Refresh();
+
+
+            if (gridView1.RowCount > 0)
+            {
+                gridView1.FocusedRowHandle = 0; // Focus first row
+                gridView1.SelectRow(0);         // Select first row
+            }
         }
 
         private void Exit_Click(object sender, EventArgs e)
@@ -56,7 +63,6 @@ namespace bakk_project_task
 
         private void EditClientButton_Click(object sender, EventArgs e)
         {
-
             var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
             if (gridView == null || gridView.FocusedRowHandle < 0)
             {
@@ -67,7 +73,7 @@ namespace bakk_project_task
             string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
             string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
             string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
-            string? PhoneNumber  = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
+            string? PhoneNumber = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
             string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
             string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
 
@@ -111,30 +117,28 @@ namespace bakk_project_task
 
         private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
-            ////DataGridViewRow? row = dataGridView1.CurrentRow;
-            //if (row == null || row.Cells["Id"].Value == null)
-            //{
-            //    MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
+            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0)
+            {
+                MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+            string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
+            string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
+            string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
+            string? PhoneNumber = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
+            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
+            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
 
-            //int id = Convert.ToInt32(row.Cells["Id"].Value);
-            //string? FirstName = row.Cells["FirstName"].Value?.ToString();
-            //string? LastName = row.Cells["LastName"].Value?.ToString();
-            //string? Email = row.Cells["Email"].Value?.ToString();
-            //string? Address = row.Cells["Address"].Value?.ToString();
-            //string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
-            //string? Status = row.Cells["Status"].Value?.ToString();
-
-            //if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
-            //{
-            //    MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
-
-            //var editForm = new AddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
-            //editForm.FormClosed += AddNewClientFormClosed;
-            //editForm.Show();
+            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
+            {
+                MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            using var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+            editForm.FormClosed += AddNewClientFormClosed;
+            editForm.ShowDialog();
         }
 
         private void SearchFirstName_EditValueChanged(object sender, EventArgs e)
@@ -196,6 +200,34 @@ namespace bakk_project_task
             StatusCheckEdit.Checked = false;
             SearchStatus = "";
             clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus);
+        }
+
+        private void BlankPhoneCheckEdit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BlankPhoneCheckEdit.Checked)
+            {
+                this.PhoneNumberTextEdit.Text = "";
+                this.SearchPhoneNumber = "";
+                PhoneNumberTextEdit.Enabled = false;
+            }
+            else
+            {
+                PhoneNumberTextEdit.Enabled = true;
+            }
+        }
+
+        private void blankEmail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (blankEmail.Checked)
+            {
+                this.EmailTextEdit.Text = "";
+                this.SearchEmail = "";
+                EmailTextEdit.Enabled = false;
+            }
+            else
+            {
+                EmailTextEdit.Enabled = true;
+            }
         }
     }
 }
