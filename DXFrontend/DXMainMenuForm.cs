@@ -27,6 +27,8 @@ namespace bakk_project_task
         private string SearchPhoneNumber = "";
         private string SearchEmail = "";
         private string SearchStatus = "";
+        private bool BlankPhoneNumberFlag;
+        private bool BlankEmailFlag;
         private readonly ClientsRepository clientsRepository;
         public DXMainMenuForm(ClientsRepository clientsRepository)
         {
@@ -155,7 +157,8 @@ namespace bakk_project_task
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus);
+            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
+                this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
         }
 
         private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
@@ -209,10 +212,12 @@ namespace bakk_project_task
                 this.PhoneNumberTextEdit.Text = "";
                 this.SearchPhoneNumber = "";
                 PhoneNumberTextEdit.Enabled = false;
+                this.BlankPhoneNumberFlag = true;
             }
             else
             {
                 PhoneNumberTextEdit.Enabled = true;
+                this.BlankPhoneNumberFlag = false;
             }
         }
 
@@ -223,10 +228,12 @@ namespace bakk_project_task
                 this.EmailTextEdit.Text = "";
                 this.SearchEmail = "";
                 EmailTextEdit.Enabled = false;
+                this.BlankEmailFlag = true;
             }
             else
             {
                 EmailTextEdit.Enabled = true;
+                this.BlankEmailFlag = false;
             }
         }
     }

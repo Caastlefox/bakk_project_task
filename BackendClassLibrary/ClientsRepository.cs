@@ -320,7 +320,10 @@ namespace bakk_project_task
             dataGridView.DataSource = dt;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-        public void SearchClients(GridControl dataGridView, string SearchFirstName, string SearchLastName, string SearchAddress, string SearchPhoneNumber, string SearchEmail, string? SearchStatus)
+        public void SearchClients(GridControl dataGridView, string SearchFirstName,
+            string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
+            string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
+            bool blankTelephoneflag = false)
         {
             try
             {
@@ -331,12 +334,26 @@ namespace bakk_project_task
 #else
                 string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
+
                 sql += " WHERE 1=1";
                 sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
                 sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
                 sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
-                sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
-                sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+                if (blankTelephoneflag)
+                {
+                    sql += string.IsNullOrEmpty(SearchEmail) ? " AND Email = \"\"" : "";
+                }
+                {
+                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
+                }
+                if (blankEmailflag)
+                {
+                    sql += string.IsNullOrEmpty(SearchEmail) ? " AND Email = \"\"": "";
+                }
+                else
+                {
+                    sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+                }
                 sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
                 using var cmd = new SqliteCommand(sql, conn);
 
