@@ -24,7 +24,10 @@ namespace bakk_project_task
         private string? SearchPhoneNumber = null;
         private string? SearchEmail = null;
         private string? SearchStatus = null;
+        private bool BlankPhoneNumberFlag;
+        private bool BlankEmailFlag;
         private readonly ClientsRepository clientsRepository;
+
         public MainMenuForm(ClientsRepository clientsRepository)
         {
             InitializeComponent();
@@ -51,7 +54,7 @@ namespace bakk_project_task
                 // Open edit dialog
                 var editForm = new AddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
                 editForm.FormClosed += AddNewClientFormClosed;
-                editForm.Show();
+                editForm.ShowDialog();
             }
         }
 
@@ -122,15 +125,17 @@ namespace bakk_project_task
             this.SearchFirstName = SearchFirstNameTextBox.Text;
         }
 
-        private void CleanFilters_Click(object sender, EventArgs e)
+        private async void CleanFilters_Click(object sender, EventArgs e)
         {
             SearchFirstNameTextBox.Text = string.Empty;
             SearchLastNameTextBox.Text = string.Empty;
             SearchAddressTextBox.Text = string.Empty;
             SearchPhoneNumberTextBox.Text = string.Empty;
             SearchMailTextBox.Text = string.Empty;
+            BlankPhoneNumberCheckBox.Checked = false;
+            BlankMailcheckBox.Checked = false;
             comboBox1.SelectedIndex = -1; // Clear the selected item in the combo box
-            _ = clientsRepository.LoadClient(dataGridView1); // Explicitly discard the task
+            await clientsRepository.LoadClient(dataGridView1);
         }
 
         private void SearchLastNameTextBox_TextChanged(object sender, EventArgs e)
@@ -146,7 +151,7 @@ namespace bakk_project_task
 
         private void Search_Click(object sender, EventArgs e)
         {
-            clientsRepository.SearchClients(this.dataGridView1,SearchFirstNameTextBox.Text, SearchLastNameTextBox.Text, SearchAddressTextBox.Text, SearchPhoneNumberTextBox.Text, SearchMailTextBox.Text, SearchStatus);
+            clientsRepository.SearchClients(this.dataGridView1, SearchFirstNameTextBox.Text, SearchLastNameTextBox.Text, SearchAddressTextBox.Text, SearchPhoneNumberTextBox.Text, SearchMailTextBox.Text, SearchStatus,BlankEmailFlag,BlankPhoneNumberFlag);
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -157,6 +162,62 @@ namespace bakk_project_task
         private void DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private async void DeleteClientButton_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show
+            (
+                "Are you sure you want to delete this client?",
+                "Confirm Deletion",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                DataGridViewRow? row = dataGridView1.CurrentRow;
+                if (row == null || row.Cells["Id"].Value == null)
+                {
+                    MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                int id = Convert.ToInt32(row.Cells["Id"].Value);
+                await clientsRepository.DeleteClient(id);
+                await this.clientsRepository.LoadClient(dataGridView1);
+            }
+        }
+
+        private void BlankPhoneNumbercheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BlankPhoneNumberCheckBox.Checked)
+            {
+                SearchPhoneNumberTextBox.Text = "";
+                SearchPhoneNumber = "";
+                SearchPhoneNumberTextBox.Enabled = false;
+                BlankEmailFlag = true;
+            }
+            else
+            {
+                SearchPhoneNumberTextBox.Enabled = true;
+                BlankEmailFlag = false;
+            }
+        }
+
+        private void BlankMailcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (BlankMailcheckBox.Checked)
+            {
+                SearchMailTextBox.Text = "";
+                SearchEmail = "";
+                SearchMailTextBox.Enabled = false;
+                BlankPhoneNumberFlag = true;
+            }
+            else
+            {
+                SearchMailTextBox.Enabled = true;
+                BlankPhoneNumberFlag = false;
+            }
         }
     }
 }

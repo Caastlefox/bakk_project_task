@@ -192,7 +192,7 @@ namespace bakk_project_task
                 this.SearchStatus = "Aktualny";
             }
         }
-        private void ClearFiltersButton_Click(object sender, EventArgs e)
+        private async void ClearFiltersButton_Click(object sender, EventArgs e)
         {
 
             FirstNameTextEdit.Text = "";
@@ -202,7 +202,9 @@ namespace bakk_project_task
             EmailTextEdit.Text = "";
             StatusCheckEdit.Checked = false;
             SearchStatus = "";
-            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus);
+            BlankPhoneCheckEdit.Checked = false;
+            blankEmail.Checked = false;
+            await clientsRepository.LoadClient(gridcontrol1);
         }
 
         private void BlankPhoneCheckEdit_CheckedChanged(object sender, EventArgs e)

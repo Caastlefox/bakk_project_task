@@ -51,6 +51,9 @@ namespace bakk_project_task
             label5 = new Label();
             label6 = new Label();
             comboBox1 = new ComboBox();
+            DeleteClientButton = new Button();
+            BlankPhoneNumberCheckBox = new CheckBox();
+            BlankMailcheckBox = new CheckBox();
             ((ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -59,7 +62,7 @@ namespace bakk_project_task
             NewClient.Location = new Point(25, 599);
             NewClient.Margin = new Padding(4, 3, 4, 3);
             NewClient.Name = "NewClient";
-            NewClient.Size = new Size(292, 32);
+            NewClient.Size = new Size(212, 32);
             NewClient.TabIndex = 3;
             NewClient.Text = "Dodaj nowego klienta";
             NewClient.UseVisualStyleBackColor = true;
@@ -87,9 +90,9 @@ namespace bakk_project_task
             // 
             // EditClient
             // 
-            EditClient.Location = new Point(324, 599);
+            EditClient.Location = new Point(257, 599);
             EditClient.Name = "EditClient";
-            EditClient.Size = new Size(292, 32);
+            EditClient.Size = new Size(215, 32);
             EditClient.TabIndex = 6;
             EditClient.Text = "Edytuj Klienta";
             EditClient.UseVisualStyleBackColor = true;
@@ -97,9 +100,9 @@ namespace bakk_project_task
             // 
             // ExitButton
             // 
-            ExitButton.Location = new Point(622, 599);
+            ExitButton.Location = new Point(727, 599);
             ExitButton.Name = "ExitButton";
-            ExitButton.Size = new Size(292, 32);
+            ExitButton.Size = new Size(187, 32);
             ExitButton.TabIndex = 7;
             ExitButton.Text = "Wyjdź";
             ExitButton.UseVisualStyleBackColor = true;
@@ -220,11 +223,46 @@ namespace bakk_project_task
             comboBox1.TabIndex = 21;
             comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
             // 
+            // DeleteClientButton
+            // 
+            DeleteClientButton.Location = new Point(494, 599);
+            DeleteClientButton.Name = "DeleteClientButton";
+            DeleteClientButton.Size = new Size(212, 32);
+            DeleteClientButton.TabIndex = 22;
+            DeleteClientButton.Text = "Usuń Klienta";
+            DeleteClientButton.UseVisualStyleBackColor = true;
+            DeleteClientButton.Click += DeleteClientButton_Click;
+            // 
+            // BlankPhoneNumberCheckBox
+            // 
+            BlankPhoneNumberCheckBox.AutoSize = true;
+            BlankPhoneNumberCheckBox.Location = new Point(308, 69);
+            BlankPhoneNumberCheckBox.Name = "BlankPhoneNumberCheckBox";
+            BlankPhoneNumberCheckBox.Size = new Size(96, 19);
+            BlankPhoneNumberCheckBox.TabIndex = 23;
+            BlankPhoneNumberCheckBox.Text = "Pusty Telefon";
+            BlankPhoneNumberCheckBox.UseVisualStyleBackColor = true;
+            BlankPhoneNumberCheckBox.CheckedChanged += BlankPhoneNumbercheckBox_CheckedChanged;
+            // 
+            // BlankMailcheckBox
+            // 
+            BlankMailcheckBox.AutoSize = true;
+            BlankMailcheckBox.Location = new Point(530, 12);
+            BlankMailcheckBox.Name = "BlankMailcheckBox";
+            BlankMailcheckBox.Size = new Size(81, 19);
+            BlankMailcheckBox.TabIndex = 24;
+            BlankMailcheckBox.Text = "Pusty Mail";
+            BlankMailcheckBox.UseVisualStyleBackColor = true;
+            BlankMailcheckBox.CheckedChanged += BlankMailcheckBox_CheckedChanged;
+            // 
             // MainMenuForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(944, 643);
+            Controls.Add(BlankMailcheckBox);
+            Controls.Add(BlankPhoneNumberCheckBox);
+            Controls.Add(DeleteClientButton);
             Controls.Add(comboBox1);
             Controls.Add(label6);
             Controls.Add(label5);
@@ -272,6 +310,9 @@ namespace bakk_project_task
         private Label label5;
         private Label label6;
         private ComboBox comboBox1;
+        private Button DeleteClientButton;
+        private CheckBox BlankPhoneNumberCheckBox;
+        private CheckBox BlankMailcheckBox;
     }
 }
 

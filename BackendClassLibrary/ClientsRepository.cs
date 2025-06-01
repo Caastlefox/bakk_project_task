@@ -150,15 +150,13 @@ namespace bakk_project_task
                 using var reader = await cmd.ExecuteReaderAsync();
 
                 var dt = new DataTable();
-                await reader.ReadAsync();
+                // await reader.ReadAsync();
 
                 dt.Load(reader);
 
                 dataGridView.DataSource = dt;
+                Console.WriteLine(dt);
                 dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-
-                //MessageBox.Show(result, "Query Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (SqliteException ex)
             {
@@ -203,8 +201,6 @@ namespace bakk_project_task
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
-                await reader.ReadAsync();
-
                 var dt = new DataTable("Clients");
                 dt.Load(reader);
 
@@ -283,7 +279,10 @@ namespace bakk_project_task
                     MessageBoxIcon.Error);
             }
         }
-        public void SearchClients(DataGridView dataGridView, string SearchFirstName, string SearchLastName, string SearchAddress, string SearchPhoneNumber, string SearchEmail, string? SearchStatus)
+        public void SearchClients(DataGridView dataGridView, string SearchFirstName,
+            string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
+            string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
+            bool blankTelephoneflag = false)
         {
 
             using var conn = new SqliteConnection(connectionString);
@@ -297,8 +296,22 @@ namespace bakk_project_task
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
             sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
             sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
-            sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
-            sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+            if (blankTelephoneflag)
+            {
+                sql += " AND PhoneNumber = \"\"";
+            }
+            else
+            {
+                sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
+            }
+            if (blankEmailflag)
+            {
+                sql += " AND Email = \"\"";
+            }
+            else
+            {
+                sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+            }
             sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
             using var cmd = new SqliteCommand(sql, conn);
 
@@ -341,7 +354,7 @@ namespace bakk_project_task
                 sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
                 if (blankTelephoneflag)
                 {
-                    sql += string.IsNullOrEmpty(SearchEmail) ? " AND Email = \"\"" : "";
+                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? " AND PhoneNumber = \"\"" : "";
                 }
                 {
                     sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
