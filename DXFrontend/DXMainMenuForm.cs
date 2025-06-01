@@ -81,9 +81,28 @@ namespace bakk_project_task
             editForm.ShowDialog();
         }
 
-        private void DeleteButton_Click(object sender, EventArgs e)
+        private async void DeleteButton_Click(object sender, EventArgs e)
         {
+            var result = MessageBox.Show
+            (
+                "Are you sure you want to delete this client?",
+                "Confirm Deletion",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
 
+            if (result == DialogResult.Yes)
+            {
+                var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView == null || gridView.FocusedRowHandle < 0)
+                {
+                    MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+                await clientsRepository.DeleteClient(id);
+                await this.clientsRepository.LoadClient(gridcontrol1);
+            }
         }
         private async void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
