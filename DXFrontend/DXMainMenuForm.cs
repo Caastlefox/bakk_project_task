@@ -135,13 +135,21 @@ namespace bakk_project_task
                 return;
             }
             int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+#if DEBUG
             string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
             string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
             string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
             string? PhoneNumber = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
             string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
             string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
-
+#else
+            string? FirstName = gridView.GetFocusedRowCellValue("Imię")?.ToString();
+            string? LastName = gridView.GetFocusedRowCellValue("Nazwisko")?.ToString();
+            string? Address = gridView.GetFocusedRowCellValue("Adres")?.ToString();
+            string? PhoneNumber = gridView.GetFocusedRowCellValue("Numer Telefonu")?.ToString();
+            string? Email = gridView.GetFocusedRowCellValue("Mail")?.ToString();
+            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
+#endif
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
             {
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

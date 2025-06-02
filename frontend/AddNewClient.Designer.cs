@@ -52,7 +52,7 @@ namespace bakk_project_task
             AddClient.Name = "AddClient";
             AddClient.Size = new Size(362, 63);
             AddClient.TabIndex = 0;
-            AddClient.Text = "Dodaj Klienta";
+            AddClient.Text = "Zapisz";
             AddClient.UseVisualStyleBackColor = true;
             AddClient.Click += AddClient_Click;
             // 

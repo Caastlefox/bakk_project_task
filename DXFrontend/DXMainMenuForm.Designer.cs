@@ -229,7 +229,7 @@ namespace bakk_project_task
             // 
             // AddressTextEdit
             // 
-            AddressTextEdit.Location = new Point(236, 24);
+            AddressTextEdit.Location = new Point(236, 69);
             AddressTextEdit.Name = "AddressTextEdit";
             AddressTextEdit.Properties.AdvancedModeOptions.Label = "Adres";
             AddressTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
@@ -313,7 +313,7 @@ namespace bakk_project_task
             // 
             // PhoneNumberTextEdit
             // 
-            PhoneNumberTextEdit.Location = new Point(236, 69);
+            PhoneNumberTextEdit.Location = new Point(236, 24);
             PhoneNumberTextEdit.Name = "PhoneNumberTextEdit";
             PhoneNumberTextEdit.Properties.AdvancedModeOptions.Label = "Numer Telefonu";
             PhoneNumberTextEdit.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
@@ -347,7 +347,7 @@ namespace bakk_project_task
             Controls.Add(DeleteButton);
             Controls.Add(FirstNameTextEdit);
             Name = "DXMainMenuForm";
-            Text = "Form1";
+            Text = "Baza Klientów";
             Load += DXMainMenuForm_Load;
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).EndInit();

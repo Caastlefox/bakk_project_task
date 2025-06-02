@@ -27,6 +27,20 @@ namespace bakk_project_task
                 throw new InvalidOperationException("Connection string 'SQLiteConnection' is not configured.");
             }
             connectionString = conn;
+            using var connection = new SqliteConnection(connectionString);
+            connection.Open();
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                CREATE TABLE IF NOT EXISTS Clients (
+                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    FirstName TEXT NOT NULL,
+                    LastName TEXT NOT NULL,
+                    Email TEXT,
+                    Address TEXT,
+                    PhoneNumber TEXT,
+                    Status TEXT
+                );";
+            command.ExecuteNonQuery();
         }
         [SupportedOSPlatform("windows6.1")]
         public async Task AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
@@ -281,8 +295,7 @@ namespace bakk_project_task
         }
         public void SearchClients(DataGridView dataGridView, string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
-            string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
-            bool blankTelephoneflag = false)
+            string SearchEmail, string? SearchStatus,bool blankTelephoneflag = false, bool blankEmailflag = false)
         {
 
             using var conn = new SqliteConnection(connectionString);
@@ -333,7 +346,7 @@ namespace bakk_project_task
             dataGridView.DataSource = dt;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-        public void SearchClients(GridControl dataGridView, string SearchFirstName,
+        public void SearchClients( GridControl dataGridView, string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
             string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
             bool blankTelephoneflag = false)

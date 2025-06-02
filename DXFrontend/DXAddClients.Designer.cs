@@ -30,7 +30,6 @@ namespace bakk_project_task
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             AddNewClient = new DevExpress.XtraEditors.SimpleButton();
             FirstNameTextBox = new DevExpress.XtraEditors.TextEdit();
             LastNameTextBox = new DevExpress.XtraEditors.TextEdit();
@@ -38,14 +37,12 @@ namespace bakk_project_task
             PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
             EmailTextBox = new DevExpress.XtraEditors.TextEdit();
             StatusCheckEdit = new DevExpress.XtraEditors.CheckEdit();
-            behaviorManager1 = new DevExpress.Utils.Behaviors.BehaviorManager(components);
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)behaviorManager1).BeginInit();
             SuspendLayout();
             // 
             // AddNewClient
@@ -54,7 +51,7 @@ namespace bakk_project_task
             AddNewClient.Name = "AddNewClient";
             AddNewClient.Size = new Size(377, 63);
             AddNewClient.TabIndex = 27;
-            AddNewClient.Text = "Dodaj Klienta";
+            AddNewClient.Text = "Zapisz";
             AddNewClient.Click += AddClient_Click;
             // 
             // FirstNameTextBox
@@ -167,7 +164,6 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)behaviorManager1).EndInit();
             ResumeLayout(false);
         }
 
@@ -179,6 +175,5 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
         private DevExpress.XtraEditors.TextEdit EmailTextBox;
         private DevExpress.XtraEditors.CheckEdit StatusCheckEdit;
-        private DevExpress.Utils.Behaviors.BehaviorManager behaviorManager1;
     }
 }
