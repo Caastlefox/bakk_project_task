@@ -148,7 +148,12 @@ namespace bakk_project_task
                 MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
                 return;
             }
-            if (!string.IsNullOrEmpty(PhoneNumberTextBox.Text))
+            if (PhoneNumberTextBox.Text.Length != 9)
+            {
+                MessageBox.Show("Proszę podać poprawny numer telefonu.");
+                return;
+            }
+            else
             {
                 PhoneNumberListBox.Items.Add(PhoneNumberTextBox.Text);
                 PhoneNumberTextBox.Text = "";
@@ -157,7 +162,7 @@ namespace bakk_project_task
 
         private void PhoneNumberMinusButton_Click(object sender, EventArgs e)
         {
-
+            PhoneNumberListBox.Items.Remove(PhoneNumberListBox.SelectedItem);
         }
 
         private void EmailPlusButton_Click(object sender, EventArgs e)
@@ -167,11 +172,20 @@ namespace bakk_project_task
                 MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
                 return;
             }
+            if (!EmailTextBox.Text.Contains('@'))
+            {
+                MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                return;
+            }
+            else
+            {
+                EmailListBox.Items.Add(EmailTextBox.Text);
+                EmailTextBox.Text = "";
+            }   
         }
-
         private void EmailMinusButton_Click(object sender, EventArgs e)
         {
-
+            EmailListBox.Items.Remove(EmailListBox.SelectedItem);
         }
 
     }
