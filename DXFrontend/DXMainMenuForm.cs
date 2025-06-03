@@ -30,6 +30,7 @@ namespace bakk_project_task
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
         private readonly ClientsRepository clientsRepository;
+        
         public DXMainMenuForm(ClientsRepository clientsRepository)
         {
             InitializeComponent();

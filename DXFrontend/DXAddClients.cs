@@ -140,5 +140,39 @@ namespace bakk_project_task
         {
             this.Email = EmailTextBox.Text;
         }
+
+        private void PhoneNumberplus_Click(object sender, EventArgs e)
+        {
+            if (PhoneNumberTextBox.Text == "")
+            {
+                MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
+                return;
+            }
+            if (!string.IsNullOrEmpty(PhoneNumberTextBox.Text))
+            {
+                PhoneNumberListBox.Items.Add(PhoneNumberTextBox.Text);
+                PhoneNumberTextBox.Text = "";
+            }
+        }
+
+        private void PhoneNumberMinusButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EmailPlusButton_Click(object sender, EventArgs e)
+        {
+            if (EmailTextBox.Text == "")
+            {
+                MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
+                return;
+            }
+        }
+
+        private void EmailMinusButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
