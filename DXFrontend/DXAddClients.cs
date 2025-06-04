@@ -99,9 +99,10 @@ namespace bakk_project_task
         }
 
 
-        private void AddNewClient_Load(object sender, EventArgs e)
+        private async void AddNewClient_Load(object sender, EventArgs e)
         {
-
+            //await clientsRepository.LoadSingleTableColumn(PhoneNumberGridControl, "PhoneNumber","PhoneNumebers");
+            //await clientsRepository.LoadSingleTableColumn(EmailGridControl,"Email","Emails");
         }
 
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
@@ -155,7 +156,7 @@ namespace bakk_project_task
             }
             else
             {
-                PhoneNumberListBox.Items.Add(PhoneNumberTextBox.Text);
+                
                 PhoneNumberTextBox.Text = "";
             }
         }
@@ -181,7 +182,7 @@ namespace bakk_project_task
             {
                 EmailListBox.Items.Add(EmailTextBox.Text);
                 EmailTextBox.Text = "";
-            }   
+            }
         }
         private void EmailMinusButton_Click(object sender, EventArgs e)
         {

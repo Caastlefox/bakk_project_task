@@ -42,31 +42,31 @@ namespace bakk_project_task
             PhoneNumberPlusButton = new DevExpress.XtraEditors.SimpleButton();
             EmailMinusButton = new DevExpress.XtraEditors.SimpleButton();
             PhoneNumberMinusButton = new DevExpress.XtraEditors.SimpleButton();
-            PhoneNumberTextBox = new DevExpress.XtraEditors.PopupContainerEdit();
-            popupContainerControl1 = new DevExpress.XtraEditors.PopupContainerControl();
-            EmailListBox = new DevExpress.XtraEditors.ListBoxControl();
-            popupContainerControl2 = new DevExpress.XtraEditors.PopupContainerControl();
-            PhoneNumberListBox = new DevExpress.XtraEditors.ListBoxControl();
-            EmailTextBox = new DevExpress.XtraEditors.PopupContainerEdit();
+            EmailGridControl = new DevExpress.XtraGrid.GridControl();
+            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            PhoneNumberGridControl = new DevExpress.XtraGrid.GridControl();
+            gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            EmailTextBox = new DevExpress.XtraEditors.TextEdit();
+            PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)popupContainerControl1).BeginInit();
-            popupContainerControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)EmailListBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)popupContainerControl2).BeginInit();
-            popupContainerControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberListBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EmailGridControl).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberGridControl).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gridView2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
             SuspendLayout();
             // 
             // AddNewClient
             // 
-            AddNewClient.Location = new Point(16, 339);
+            AddNewClient.Location = new Point(218, 417);
             AddNewClient.Name = "AddNewClient";
-            AddNewClient.Size = new Size(463, 63);
+            AddNewClient.Size = new Size(286, 67);
             AddNewClient.TabIndex = 27;
             AddNewClient.Text = "Zapisz";
             AddNewClient.Click += AddClient_Click;
@@ -82,13 +82,13 @@ namespace bakk_project_task
             FirstNameTextBox.Properties.Appearance.Options.UseTextOptions = true;
             FirstNameTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             FirstNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            FirstNameTextBox.Size = new Size(377, 34);
+            FirstNameTextBox.Size = new Size(200, 34);
             FirstNameTextBox.TabIndex = 28;
             FirstNameTextBox.EditValueChanged += FirstNameTextBox_EditValueChanged;
             // 
             // LastNameTextBox
             // 
-            LastNameTextBox.Location = new Point(12, 61);
+            LastNameTextBox.Location = new Point(12, 92);
             LastNameTextBox.Name = "LastNameTextBox";
             LastNameTextBox.Properties.AdvancedModeOptions.Label = "Podaj Nazwisko(obowiązkowe)";
             LastNameTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
@@ -97,13 +97,13 @@ namespace bakk_project_task
             LastNameTextBox.Properties.Appearance.Options.UseTextOptions = true;
             LastNameTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             LastNameTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            LastNameTextBox.Size = new Size(377, 34);
+            LastNameTextBox.Size = new Size(200, 34);
             LastNameTextBox.TabIndex = 29;
             LastNameTextBox.EditValueChanged += LastNameTextBox_EditValueChanged;
             // 
             // AddressTextBox
             // 
-            AddressTextBox.Location = new Point(12, 111);
+            AddressTextBox.Location = new Point(12, 175);
             AddressTextBox.Name = "AddressTextBox";
             AddressTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres";
             AddressTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
@@ -112,14 +112,14 @@ namespace bakk_project_task
             AddressTextBox.Properties.Appearance.Options.UseTextOptions = true;
             AddressTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             AddressTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            AddressTextBox.Size = new Size(377, 34);
+            AddressTextBox.Size = new Size(200, 34);
             AddressTextBox.TabIndex = 30;
             AddressTextBox.EditValueChanged += AddressTextBox_EditValueChanged;
             // 
             // StatusCheckEdit
             // 
             StatusCheckEdit.EditValue = null;
-            StatusCheckEdit.Location = new Point(12, 258);
+            StatusCheckEdit.Location = new Point(12, 255);
             StatusCheckEdit.Name = "StatusCheckEdit";
             StatusCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
             StatusCheckEdit.Properties.Caption = "Potencjalny";
@@ -133,27 +133,27 @@ namespace bakk_project_task
             // EmailPlusButton
             // 
             EmailPlusButton.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("EmailPlusButton.ImageOptions.SvgImage");
-            EmailPlusButton.Location = new Point(395, 207);
+            EmailPlusButton.Location = new Point(424, 215);
             EmailPlusButton.Name = "EmailPlusButton";
-            EmailPlusButton.Size = new Size(37, 35);
+            EmailPlusButton.Size = new Size(37, 34);
             EmailPlusButton.TabIndex = 36;
             EmailPlusButton.Click += EmailPlusButton_Click;
             // 
             // PhoneNumberPlusButton
             // 
             PhoneNumberPlusButton.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("PhoneNumberPlusButton.ImageOptions.SvgImage");
-            PhoneNumberPlusButton.Location = new Point(395, 159);
+            PhoneNumberPlusButton.Location = new Point(424, 12);
             PhoneNumberPlusButton.Name = "PhoneNumberPlusButton";
-            PhoneNumberPlusButton.Size = new Size(37, 35);
+            PhoneNumberPlusButton.Size = new Size(37, 34);
             PhoneNumberPlusButton.TabIndex = 37;
             PhoneNumberPlusButton.Click += PhoneNumberplus_Click;
             // 
             // EmailMinusButton
             // 
             EmailMinusButton.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("EmailMinusButton.ImageOptions.SvgImage");
-            EmailMinusButton.Location = new Point(438, 207);
+            EmailMinusButton.Location = new Point(467, 215);
             EmailMinusButton.Name = "EmailMinusButton";
-            EmailMinusButton.Size = new Size(37, 35);
+            EmailMinusButton.Size = new Size(37, 34);
             EmailMinusButton.TabIndex = 38;
             EmailMinusButton.Text = "Zapisz";
             EmailMinusButton.Click += EmailMinusButton_Click;
@@ -161,16 +161,91 @@ namespace bakk_project_task
             // PhoneNumberMinusButton
             // 
             PhoneNumberMinusButton.ImageOptions.SvgImage = (DevExpress.Utils.Svg.SvgImage)resources.GetObject("PhoneNumberMinusButton.ImageOptions.SvgImage");
-            PhoneNumberMinusButton.Location = new Point(438, 159);
+            PhoneNumberMinusButton.Location = new Point(467, 12);
             PhoneNumberMinusButton.Name = "PhoneNumberMinusButton";
-            PhoneNumberMinusButton.Size = new Size(37, 35);
+            PhoneNumberMinusButton.Size = new Size(37, 34);
             PhoneNumberMinusButton.TabIndex = 39;
             PhoneNumberMinusButton.Text = "Zapisz";
             PhoneNumberMinusButton.Click += PhoneNumberMinusButton_Click;
             // 
+            // EmailGridControl
+            // 
+            this.EmailGridControl.BackgroundImageLayout = ImageLayout.None;
+            this.EmailGridControl.DataMember = "Clients";
+            this.EmailGridControl.ImeMode = ImeMode.NoControl;
+            this.EmailGridControl.Location = new Point(218, 255);
+            this.EmailGridControl.MainView = gridView1;
+            this.EmailGridControl.Name = "EmailGridControl";
+            this.EmailGridControl.Size = new Size(286, 156);
+            this.EmailGridControl.TabIndex = 45;
+            this.EmailGridControl.UseDisabledStatePainter = false;
+            this.EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            // 
+            // gridView1
+            // 
+            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn1 });
+            gridView1.GridControl = this.EmailGridControl;
+            gridView1.Name = "gridView1";
+            gridView1.OptionsBehavior.Editable = false;
+            gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
+            gridView1.OptionsView.ShowColumnHeaders = false;
+            gridView1.OptionsView.ShowGroupPanel = false;
+            // 
+            // gridColumn1
+            // 
+            gridColumn1.Caption = "gridColumn1";
+            gridColumn1.Name = "gridColumn1";
+            gridColumn1.Visible = true;
+            gridColumn1.VisibleIndex = 0;
+            // 
+            // PhoneNumberGridControl
+            // 
+            PhoneNumberGridControl.BackgroundImageLayout = ImageLayout.None;
+            PhoneNumberGridControl.DataMember = "Clients";
+            PhoneNumberGridControl.ImeMode = ImeMode.NoControl;
+            PhoneNumberGridControl.Location = new Point(218, 52);
+            PhoneNumberGridControl.MainView = gridView2;
+            PhoneNumberGridControl.Name = "PhoneNumberGridControl";
+            PhoneNumberGridControl.Size = new Size(286, 157);
+            PhoneNumberGridControl.TabIndex = 46;
+            PhoneNumberGridControl.UseDisabledStatePainter = false;
+            PhoneNumberGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
+            // 
+            // gridView2
+            // 
+            gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2 });
+            gridView2.GridControl = PhoneNumberGridControl;
+            gridView2.Name = "gridView2";
+            gridView2.OptionsBehavior.Editable = false;
+            gridView2.OptionsSelection.EnableAppearanceHideSelection = false;
+            gridView2.OptionsView.ShowColumnHeaders = false;
+            gridView2.OptionsView.ShowGroupPanel = false;
+            // 
+            // gridColumn2
+            // 
+            gridColumn2.Caption = "gridColumn1";
+            gridColumn2.Name = "gridColumn2";
+            gridColumn2.Visible = true;
+            gridColumn2.VisibleIndex = 0;
+            // 
+            // EmailTextBox
+            // 
+            EmailTextBox.Location = new Point(218, 215);
+            EmailTextBox.Name = "EmailTextBox";
+            EmailTextBox.Properties.AdvancedModeOptions.Label = "Podaj Email";
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
+            EmailTextBox.Properties.Appearance.Options.UseTextOptions = true;
+            EmailTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            EmailTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
+            EmailTextBox.Size = new Size(200, 34);
+            EmailTextBox.TabIndex = 47;
+            EmailTextBox.EditValueChanged += EmailTextBox_EditValueChanged;
+            // 
             // PhoneNumberTextBox
             // 
-            PhoneNumberTextBox.Location = new Point(12, 160);
+            PhoneNumberTextBox.Location = new Point(218, 12);
             PhoneNumberTextBox.Name = "PhoneNumberTextBox";
             PhoneNumberTextBox.Properties.AdvancedModeOptions.Label = "Podaj Numer Telefonu";
             PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
@@ -178,70 +253,20 @@ namespace bakk_project_task
             PhoneNumberTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             PhoneNumberTextBox.Properties.Appearance.Options.UseTextOptions = true;
             PhoneNumberTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            PhoneNumberTextBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            PhoneNumberTextBox.Properties.PopupControl = popupContainerControl1;
-            PhoneNumberTextBox.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             PhoneNumberTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            PhoneNumberTextBox.Size = new Size(377, 34);
-            PhoneNumberTextBox.TabIndex = 31;
+            PhoneNumberTextBox.Size = new Size(200, 34);
+            PhoneNumberTextBox.TabIndex = 48;
             PhoneNumberTextBox.EditValueChanged += PhoneNumberTextBox_EditValueChanged;
-            // 
-            // popupContainerControl1
-            // 
-            popupContainerControl1.Controls.Add(PhoneNumberListBox);
-            popupContainerControl1.Location = new Point(12, 248);
-            popupContainerControl1.Name = "popupContainerControl1";
-            popupContainerControl1.Size = new Size(377, 139);
-            popupContainerControl1.TabIndex = 43;
-            // 
-            // EmailListBox
-            // 
-            EmailListBox.Location = new Point(0, 0);
-            EmailListBox.Name = "EmailListBox";
-            EmailListBox.Size = new Size(377, 139);
-            EmailListBox.TabIndex = 0;
-            // 
-            // popupContainerControl2
-            // 
-            popupContainerControl2.Controls.Add(EmailListBox);
-            popupContainerControl2.Location = new Point(12, 194);
-            popupContainerControl2.Name = "popupContainerControl2";
-            popupContainerControl2.Size = new Size(377, 139);
-            popupContainerControl2.TabIndex = 41;
-            // 
-            // PhoneNumberListBox
-            // 
-            PhoneNumberListBox.Location = new Point(0, 0);
-            PhoneNumberListBox.Name = "PhoneNumberListBox";
-            PhoneNumberListBox.Size = new Size(377, 193);
-            PhoneNumberListBox.TabIndex = 0;
-            // 
-            // EmailTextBox
-            // 
-            EmailTextBox.Location = new Point(12, 208);
-            EmailTextBox.Name = "EmailTextBox";
-            EmailTextBox.Properties.AdvancedModeOptions.Label = "Podaj Adres Email";
-            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.Options.UseTextOptions = true;
-            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            EmailTextBox.Properties.AdvancedModeOptions.LabelAppearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
-            EmailTextBox.Properties.Appearance.Options.UseTextOptions = true;
-            EmailTextBox.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            EmailTextBox.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] { new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo) });
-            EmailTextBox.Properties.PopupControl = popupContainerControl2;
-            EmailTextBox.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            EmailTextBox.Properties.UseAdvancedMode = DevExpress.Utils.DefaultBoolean.True;
-            EmailTextBox.Size = new Size(377, 34);
-            EmailTextBox.TabIndex = 42;
-            EmailTextBox.EditValueChanged += EmailTextBox_EditValueChanged;
             // 
             // DXAddNewClient
             // 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(491, 414);
-            Controls.Add(popupContainerControl1);
+            ClientSize = new Size(511, 491);
+            Controls.Add(PhoneNumberTextBox);
             Controls.Add(EmailTextBox);
-            Controls.Add(popupContainerControl2);
+            Controls.Add(PhoneNumberGridControl);
+            Controls.Add(EmailGridControl);
             Controls.Add(PhoneNumberMinusButton);
             Controls.Add(EmailMinusButton);
             Controls.Add(PhoneNumberPlusButton);
@@ -251,7 +276,6 @@ namespace bakk_project_task
             Controls.Add(FirstNameTextBox);
             Controls.Add(AddNewClient);
             Controls.Add(StatusCheckEdit);
-            Controls.Add(PhoneNumberTextBox);
             Name = "DXAddNewClient";
             Text = "Dane Klienta";
             Load += AddNewClient_Load;
@@ -259,14 +283,12 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)popupContainerControl1).EndInit();
-            popupContainerControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)EmailListBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)popupContainerControl2).EndInit();
-            popupContainerControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)PhoneNumberListBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)this.EmailGridControl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberGridControl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gridView2).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
             ResumeLayout(false);
         }
 
@@ -280,11 +302,17 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.SimpleButton PhoneNumberPlusButton;
         private DevExpress.XtraEditors.SimpleButton EmailMinusButton;
         private DevExpress.XtraEditors.SimpleButton PhoneNumberMinusButton;
-        private DevExpress.XtraEditors.PopupContainerEdit PhoneNumberTextBox;
         private DevExpress.XtraEditors.PopupContainerControl popupContainerControl2;
         private DevExpress.XtraEditors.ListBoxControl PhoneNumberListBox;
-        private DevExpress.XtraEditors.PopupContainerEdit EmailTextBox;
         private DevExpress.XtraEditors.PopupContainerControl popupContainerControl1;
         private DevExpress.XtraEditors.ListBoxControl EmailListBox;
+        private DevExpress.XtraGrid.GridControl EmailGridControl;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.GridControl PhoneNumberGridControl;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
+        private DevExpress.XtraEditors.TextEdit EmailTextBox;
+        private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
     }
 }
