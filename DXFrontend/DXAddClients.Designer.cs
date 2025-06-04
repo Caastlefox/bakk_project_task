@@ -302,10 +302,6 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.SimpleButton PhoneNumberPlusButton;
         private DevExpress.XtraEditors.SimpleButton EmailMinusButton;
         private DevExpress.XtraEditors.SimpleButton PhoneNumberMinusButton;
-        private DevExpress.XtraEditors.PopupContainerControl popupContainerControl2;
-        private DevExpress.XtraEditors.ListBoxControl PhoneNumberListBox;
-        private DevExpress.XtraEditors.PopupContainerControl popupContainerControl1;
-        private DevExpress.XtraEditors.ListBoxControl EmailListBox;
         private DevExpress.XtraGrid.GridControl EmailGridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;

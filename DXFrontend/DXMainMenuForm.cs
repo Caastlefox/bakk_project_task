@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -37,7 +38,7 @@ namespace bakk_project_task
 
             this.clientsRepository = clientsRepository;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private async void DXMainMenuForm_Load(object sender, EventArgs e)
         {
             await clientsRepository.LoadClient(gridcontrol1);
@@ -51,19 +52,19 @@ namespace bakk_project_task
                 gridView1.SelectRow(0);         // Select first row
             }
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void AddClientButton_Click(object sender, EventArgs e)
         {
             using var form = new DXAddNewClient(clientsRepository);
             form.FormClosed += AddNewClientFormClosed;
             form.ShowDialog(this);
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void EditClientButton_Click(object sender, EventArgs e)
         {
             var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
@@ -98,7 +99,7 @@ namespace bakk_project_task
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show
@@ -122,11 +123,12 @@ namespace bakk_project_task
                 await this.clientsRepository.LoadClient(gridcontrol1);
             }
         }
+        [SupportedOSPlatform("windows6.1")]
         private async void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
             await this.clientsRepository.LoadClient(gridcontrol1);
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
             var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
@@ -160,7 +162,7 @@ namespace bakk_project_task
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void SearchFirstName_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchFirstName = FirstNameTextEdit.Text;
@@ -175,7 +177,7 @@ namespace bakk_project_task
 
         private void SearchButton_Click(object sender, EventArgs e)
         {
-            clientsRepository.SearchClients(gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
+            clientsRepository.SearchClients(this.gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
                 this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
         }
 

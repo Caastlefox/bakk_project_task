@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -29,6 +30,7 @@ namespace bakk_project_task
             this.Id = null;
 
         }
+        [SupportedOSPlatform("windows6.1")]
         public DXAddNewClient(ClientsRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
@@ -60,7 +62,7 @@ namespace bakk_project_task
         {
 
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private async void AddClient_Click(object sender, EventArgs e)
         {
             try
@@ -104,7 +106,7 @@ namespace bakk_project_task
             //await clientsRepository.LoadSingleTableColumn(PhoneNumberGridControl, "PhoneNumber","PhoneNumebers");
             //await clientsRepository.LoadSingleTableColumn(EmailGridControl,"Email","Emails");
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
             if (StatusCheckEdit.Checked)
@@ -116,32 +118,32 @@ namespace bakk_project_task
                 this.Status = "Aktualny";
             }
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void FirstNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.FirstName = FirstNameTextBox.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.LastName = LastNameTextBox.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void AddressTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.Address = AddressTextBox.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.PhoneNumber = PhoneNumberTextBox.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void EmailTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.Email = EmailTextBox.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberplus_Click(object sender, EventArgs e)
         {
             if (PhoneNumberTextBox.Text == "")
@@ -163,9 +165,9 @@ namespace bakk_project_task
 
         private void PhoneNumberMinusButton_Click(object sender, EventArgs e)
         {
-            PhoneNumberListBox.Items.Remove(PhoneNumberListBox.SelectedItem);
+            
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void EmailPlusButton_Click(object sender, EventArgs e)
         {
             if (EmailTextBox.Text == "")
@@ -180,13 +182,13 @@ namespace bakk_project_task
             }
             else
             {
-                EmailListBox.Items.Add(EmailTextBox.Text);
+                
                 EmailTextBox.Text = "";
             }
         }
         private void EmailMinusButton_Click(object sender, EventArgs e)
         {
-            EmailListBox.Items.Remove(EmailListBox.SelectedItem);
+            
         }
 
     }
