@@ -9,7 +9,11 @@
 
         void SearchClients(DataGridView dataGridView, string SearchFirstName, string SearchLastName, string SearchAddress, string SearchPhoneNumber, string SearchEmail, string SearchStatus, bool blankEmailflag = false,
             bool blankTelephoneflag = false);
-        //DataTable GetAllClients();
-        //DataTable SearchClients(string? firstName = null, string? lastName = null, string? address = null, string? phoneNumber = null, string? email = null, string? status = null);
+        /*
+        Task AddSubtableEntry(int? id, string TableName);
+        Task UpdateSubtableEntry(int? id, string TableName);
+        Task LoadSubtableEntry(int? id, string TableName);
+        Task DeleteSubtableEntry(int? id, string TableName);
+        */
     }
 }

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Security.AccessControl;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -32,13 +33,29 @@ namespace bakk_project_task
             var command = connection.CreateCommand();
             command.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Clients (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ClientId INTEGER PRIMARY KEY AUTOINCREMENT,
                     FirstName TEXT NOT NULL,
                     LastName TEXT NOT NULL,
                     Email TEXT,
                     Address TEXT,
                     PhoneNumber TEXT,
                     Status TEXT
+                );";
+            command.ExecuteNonQuery();
+            command.CommandText = @"
+                CREATE TABLE IF NOT EXISTS PhoneNumbers (
+                    NumberId INTEGER PRIMARY KEY AUTOINCREMENT,                   
+                    PhoneNumber TEXT,
+                    ClientID INTEGER,
+                    FOREIGN KEY (ClientId) REFERENCES Clients(ClientId)
+                );";
+            command.ExecuteNonQuery();
+            command.CommandText = @"
+                CREATE TABLE IF NOT EXISTS Emails (
+                    EmailId INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Email TEXT,
+                    ClientID INTEGER,
+                    FOREIGN KEY (ClientId) REFERENCES Clients(ClientId)
                 );";
             command.ExecuteNonQuery();
         }
@@ -106,7 +123,7 @@ namespace bakk_project_task
                 command.CommandText = @"
                 UPDATE Clients
                 SET FirstName = $firstName, LastName = $lastName, Email = $email, Address = $address, PhoneNumber = $phoneNumber, Status = $status
-                WHERE Id = $id;
+                WHERE ClientId = $id;
             ";
                 command.Parameters.AddWithValue("$id", id);
                 command.Parameters.AddWithValue("$firstName", firstName);
@@ -157,7 +174,7 @@ namespace bakk_project_task
 #if DEBUG
                 string sql = "SELECT * FROM Clients";
 #else
-                string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+                string sql = "SELECT ClientId, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
@@ -210,7 +227,7 @@ namespace bakk_project_task
 #if DEBUG
                 string sql = "SELECT * FROM Clients";
 #else
-                string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+                string sql = "SELECT ClientId, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
@@ -260,7 +277,7 @@ namespace bakk_project_task
                 await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @"
-                DELETE FROM Clients WHERE Id = $id;
+                DELETE FROM Clients WHERE ClientId = $id;
             ";
                 command.Parameters.AddWithValue("$id", id);
                 await command.ExecuteNonQueryAsync();
@@ -293,6 +310,8 @@ namespace bakk_project_task
                     MessageBoxIcon.Error);
             }
         }
+
+        
         public void SearchClients(DataGridView dataGridView, string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
             string SearchEmail, string? SearchStatus,bool blankTelephoneflag = false, bool blankEmailflag = false)
@@ -303,7 +322,7 @@ namespace bakk_project_task
 #if DEBUG
             string sql = "SELECT * FROM Clients";
 #else
-            string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+            string sql = "SELECT ClientId, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
             sql += " WHERE 1=1";
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
@@ -358,7 +377,7 @@ namespace bakk_project_task
 #if DEBUG
                 string sql = "SELECT * FROM Clients";
 #else
-                string sql = "SELECT Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+                string sql = "SELECT ClientId, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
 #endif
 
                 sql += " WHERE 1=1";
@@ -428,6 +447,49 @@ namespace bakk_project_task
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+        }
+        public async Task LoadSubTable(GridControl gridControl, string ColumnName, string TableName)
+        {
+            try
+            {
+                string sql = "SELECT " + ColumnName + " FROM " + TableName + ";";
+                using var conn = new SqliteConnection(connectionString);
+                await conn.OpenAsync();
+                using var cmd = new SqliteCommand(sql, conn);
+                using var reader = await cmd.ExecuteReaderAsync();
+                var dt = new DataTable();
+                dt.Load(reader);
+                gridControl.DataSource = dt;
+                gridControl.MainView.PopulateColumns();
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+
         }
     }
 }
