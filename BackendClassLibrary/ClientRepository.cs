@@ -32,7 +32,7 @@ namespace bakk_project_task
             connectionString = conn;
             using var connection = new SqliteConnection(connectionString);
             connection.Open();
-#if DEBUG
+#if CLEAR && DEBUG
             var debugcommand = connection.CreateCommand();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Client;

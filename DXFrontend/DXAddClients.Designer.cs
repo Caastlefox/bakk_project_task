@@ -44,7 +44,7 @@ namespace bakk_project_task
             PhoneNumberMinusButton = new DevExpress.XtraEditors.SimpleButton();
             EmailGridControl = new DevExpress.XtraGrid.GridControl();
             gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            Email = new DevExpress.XtraGrid.Columns.GridColumn();
             PhoneNumberGridControl = new DevExpress.XtraGrid.GridControl();
             gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -180,23 +180,23 @@ namespace bakk_project_task
             EmailGridControl.TabIndex = 45;
             EmailGridControl.UseDisabledStatePainter = false;
             EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            EmailGridControl.Click += EmailGridControl_Click;
             // 
             // gridView1
             // 
-            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn1 });
+            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { Email });
             gridView1.GridControl = EmailGridControl;
             gridView1.Name = "gridView1";
-            gridView1.OptionsBehavior.Editable = false;
             gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
             gridView1.OptionsView.ShowColumnHeaders = false;
             gridView1.OptionsView.ShowGroupPanel = false;
             // 
-            // gridColumn1
+            // Email
             // 
-            gridColumn1.Caption = "gridColumn1";
-            gridColumn1.Name = "gridColumn1";
-            gridColumn1.Visible = true;
-            gridColumn1.VisibleIndex = 0;
+            Email.Caption = "Email";
+            Email.Name = "Email";
+            Email.Visible = true;
+            Email.VisibleIndex = 0;
             // 
             // PhoneNumberGridControl
             // 
@@ -216,14 +216,13 @@ namespace bakk_project_task
             gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2 });
             gridView2.GridControl = PhoneNumberGridControl;
             gridView2.Name = "gridView2";
-            gridView2.OptionsBehavior.Editable = false;
             gridView2.OptionsSelection.EnableAppearanceHideSelection = false;
             gridView2.OptionsView.ShowColumnHeaders = false;
             gridView2.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn2
             // 
-            gridColumn2.Caption = "gridColumn1";
+            gridColumn2.Caption = "gridColumn2";
             gridColumn2.Name = "gridColumn2";
             gridColumn2.Visible = true;
             gridColumn2.VisibleIndex = 0;
@@ -304,11 +303,11 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.SimpleButton PhoneNumberMinusButton;
         private DevExpress.XtraGrid.GridControl EmailGridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
         private DevExpress.XtraGrid.GridControl PhoneNumberGridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraEditors.TextEdit EmailTextBox;
         private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
+        private DevExpress.XtraGrid.Columns.GridColumn Email;
     }
 }

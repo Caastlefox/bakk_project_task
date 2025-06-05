@@ -1,4 +1,6 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.Charts.Model;
+using DevExpress.CodeParser;
+using DevExpress.XtraEditors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -157,21 +159,25 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void PhoneNumberMinusButton_Click(object sender, EventArgs e)
+        private void PhoneNumberMinusButton_Click(object sender, EventArgs e)
         {
-            if (PhoneNumberTextBox.Text == "")
+            var gridView = PhoneNumberGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0)
             {
-                MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
+                MessageBox.Show("Zaznacz Dane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (PhoneNumberTextBox.Text.Length != 9)
+            var PhoneNumber = (gridView.GetFocusedRow() as Entry)?.Name;
+
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
             {
-                MessageBox.Show("Proszę podać poprawny numer telefonu.");
+                MessageBox.Show("Pole Puste", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             else
             {
-                //await clientsRepository.DeleteSubTableEntry
+                PhoneNumberController.RemoveElement(PhoneNumber);
+                PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
             }
         }
 
@@ -199,24 +205,28 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void EmailMinusButton_Click(object sender, EventArgs e)
         {
-            if (EmailTextBox.Text == "")
+            var gridView = EmailGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0)
             {
-                MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
+                MessageBox.Show("Zaznacz Dane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            if (!EmailTextBox.Text.Contains('@'))
+            var Email = (gridView.GetFocusedRow() as Entry)?.Name;
+
+            if (string.IsNullOrWhiteSpace(Email))
             {
-                MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                MessageBox.Show("Pole Puste", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             else
             {
-
+                EmailController.RemoveElement(Email);
+                EmailController.SendToGridControl(EmailGridControl);
             }
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void PhoneNumberPlusButton_Click(object sender, EventArgs e)
+        private void PhoneNumberPlusButton_Click(object sender, EventArgs e)
         {
             if (PhoneNumberTextBox.Text == "")
             {
@@ -235,6 +245,18 @@ namespace bakk_project_task
                 PhoneNumberTextBox.Text = "";
 
             }
+        }
+
+        private void EmailGridControl_Click(object sender, EventArgs e)
+        {
+            var gridView = EmailGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView == null || gridView.FocusedRowHandle < 0)
+            {
+                MessageBox.Show("ZaznaczDane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
+
         }
     }
 }

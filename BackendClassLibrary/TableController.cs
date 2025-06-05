@@ -25,7 +25,7 @@ namespace bakk_project_task
     {
 
     }
-    public struct Entry
+    public class Entry
     {
         public string Name;
         public char Tag;
@@ -33,9 +33,9 @@ namespace bakk_project_task
         public string EntryName => Name;
         public Entry(string name, char tag, int id = -1)
         {
+            this.Id = id;
             this.Name = name;
             this.Tag = tag;
-            this.Id = id;
         }
 
     }
@@ -76,21 +76,30 @@ namespace bakk_project_task
                 throw new ArgumentException("Entry cannot be null or empty.");
             }
 #endif
-            //if (ControllerList.Any())
-            //{
-            //    MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
+            if (ControllerList.Any(e => e.Name == Name))
+            {
+                MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             Entry entry = new Entry(Name, 'A');
             ControllerList.Add(entry);
         }
 
         public void RemoveElement(string Name)
         {
-            Entry entrytoedit = ControllerList.FirstOrDefault(t => t.Name == Name);
-            if (entrytoedit.Name == null)
+#if DEBUG
+            //Sanity Check
+            if (string.IsNullOrEmpty(Name))
             {
-                MessageBox.Show("Entry not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Entry \"{Name}\" not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+#endif
+
+            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == Name);
+            if (entrytoedit == null)
+            {
+                MessageBox.Show($"Entry \"{Name}\" not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             switch (entrytoedit.Tag)
@@ -113,30 +122,29 @@ namespace bakk_project_task
 
         public void EditElement(string OldEntryName, string NewEntryName)
         {
-            Entry entrytoedit = ControllerList.FirstOrDefault(t => t.Name == OldEntryName);
-            if (entrytoedit.Name == null)
+            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == OldEntryName);
+            if (entrytoedit == null)
             {
                 MessageBox.Show("Entry not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-                switch (entrytoedit.Tag)
-                    {
-                    case '\0':
-                        entrytoedit.Name = NewEntryName;
-                        entrytoedit.Tag = 'M';
-                        return;
-                    case 'M':
-                        entrytoedit.Name = NewEntryName;
-                        return;
-                    case 'A':
-                        entrytoedit.Name = NewEntryName;
-                        return;
+            switch (entrytoedit.Tag)
+            {
+                case '\0':
+                    entrytoedit.Name = NewEntryName;
+                    entrytoedit.Tag = 'M';
+                    return;
+                case 'M':
+                    entrytoedit.Name = NewEntryName;
+                    return;
+                case 'A':
+                    entrytoedit.Name = NewEntryName;
+                    return;
 #if DEBUG
-                    default:
-                        throw new ArgumentException("Tag can only be 'M', 'A' or '\\0' here");
+                default:
+                    throw new ArgumentException("Tag can only be 'M', 'A' or '\\0' here");
 #endif
-                    }
-
+            }
         }
 
         public async Task ReceiveFromDatabase(int Id) 
@@ -153,11 +161,11 @@ namespace bakk_project_task
             while (await reader.ReadAsync())
             {
                 var entry = new Entry
-                {
-                    Id = reader.GetInt32(reader.GetOrdinal($"{TableName}_Id")),
-                    Name = reader.GetString(reader.GetOrdinal(TableName)),
-                    Tag = '\0'
-                };
+                    (
+                    reader.GetString(reader.GetOrdinal(TableName)),
+                    '\0', 
+                    reader.GetInt32(reader.GetOrdinal($"{TableName}_Id"))
+                    );
                 ControllerList.Add(entry);
             }
         }
@@ -215,7 +223,6 @@ namespace bakk_project_task
             TableGrid.DataSource = ControllerList;
             TableGrid.MainView.PopulateColumns();
         }
-        
 
     }
 }
