@@ -62,10 +62,11 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void AddClientButton_Click(object sender, EventArgs e)
         {
-            using var form = new DXAddNewClient(clientsRepository);
+            using var form = new DXAddNewClient(clientsRepository,EmailController,PhoneNumberController);
             form.FormClosed += AddNewClientFormClosed;
             form.ShowDialog(this);
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void EditClientButton_Click(object sender, EventArgs e)
         {
@@ -97,7 +98,7 @@ namespace bakk_project_task
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            using var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, PhoneNumber, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }
@@ -160,7 +161,7 @@ namespace bakk_project_task
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            using var editForm = new DXAddNewClient(clientsRepository, id, FirstName, LastName, Email, Address, PhoneNumber, Status);
+            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, PhoneNumber, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }

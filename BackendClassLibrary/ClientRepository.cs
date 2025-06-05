@@ -63,7 +63,7 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public async Task AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public async Task AddClient(string? firstName, string? lastName, string? address, string? phoneNumber, string? status)
         {
             try
             {
@@ -71,12 +71,11 @@ namespace bakk_project_task
                 await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @"
-                INSERT INTO Client(FirstName, LastName, Email, Address, PhoneNumber, Status)
-                VALUES ($firstName, $lastName, $email, $address, $phoneNumber, $status);
+                INSERT INTO Client(FirstName, LastName, Address, PhoneNumber, Status)
+                VALUES ($firstName, $lastName, $address, $phoneNumber, $status);
                 ";
                 command.Parameters.AddWithValue("$firstName", firstName);
                 command.Parameters.AddWithValue("$lastName", lastName);
-                command.Parameters.AddWithValue("$email", email);
                 command.Parameters.AddWithValue("$address", address);
                 command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
                 command.Parameters.AddWithValue("$status", status);
@@ -113,7 +112,7 @@ namespace bakk_project_task
             }
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task UpdateClient(int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public async Task UpdateClient(int? id, string? firstName, string? lastName, string? address, string? phoneNumber, string? status)
         {
             try
             {
@@ -122,13 +121,12 @@ namespace bakk_project_task
                 var command = connection.CreateCommand();
                 command.CommandText = @"
                 UPDATE Client
-                SET FirstName = $firstName, LastName = $lastName, Email = $email, Address = $address, PhoneNumber = $phoneNumber, Status = $status
+                SET FirstName = $firstName, LastName = $lastName, Address = $address, PhoneNumber = $phoneNumber, Status = $status
                 WHERE Client_Id = $id;
             ";
                 command.Parameters.AddWithValue("$id", id);
                 command.Parameters.AddWithValue("$firstName", firstName);
                 command.Parameters.AddWithValue("$lastName", lastName);
-                command.Parameters.AddWithValue("$email", email);
                 command.Parameters.AddWithValue("$address", address);
                 command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
                 command.Parameters.AddWithValue("$status", status);

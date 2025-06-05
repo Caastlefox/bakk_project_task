@@ -5,6 +5,7 @@ using DevExpress.XtraBars.Customization;
 using DevExpress.XtraGrid;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraRichEdit.Import.Html;
+using DevExpress.XtraRichEdit.Import.OpenXml;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,7 @@ namespace bakk_project_task
         public string Name;
         public char Tag;
         public int Id;
+        public string EntryName => Name;
         public Entry(string name, char tag, int id = -1)
         {
             this.Name = name;
@@ -66,24 +68,20 @@ namespace bakk_project_task
                 );";
             command.ExecuteNonQuery();
         }
-        public void AddElement(string Name, char Tag = '\0')
+        public void AddElement(string Name)
         {
 #if  DEBUG 
             if (string.IsNullOrEmpty(Name) )
             {
                 throw new ArgumentException("Entry cannot be null or empty.");
             }
-            if (Tag != 'D' && Tag != 'M' && Tag != 'A' && Tag != '\0')
-            {
-                throw new ArgumentException("Tag can only be 'D', 'M', 'A' or '\\0'");
-            }
 #endif
-            if (ControllerList.Any())
-            {
-                MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            Entry entry = new Entry(Name, Tag);
+            //if (ControllerList.Any())
+            //{
+            //    MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //    return;
+            //}
+            Entry entry = new Entry(Name, 'A');
             ControllerList.Add(entry);
         }
 
@@ -141,8 +139,9 @@ namespace bakk_project_task
 
         }
 
-        public async Task ReceiveFromDatabase() 
+        public async Task ReceiveFromDatabase(int Id) 
         {
+            this.ClientId = Id;
             ControllerList.Clear();
             using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
@@ -214,6 +213,9 @@ namespace bakk_project_task
         public void SendToGridControl(GridControl TableGrid)
         {
             TableGrid.DataSource = ControllerList;
+            TableGrid.MainView.PopulateColumns();
         }
+        
+
     }
 }

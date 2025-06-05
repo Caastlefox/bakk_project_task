@@ -92,12 +92,12 @@ namespace bakk_project_task
             if (Id == null)
             {
                 await clientsRepository.AddClient(this.FirstName, this.LastName,
-                    this.Email, this.Address, this.PhoneNumber, this.Status);
+                     this.Address, this.PhoneNumber, this.Status);
             }
             else
             {
                 await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                    this.Email, this.Address, this.PhoneNumber, this.Status);
+                     this.Address, this.PhoneNumber, this.Status);
             }
             this.Close();
         }

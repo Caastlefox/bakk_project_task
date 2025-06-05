@@ -14,39 +14,41 @@ namespace bakk_project_task
 {
     public partial class DXAddNewClient : DevExpress.XtraEditors.XtraForm
     {
-
-        private readonly int? Id;
-        private string? Email = "";
+        private readonly int Id = -1;
         private string? FirstName = "";
         private string? LastName = "";
         private string? Address = "";
         private string? PhoneNumber = "";
         private string? Status = "Aktualny";
         private readonly ClientRepository clientsRepository;
-        public DXAddNewClient(ClientRepository clientsRepository)
+        private TableController EmailController;
+        private TableController PhoneNumberController;
+
+        public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController)
         {
-            this.clientsRepository = clientsRepository;
             InitializeComponent();
-            this.Id = null;
+            this.clientsRepository = clientsRepository;
+            this.EmailController = EmailController;
+            this.PhoneNumberController = PhoneNumberController;
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public DXAddNewClient(ClientRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController, int id, string? firstName, string? lastName, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;
-            // "this" used for clarity, can be omitted
+            this.EmailController = EmailController;
+            this.PhoneNumberController = PhoneNumberController;
             this.Id = id;
             this.FirstName = firstName;
             this.LastName = lastName;
-            this.Email = email;
+
             this.Address = address;
             this.PhoneNumber = phoneNumber;
             this.Status = status;
 
             this.FirstNameTextBox.Text = firstName;
             this.LastNameTextBox.Text = lastName;
-            this.EmailTextBox.Text = email;
             this.AddressTextBox.Text = address;
             this.PhoneNumberTextBox.Text = phoneNumber;
             if (status != "Aktualny")
@@ -57,7 +59,11 @@ namespace bakk_project_task
             {
                 StatusCheckEdit.Checked = false;
             }
+
+            this.EmailController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
+            this.EmailController.SendToGridControl(EmailGridControl);
         }
+
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -73,25 +79,25 @@ namespace bakk_project_task
                     MessageBox.Show("Pola Imię i Nazwisko muszą być wypełnione.");
                     return;
                 }
-                if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains('@'))
-                {
-                    MessageBox.Show("Proszę podać poprawny adres e-mail.");
-                    return;
-                }
+                //if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains('@'))
+                //{
+                //    MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                //    return;
+                //}
                 if (!string.IsNullOrWhiteSpace(PhoneNumber) && PhoneNumber.Length != 9)
                 {
                     MessageBox.Show("Proszę podać poprawny numer telefonu.");
                     return;
                 }
-                if (Id == null)
+                if (Id == -1)
                 {
                     await clientsRepository.AddClient(this.FirstName, this.LastName,
-                        this.Email, this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
+                         this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
                 }
                 else
                 {
                     await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                        this.Email, this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
+                         this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
                 }
                 this.Close();
             }
@@ -102,7 +108,7 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void AddNewClient_Load(object sender, EventArgs e)
+        private void AddNewClient_Load(object sender, EventArgs e)
         {
 
         }
@@ -147,7 +153,7 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void EmailTextBox_EditValueChanged(object sender, EventArgs e)
         {
-            this.Email = EmailTextBox.Text;
+            //this.Email = EmailTextBox.Text;
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -170,7 +176,7 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void EmailPlusButton_Click(object sender, EventArgs e)
+        private void EmailPlusButton_Click(object sender, EventArgs e)
         {
             if (EmailTextBox.Text == "")
             {
@@ -184,7 +190,8 @@ namespace bakk_project_task
             }
             else
             {
-
+                EmailController.AddElement(EmailTextBox.Text);
+                EmailController.SendToGridControl(EmailGridControl);
                 EmailTextBox.Text = "";
             }
         }
@@ -223,7 +230,8 @@ namespace bakk_project_task
             }
             else
             {
-
+                PhoneNumberController.AddElement(PhoneNumberTextBox.Text);
+                PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
                 PhoneNumberTextBox.Text = "";
 
             }
