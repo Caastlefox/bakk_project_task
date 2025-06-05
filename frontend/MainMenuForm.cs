@@ -26,9 +26,9 @@ namespace bakk_project_task
         private string? SearchStatus = null;
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
-        private readonly ClientsRepository clientsRepository;
+        private readonly ClientRepository clientsRepository;
 
-        public MainMenuForm(ClientsRepository clientsRepository)
+        public MainMenuForm(ClientRepository clientsRepository)
         {
             InitializeComponent();
             dataGridView1.CellDoubleClick += DataGridView1_CellDoubleClick;

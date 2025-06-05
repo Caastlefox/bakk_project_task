@@ -19,10 +19,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bakk_project_task
 {
-    public class ClientsRepository : IClientRepository
+    public class ClientRepository : IClientRepository
     {
         private readonly string connectionString;
-        public ClientsRepository()
+        public ClientRepository()
         {
             var conn = ConfigurationManager.ConnectionStrings["SQLiteConnection"]?.ConnectionString;
             if (string.IsNullOrEmpty(conn))
@@ -32,12 +32,28 @@ namespace bakk_project_task
             connectionString = conn;
             using var connection = new SqliteConnection(connectionString);
             connection.Open();
+#if DEBUG
+            var debugcommand = connection.CreateCommand();
+            debugcommand.CommandText = @"
+                DROP TABLE IF EXISTS Client;
+                );";
+            debugcommand.ExecuteNonQuery();
+            debugcommand.CommandText = @"
+                DROP TABLE IF EXISTS PhoneNumber;
+                );";
+            debugcommand.ExecuteNonQuery();
+            debugcommand.CommandText = @"
+                DROP TABLE IF EXISTS Email;
+                );";
+            debugcommand.ExecuteNonQuery();
+#endif
             var command = connection.CreateCommand();
             command.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Client(
                     Client_Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     FirstName TEXT NOT NULL,
                     LastName TEXT NOT NULL,
+                    FOREIGN KEY (Client_Id) REFERENCES Client(Client_Id),
                     Email TEXT,
                     Address TEXT,
                     PhoneNumber TEXT,
@@ -61,6 +77,7 @@ namespace bakk_project_task
                 );";
             command.ExecuteNonQuery();
         }
+
         [SupportedOSPlatform("windows6.1")]
         public async Task AddClient(string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
@@ -79,11 +96,8 @@ namespace bakk_project_task
                 command.Parameters.AddWithValue("$address", address);
                 command.Parameters.AddWithValue("$phoneNumber", phoneNumber);
                 command.Parameters.AddWithValue("$status", status);
+                MessageBox.Show(command.CommandText);
                 await command.ExecuteNonQueryAsync();
-                // Can make it into message, returns rows
-                //
-                // MessageBox.Show($"Inserted {rows} row(s)!", "Success",
-                // MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             catch (SqliteException ex)
@@ -461,12 +475,15 @@ namespace bakk_project_task
                 await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @"
-                INSERT INTO $tableName ($columnName)
-                VALUES ($entryName);
+                INSERT INTO
+                "+TableName +
+                "("+ ColumnName+ ")" +
+                @"VALUES ($entryname);
                 ";
-                command.Parameters.AddWithValue("$tableName", TableName);
-                command.Parameters.AddWithValue("$columnName", ColumnName);
-                command.Parameters.AddWithValue("$entryName", EntryName);
+                command.Parameters.AddWithValue("$tablename", TableName);
+                command.Parameters.AddWithValue("$columnname", ColumnName);
+                command.Parameters.AddWithValue("$entryname", EntryName);
+                MessageBox.Show(command.CommandText);
                 await command.ExecuteNonQueryAsync();
             }
             catch (SqliteException ex)
@@ -499,7 +516,7 @@ namespace bakk_project_task
 
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task ReadSubTableEntries(GridControl gridControl, string ColumnName, string TableName)
+        public async Task ReadSubTableEntry(GridControl gridControl, string ColumnName, string TableName)
         {
             try
             {
@@ -548,7 +565,7 @@ namespace bakk_project_task
 
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task UpdateSubTable(GridControl gridControl, string ColumnName, string TableName , string Entry, int id)
+        public async Task UpdateSubTableEntry(GridControl gridControl, string ColumnName, string TableName , string Entry, int id)
         {
             try
             {
@@ -596,7 +613,7 @@ namespace bakk_project_task
 
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task DeleteSubTable(GridControl gridControl, string TableName, int id)
+        public async Task DeleteSubTableEntry(GridControl gridControl, string TableName, int id)
         {
             try
             {

@@ -15,7 +15,7 @@ namespace bakk_project_task
             string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
             bool blankTelephoneflag = false);
         //Task CreateSubtableEntry(int? id, string TableName);
-        //Task ReadSubtableEntries(int? id, string TableName);
+        //Task ReadSubTableEntry(int? id, string TableName);
         //Task UpdateSubtableEntry(GridControl gridControl, string ColumnName, string TableName, string Entry, int id);
         //Task DeleteSubtableEntry(DataGridView dataGridView, string TableName, int id);
     }

@@ -30,9 +30,9 @@ namespace bakk_project_task
         private string SearchStatus = "";
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
-        private readonly ClientsRepository clientsRepository;
+        private readonly ClientRepository clientsRepository;
         
-        public DXMainMenuForm(ClientsRepository clientsRepository)
+        public DXMainMenuForm(ClientRepository clientsRepository)
         {
             InitializeComponent();
 
@@ -174,33 +174,33 @@ namespace bakk_project_task
         {
 
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void SearchButton_Click(object sender, EventArgs e)
         {
             clientsRepository.SearchClients(this.gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
                 this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchLastName = LastNameTextEdit.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void AdressTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchAddress = AddressTextEdit.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchPhoneNumber = PhoneNumberTextEdit.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void EmailTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchEmail = EmailTextEdit.Text;
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
             if (StatusCheckEdit.Checked)
@@ -212,6 +212,7 @@ namespace bakk_project_task
                 this.SearchStatus = "Aktualny";
             }
         }
+        [SupportedOSPlatform("windows6.1")]
         private async void ClearFiltersButton_Click(object sender, EventArgs e)
         {
 
@@ -226,7 +227,7 @@ namespace bakk_project_task
             blankEmail.Checked = false;
             await clientsRepository.LoadClient(gridcontrol1);
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void BlankPhoneCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
             if (BlankPhoneCheckEdit.Checked)
@@ -242,7 +243,7 @@ namespace bakk_project_task
                 this.BlankPhoneNumberFlag = false;
             }
         }
-
+        [SupportedOSPlatform("windows6.1")]
         private void blankEmail_CheckedChanged(object sender, EventArgs e)
         {
             if (blankEmail.Checked)

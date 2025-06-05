@@ -22,16 +22,16 @@ namespace bakk_project_task
         private string? Address = "";
         private string? PhoneNumber = "";
         private string? Status = "Aktualny";
-        private readonly ClientsRepository clientsRepository;
-        public DXAddNewClient(ClientsRepository clientsRepository)
+        private readonly ClientRepository clientsRepository;
+        public DXAddNewClient(ClientRepository clientsRepository)
         {
             this.clientsRepository = clientsRepository;
             InitializeComponent();
             this.Id = null;
-
         }
+
         [SupportedOSPlatform("windows6.1")]
-        public DXAddNewClient(ClientsRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public DXAddNewClient(ClientRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;
@@ -62,6 +62,7 @@ namespace bakk_project_task
         {
 
         }
+
         [SupportedOSPlatform("windows6.1")]
         private async void AddClient_Click(object sender, EventArgs e)
         {
@@ -100,12 +101,13 @@ namespace bakk_project_task
             }
         }
 
-
+        [SupportedOSPlatform("windows6.1")]
         private async void AddNewClient_Load(object sender, EventArgs e)
         {
-            //await clientsRepository.LoadSingleTableColumn(PhoneNumberGridControl, "PhoneNumber","PhoneNumebers");
-            //await clientsRepository.LoadSingleTableColumn(EmailGridControl,"Email","Emails");
+            await clientsRepository.ReadSubTableEntry(PhoneNumberGridControl, "PhoneNumber", "PhoneNumber");
+            await clientsRepository.ReadSubTableEntry(EmailGridControl, "Email", "Email");
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
@@ -118,33 +120,39 @@ namespace bakk_project_task
                 this.Status = "Aktualny";
             }
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void FirstNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.FirstName = FirstNameTextBox.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.LastName = LastNameTextBox.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void AddressTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.Address = AddressTextBox.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.PhoneNumber = PhoneNumberTextBox.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void EmailTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.Email = EmailTextBox.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
-        private void PhoneNumberplus_Click(object sender, EventArgs e)
+        private async void PhoneNumberMinusButton_Click(object sender, EventArgs e)
         {
             if (PhoneNumberTextBox.Text == "")
             {
@@ -158,17 +166,12 @@ namespace bakk_project_task
             }
             else
             {
-                
-                PhoneNumberTextBox.Text = "";
+                //await clientsRepository.DeleteSubTableEntry
             }
         }
 
-        private void PhoneNumberMinusButton_Click(object sender, EventArgs e)
-        {
-            
-        }
         [SupportedOSPlatform("windows6.1")]
-        private void EmailPlusButton_Click(object sender, EventArgs e)
+        private async void EmailPlusButton_Click(object sender, EventArgs e)
         {
             if (EmailTextBox.Text == "")
             {
@@ -182,14 +185,49 @@ namespace bakk_project_task
             }
             else
             {
-                
+                await clientsRepository.CreateSubTableEntry(EmailGridControl, "Email", "Email", EmailTextBox.Text);
                 EmailTextBox.Text = "";
             }
         }
+
+        [SupportedOSPlatform("windows6.1")]
         private void EmailMinusButton_Click(object sender, EventArgs e)
         {
-            
+            if (EmailTextBox.Text == "")
+            {
+                MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
+                return;
+            }
+            if (!EmailTextBox.Text.Contains('@'))
+            {
+                MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                return;
+            }
+            else
+            {
+
+            }
         }
 
+        [SupportedOSPlatform("windows6.1")]
+        private async void PhoneNumberPlusButton_Click(object sender, EventArgs e)
+        {
+            if (PhoneNumberTextBox.Text == "")
+            {
+                MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
+                return;
+            }
+            if (PhoneNumberTextBox.Text.Length != 9)
+            {
+                MessageBox.Show("Proszę podać poprawny numer telefonu.");
+                return;
+            }
+            else
+            {
+                await clientsRepository.CreateSubTableEntry(PhoneNumberGridControl , "PhoneNumber", "PhoneNumber", PhoneNumberTextBox.Text);
+                PhoneNumberTextBox.Text = "";
+                await clientsRepository.ReadSubTableEntry(PhoneNumberGridControl, "PhoneNumber", "PhoneNumber");
+            }
+        }
     }
 }

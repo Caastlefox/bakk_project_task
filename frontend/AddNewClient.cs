@@ -28,15 +28,15 @@ namespace bakk_project_task
         private string? Address = "";
         private string? PhoneNumber = "";
         private string? Status = "Aktualny";
-        private readonly ClientsRepository clientsRepository;
-        public AddNewClient(ClientsRepository clientsRepository)
+        private readonly ClientRepository clientsRepository;
+        public AddNewClient(ClientRepository clientsRepository)
         {
             this.clientsRepository = clientsRepository;
             InitializeComponent();
             this.Id = null;
             
         }
-        public AddNewClient(ClientsRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public AddNewClient(ClientRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;

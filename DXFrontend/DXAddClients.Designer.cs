@@ -146,7 +146,7 @@ namespace bakk_project_task
             PhoneNumberPlusButton.Name = "PhoneNumberPlusButton";
             PhoneNumberPlusButton.Size = new Size(37, 34);
             PhoneNumberPlusButton.TabIndex = 37;
-            PhoneNumberPlusButton.Click += PhoneNumberplus_Click;
+            PhoneNumberPlusButton.Click += PhoneNumberPlusButton_Click;
             // 
             // EmailMinusButton
             // 
@@ -170,21 +170,21 @@ namespace bakk_project_task
             // 
             // EmailGridControl
             // 
-            this.EmailGridControl.BackgroundImageLayout = ImageLayout.None;
-            this.EmailGridControl.DataMember = "Clients";
-            this.EmailGridControl.ImeMode = ImeMode.NoControl;
-            this.EmailGridControl.Location = new Point(218, 255);
-            this.EmailGridControl.MainView = gridView1;
-            this.EmailGridControl.Name = "EmailGridControl";
-            this.EmailGridControl.Size = new Size(286, 156);
-            this.EmailGridControl.TabIndex = 45;
-            this.EmailGridControl.UseDisabledStatePainter = false;
-            this.EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            EmailGridControl.BackgroundImageLayout = ImageLayout.None;
+            EmailGridControl.DataMember = "Clients";
+            EmailGridControl.ImeMode = ImeMode.NoControl;
+            EmailGridControl.Location = new Point(218, 255);
+            EmailGridControl.MainView = gridView1;
+            EmailGridControl.Name = "EmailGridControl";
+            EmailGridControl.Size = new Size(286, 156);
+            EmailGridControl.TabIndex = 45;
+            EmailGridControl.UseDisabledStatePainter = false;
+            EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
             // 
             // gridView1
             // 
             gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn1 });
-            gridView1.GridControl = this.EmailGridControl;
+            gridView1.GridControl = EmailGridControl;
             gridView1.Name = "gridView1";
             gridView1.OptionsBehavior.Editable = false;
             gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
@@ -283,7 +283,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
-            ((System.ComponentModel.ISupportInitialize)this.EmailGridControl).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EmailGridControl).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberGridControl).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView2).EndInit();
