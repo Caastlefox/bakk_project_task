@@ -104,8 +104,7 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private async void AddNewClient_Load(object sender, EventArgs e)
         {
-            await clientsRepository.ReadSubTableEntry(PhoneNumberGridControl, "PhoneNumber", "PhoneNumber");
-            await clientsRepository.ReadSubTableEntry(EmailGridControl, "Email", "Email");
+
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -185,7 +184,7 @@ namespace bakk_project_task
             }
             else
             {
-                await clientsRepository.CreateSubTableEntry(EmailGridControl, "Email", "Email", EmailTextBox.Text);
+
                 EmailTextBox.Text = "";
             }
         }
@@ -224,9 +223,9 @@ namespace bakk_project_task
             }
             else
             {
-                await clientsRepository.CreateSubTableEntry(PhoneNumberGridControl , "PhoneNumber", "PhoneNumber", PhoneNumberTextBox.Text);
+
                 PhoneNumberTextBox.Text = "";
-                await clientsRepository.ReadSubTableEntry(PhoneNumberGridControl, "PhoneNumber", "PhoneNumber");
+
             }
         }
     }

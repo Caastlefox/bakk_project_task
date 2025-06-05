@@ -19,8 +19,7 @@ namespace bakk_project_task
 
         static void Main()
         {
-            var clientsRepository = new ClientsRepository();
-
+            var clientsRepository = new ClientRepository();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             if (ConfigurationManager.AppSettings["UseDX"] == "true")

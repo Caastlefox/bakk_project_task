@@ -31,11 +31,13 @@ namespace bakk_project_task
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
         private readonly ClientRepository clientsRepository;
-        
+        private TableController EmailController;
+        private TableController PhoneNumberController;
         public DXMainMenuForm(ClientRepository clientsRepository)
         {
             InitializeComponent();
-
+            EmailController = new TableController("Client", "Email");
+            PhoneNumberController = new TableController("Client", "PhoneNumber");
             this.clientsRepository = clientsRepository;
         }
         [SupportedOSPlatform("windows6.1")]

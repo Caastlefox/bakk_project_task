@@ -36,46 +36,30 @@ namespace bakk_project_task
             var debugcommand = connection.CreateCommand();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Client;
-                );";
+                ;";
             debugcommand.ExecuteNonQuery();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS PhoneNumber;
-                );";
+                ;";
             debugcommand.ExecuteNonQuery();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Email;
-                );";
+                ;";
             debugcommand.ExecuteNonQuery();
 #endif
             var command = connection.CreateCommand();
             command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Client(
+                CREATE TABLE IF NOT EXISTS Client (
                     Client_Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     FirstName TEXT NOT NULL,
                     LastName TEXT NOT NULL,
-                    FOREIGN KEY (Client_Id) REFERENCES Client(Client_Id),
                     Email TEXT,
                     Address TEXT,
                     PhoneNumber TEXT,
                     Status TEXT
                 );";
             command.ExecuteNonQuery();
-            command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS PhoneNumber(
-                    PhoneNumber_Id INTEGER PRIMARY KEY AUTOINCREMENT,                   
-                    PhoneNumber TEXT,
-                    Client_Id INTEGER,
-                    FOREIGN KEY (Client_Id) REFERENCES Client(Client_Id)
-                );";
-            command.ExecuteNonQuery();
-            command.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Email(
-                    Email_Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Email TEXT,
-                    Client_Id INTEGER,
-                    FOREIGN KEY (Client_Id) REFERENCES Client(Client_Id)
-                );";
-            command.ExecuteNonQuery();
+
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -188,9 +172,9 @@ namespace bakk_project_task
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
 #if DEBUG
-                string sql = "SELECT * FROM Clients";
+                string sql = "SELECT * FROM Client";
 #else
-                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Clients";
+                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
 #endif
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
@@ -242,7 +226,7 @@ namespace bakk_project_task
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
 #if DEBUG
-                string sql = "SELECT * FROM Clients";
+                string sql = "SELECT * FROM Client";
 #else
                 string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
 #endif
@@ -466,195 +450,6 @@ namespace bakk_project_task
                     MessageBoxIcon.Error);
             }
         }
-        [SupportedOSPlatform("windows6.1")]
-        public async Task CreateSubTableEntry(GridControl gridControl, string ColumnName, string TableName, string EntryName)
-        {
-            try
-            {
-                using var connection = new SqliteConnection(connectionString);
-                await connection.OpenAsync();
-                var command = connection.CreateCommand();
-                command.CommandText = @"
-                INSERT INTO
-                "+TableName +
-                "("+ ColumnName+ ")" +
-                @"VALUES ($entryname);
-                ";
-                command.Parameters.AddWithValue("$tablename", TableName);
-                command.Parameters.AddWithValue("$columnname", ColumnName);
-                command.Parameters.AddWithValue("$entryname", EntryName);
-                MessageBox.Show(command.CommandText);
-                await command.ExecuteNonQueryAsync();
-            }
-            catch (SqliteException ex)
-            {
-                MessageBox.Show(
-                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
-                    "SQLite Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
 
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Connection state issues
-                MessageBox.Show(
-                    $"Invalid operation: {ex.Message}",
-                    "Operation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                // All other errors
-                MessageBox.Show(
-                    $"Unexpected error: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-        }
-        [SupportedOSPlatform("windows6.1")]
-        public async Task ReadSubTableEntry(GridControl gridControl, string ColumnName, string TableName)
-        {
-            try
-            {
-                string sql = 
-                    "SELECT " 
-                    + ColumnName 
-                    + " FROM " 
-                    + TableName 
-                    + ";";
-                using var conn = new SqliteConnection(connectionString);
-                await conn.OpenAsync();
-                using var cmd = new SqliteCommand(sql, conn);
-                using var reader = await cmd.ExecuteReaderAsync();
-                var dt = new DataTable();
-                dt.Load(reader);
-                gridControl.DataSource = dt;
-                gridControl.MainView.PopulateColumns();
-            }
-            catch (SqliteException ex)
-            {
-                MessageBox.Show(
-                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
-                    "SQLite Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Connection state issues
-                MessageBox.Show(
-                    $"Invalid operation: {ex.Message}",
-                    "Operation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                // All other errors
-                MessageBox.Show(
-                    $"Unexpected error: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-        }
-        [SupportedOSPlatform("windows6.1")]
-        public async Task UpdateSubTableEntry(GridControl gridControl, string ColumnName, string TableName , string Entry, int id)
-        {
-            try
-            {
-                using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-                await connection.OpenAsync();
-                var command = connection.CreateCommand();
-                command.CommandText = @"
-                UPDATE $tablename
-                SET $columnname = $entry
-                WHERE $tablename_Id = $id;
-            ";
-                command.Parameters.AddWithValue("$tablename", TableName);
-                command.Parameters.AddWithValue("$columnname", ColumnName);
-                command.Parameters.AddWithValue("$entry", Entry);
-                command.Parameters.AddWithValue("$id", id);
-                await command.ExecuteNonQueryAsync();
-            }
-            catch (SqliteException ex)
-            {
-                MessageBox.Show(
-                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
-                    "SQLite Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Connection state issues
-                MessageBox.Show(
-                    $"Invalid operation: {ex.Message}",
-                    "Operation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                // All other errors
-                MessageBox.Show(
-                    $"Unexpected error: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-        }
-        [SupportedOSPlatform("windows6.1")]
-        public async Task DeleteSubTableEntry(GridControl gridControl, string TableName, int id)
-        {
-            try
-            {
-                using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-                await connection.OpenAsync();
-                var command = connection.CreateCommand();
-                command.CommandText = @"
-                DELETE FROM $tablename WHERE $tablename_Id = $id;
-                ";
-                command.Parameters.AddWithValue("$tablename", TableName);
-                command.Parameters.AddWithValue("$id", id);
-                await command.ExecuteNonQueryAsync();
-            }
-            catch (SqliteException ex)
-            {
-                MessageBox.Show(
-                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
-                    "SQLite Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Connection state issues
-                MessageBox.Show(
-                    $"Invalid operation: {ex.Message}",
-                    "Operation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                // All other errors
-                MessageBox.Show(
-                    $"Unexpected error: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-
-        }
     }
 }

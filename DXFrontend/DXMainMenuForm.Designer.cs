@@ -142,7 +142,7 @@ namespace bakk_project_task
             // gridcontrol1
             // 
             gridcontrol1.BackgroundImageLayout = ImageLayout.None;
-            gridcontrol1.DataMember = "Clients";
+            gridcontrol1.DataMember = "Client";
             gridcontrol1.ImeMode = ImeMode.NoControl;
             gridcontrol1.Location = new Point(30, 112);
             gridcontrol1.MainView = gridView1;

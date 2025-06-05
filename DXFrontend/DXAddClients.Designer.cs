@@ -171,7 +171,7 @@ namespace bakk_project_task
             // EmailGridControl
             // 
             EmailGridControl.BackgroundImageLayout = ImageLayout.None;
-            EmailGridControl.DataMember = "Clients";
+            EmailGridControl.DataMember = "Client";
             EmailGridControl.ImeMode = ImeMode.NoControl;
             EmailGridControl.Location = new Point(218, 255);
             EmailGridControl.MainView = gridView1;
@@ -201,7 +201,7 @@ namespace bakk_project_task
             // PhoneNumberGridControl
             // 
             PhoneNumberGridControl.BackgroundImageLayout = ImageLayout.None;
-            PhoneNumberGridControl.DataMember = "Clients";
+            PhoneNumberGridControl.DataMember = "Client";
             PhoneNumberGridControl.ImeMode = ImeMode.NoControl;
             PhoneNumberGridControl.Location = new Point(218, 52);
             PhoneNumberGridControl.MainView = gridView2;
