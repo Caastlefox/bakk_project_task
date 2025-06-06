@@ -91,22 +91,13 @@ namespace bakk_project_task
                 return;
             }
             long id = Convert.ToInt64(row.Cells["Id"].Value);
-#if DEBUG
-            
-            string? FirstName = row.Cells["FirstName"].Value?.ToString();
-            string? LastName = row.Cells["LastName"].Value?.ToString();
-            string? Email = row.Cells["Email"].Value?.ToString();
-            string? Address = row.Cells["Address"].Value?.ToString();
-            string? PhoneNumber = row.Cells["PhoneNumber"].Value?.ToString();
-            string? Status = row.Cells["Status"].Value?.ToString();
-#else
+
             string? FirstName = row.Cells["Imię"].Value?.ToString();
             string? LastName = row.Cells["Nazwisko"].Value?.ToString();
             string? Email = row.Cells["Mail"].Value?.ToString();
             string? Address = row.Cells["Adres"].Value?.ToString();
             string? PhoneNumber = row.Cells["Numer Telefonu"].Value?.ToString();
             string? Status = row.Cells["Status"].Value?.ToString();
-#endif
 
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
             {

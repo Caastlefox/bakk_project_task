@@ -36,7 +36,7 @@ namespace bakk_project_task
 
         [SupportedOSPlatform("windows6.1")]
         public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController,
-            
+
             long id, string? firstName, string? lastName, string? address, string? status)
         {
             InitializeComponent();
@@ -93,7 +93,7 @@ namespace bakk_project_task
                 {
                     await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
                          this.Address, this.Status);
-                    
+
                 }
                 await EmailController.SendToDataBase(Id);
                 await PhoneNumberController.SendToDataBase(Id);
@@ -254,6 +254,12 @@ namespace bakk_project_task
             }
             string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
 
+        }
+
+        private void DXAddNewClient_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            EmailController.ClearControllerList();
+            PhoneNumberController.ClearControllerList();
         }
     }
 }

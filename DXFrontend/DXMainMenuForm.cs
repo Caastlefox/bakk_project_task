@@ -81,17 +81,12 @@ namespace bakk_project_task
                 return;
             }
             long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
-#if DEBUG
-            string? FirstName = gridView.GetFocusedRowCellValue("FirstName") as string;
-            string? LastName = gridView.GetFocusedRowCellValue("LastName") as string;
-            string? Address = gridView.GetFocusedRowCellValue("Address") as string;
-            string? Status = gridView.GetFocusedRowCellValue("Status") as string;
-#else
+
             string? FirstName = gridView.GetFocusedRowCellValue("Imię") as string;
             string? LastName = gridView.GetFocusedRowCellValue("Nazwisko") as string;
             string? Address = gridView.GetFocusedRowCellValue("Adres") as string;
             string? Status = gridView.GetFocusedRowCellValue("Status") as string;
-#endif
+
 
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
             {
@@ -144,17 +139,12 @@ namespace bakk_project_task
                 return;
             }
             long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
-#if DEBUG
-            string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
-            string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
-            string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
-            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
-#else
+
             string? FirstName = gridView.GetFocusedRowCellValue("Imię")?.ToString();
             string? LastName = gridView.GetFocusedRowCellValue("Nazwisko")?.ToString();
             string? Address = gridView.GetFocusedRowCellValue("Adres")?.ToString();
             string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
-#endif
+
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
             {
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

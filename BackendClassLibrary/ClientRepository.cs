@@ -1,5 +1,6 @@
 ﻿#define CLEAR
 using DevExpress.XtraGrid;
+using DevExpress.XtraMap;
 using DevExpress.XtraRichEdit.Model;
 using Microsoft.Data.Sqlite;
 using System;
@@ -20,6 +21,17 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bakk_project_task
 {
+    public class Client
+    {
+        public required long? Id { get; set; }
+        public required string? FirstName { get; set; }
+        public required string? LastName { get; set; }
+        public required string? Address { get; set; }
+        public required string? Email { get; set; }
+        public required string? PhoneNumber { get; set; }
+        public required string? Status { get; set; }
+    }
+
     public class ClientRepository : IClientRepository
     {
         private readonly string connectionString;
@@ -43,10 +55,10 @@ namespace bakk_project_task
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Email;
                 ;";
+            debugcommand.ExecuteNonQuery();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Client;
                 ;";
-            debugcommand.ExecuteNonQuery();
             debugcommand.ExecuteNonQuery();
 #endif
             var command = connection.CreateCommand();
@@ -176,11 +188,9 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
+
                 string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -230,18 +240,34 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
-                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
+                string sql = "SELECT Client.Client_Id, Client.FirstName, Client.LastName, "
+                           + "Email.Email," 
+                           + " PhoneNumber.PhoneNumber as \"Numer Telefonu\", "
+                           + "Client.Address, Client.Status FROM Client "
+                           + "LEFT JOIN Email ON Email.Client_Id = Client.Client_Id "
+                           + "LEFT JOIN PhoneNumber ON PhoneNumber.Client_Id = Client.Client_Id;";
                 command.CommandText = sql;
+                List<Client> data = [];
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
-                var dt = new DataTable("Client");
-                dt.Load(reader);
+                while (await reader.ReadAsync()) 
+                {
+                    var client = new Client
+                    {
+                        Id          = reader.IsDBNull(0) ? null : reader.GetInt64(0),
+                        FirstName   = reader.IsDBNull(1) ? null : reader.GetString(1),
+                        LastName    = reader.IsDBNull(2) ? null : reader.GetString(2),
+                        Email       = reader.IsDBNull(3) ? null : reader.GetString(3),
+                        PhoneNumber = reader.IsDBNull(4) ? null : reader.GetString(4),
+                        Address     = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        Status      = reader.IsDBNull(6) ? null : reader.GetString(6)
+                    };
+                    data.Add(client);
 
-                dataGridView.DataSource = dt;
+                }
+                
+                dataGridView.DataSource = data;
                 dataGridView.MainView.PopulateColumns();
 
                 //MessageBox.Show(result, "Query Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -325,11 +351,10 @@ namespace bakk_project_task
 
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
-#if DEBUG
-            string sql = "SELECT * FROM Client";
-#else
+
+
             string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
             sql += " WHERE 1=1";
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
             sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
@@ -381,11 +406,9 @@ namespace bakk_project_task
             {
                 using var conn = new SqliteConnection(connectionString);
                 conn.Open();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
+
                 string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
 
                 sql += " WHERE 1=1";
                 sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";

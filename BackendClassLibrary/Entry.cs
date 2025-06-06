@@ -7,4 +7,5 @@
         public long Id { get; set; } = id;
         public string EntryName => Name;
     }
+
 }

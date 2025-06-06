@@ -239,5 +239,10 @@ namespace bakk_project_task
             TableGrid.MainView.PopulateColumns();
         }
 
+        public void ClearControllerList()
+        {
+            ControllerList.Clear();
+        }   
+
     }
 }

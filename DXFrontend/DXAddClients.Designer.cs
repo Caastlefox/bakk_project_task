@@ -277,6 +277,7 @@ namespace bakk_project_task
             Controls.Add(StatusCheckEdit);
             Name = "DXAddNewClient";
             Text = "Dane Klienta";
+            FormClosed += DXAddNewClient_FormClosed;
             Load += AddNewClient_Load;
             ((System.ComponentModel.ISupportInitialize)FirstNameTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextBox.Properties).EndInit();
