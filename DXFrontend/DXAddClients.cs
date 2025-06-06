@@ -1,6 +1,8 @@
 ﻿using DevExpress.Charts.Model;
 using DevExpress.CodeParser;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid;
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +13,7 @@ using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace bakk_project_task
 {
@@ -76,34 +79,15 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private async void AddClient_Click(object sender, EventArgs e)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
-                {
-                    MessageBox.Show("Pola Imię i Nazwisko muszą być wypełnione.");
-                    return;
-                }
-
-                if (Id == -1)
-                {
-                    Id = await clientsRepository.AddClient(this.FirstName, this.LastName,
-                         this.Address, this.Status);
-                }
-                else
-                {
-                    await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                         this.Address, this.Status);
-                    
-                }
-                await EmailController.SendToDataBase(Id);
-                await PhoneNumberController.SendToDataBase(Id);
-
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred: {ex.Message}");
-            }
+            PhoneNumberGridControl.MainView.CloseEditor();
+            PhoneNumberGridControl.MainView.UpdateCurrentRow();
+            EmailGridControl.MainView.CloseEditor();
+            EmailGridControl.MainView.UpdateCurrentRow();
+            await clientsRepository.CommitChanges(this.Id, this.FirstName, this.LastName,
+                         this.Address, this.Status, EmailController, PhoneNumberController);
+            EmailController.ClearGrid(EmailGridControl);
+            PhoneNumberController.ClearGrid(PhoneNumberGridControl);
+            this.Close();
         }
 
         [SupportedOSPlatform("windows6.1")]

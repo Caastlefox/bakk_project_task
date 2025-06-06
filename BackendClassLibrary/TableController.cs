@@ -7,6 +7,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraRichEdit.Import.Html;
 using DevExpress.XtraRichEdit.Import.OpenXml;
+using DevExpress.XtraRichEdit.Tables.Native;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace bakk_project_task
                 CREATE TABLE IF NOT EXISTS {TableName}(
                     {TableName}_Id INTEGER PRIMARY KEY AUTOINCREMENT,                   
                     {TableName} TEXT,
-                    {ParentTable}_Id INTEGER,
+                    {ParentTable}_Id INTEGER NOT NULL,
                     FOREIGN KEY ({ParentTable}_Id) REFERENCES {ParentTable}({ParentTable}_Id)
                 );";
             command.ExecuteNonQuery();
@@ -153,15 +154,14 @@ namespace bakk_project_task
             }
         }
 
-        public async Task SendToDataBase(long ClientId)
+        public async Task SendToDataBase(long ClientId, SqliteTransaction transaction, SqliteConnection connection)
         {
             try
             {
                 this.ClientId = ClientId;
-                using var connection = new SqliteConnection(ConnectionString);
-                await connection.OpenAsync();
-                var Command = connection.CreateCommand();
 
+                var Command = connection.CreateCommand();
+                Command.Transaction = transaction;
                 if (ControllerList.Any(e => e.Tag == 'M'))
                 {
                     Command.CommandText = @$"UPDATE {TableName}
@@ -193,14 +193,14 @@ namespace bakk_project_task
 
                 if (ControllerList.Any(e => e.Tag == 'A'))
                 {
-                    Command.CommandText = @$"INSERT INTO {TableName}
-                                        ({TableName},{ParentTable}_Id) VALUES ";
-                    Command.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
+                    Command.CommandText = @$"INSERT INTO {TableName} ({TableName},{ParentTable}_Id) VALUES ";
+                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
                                         + ";";
 #if DEBUG
                     MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
                     await Command.ExecuteNonQueryAsync();
+                    
                 }
             }
             catch (SqliteException ex)
@@ -238,6 +238,11 @@ namespace bakk_project_task
             TableGrid.DataSource = ControllerList;
             TableGrid.MainView.PopulateColumns();
         }
-
+        public void ClearGrid(GridControl TableGrid) 
+        {
+            ControllerList.Clear();
+            TableGrid.DataSource = ControllerList;
+            TableGrid.MainView.PopulateColumns();
+        }
     }
 }

@@ -33,12 +33,10 @@ namespace bakk_project_task
             connectionString = conn;
             using var connection = new SqliteConnection(connectionString);
             connection.Open();
+
+
 #if CLEAR && DEBUG
             var debugcommand = connection.CreateCommand();
-            debugcommand.CommandText = @"
-                DROP TABLE IF EXISTS Client;
-                ;";
-            debugcommand.ExecuteNonQuery();
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS PhoneNumber;
                 ;";
@@ -47,8 +45,14 @@ namespace bakk_project_task
                 DROP TABLE IF EXISTS Email;
                 ;";
             debugcommand.ExecuteNonQuery();
+            debugcommand.CommandText = @"
+                DROP TABLE IF EXISTS Client;
+                ;";
+            debugcommand.ExecuteNonQuery();
+
 #endif
             var command = connection.CreateCommand();
+
             command.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Client (
                     Client_Id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,12 +68,10 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public async Task<long> AddClient(string? firstName, string? lastName, string? address, string? status)
+        public async Task<long> AddClient(string? firstName, string? lastName, string? address, string? status, SqliteTransaction transaction, SqliteConnection connection)
         {
             try
             {
-                using var connection = new SqliteConnection(connectionString);
-                await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @"
                 INSERT INTO Client(FirstName, LastName, Address, Status)
@@ -119,12 +121,11 @@ namespace bakk_project_task
             return -1;
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task UpdateClient(long? id, string? firstName, string? lastName, string? address, string? status)
+        public async Task UpdateClient(long? id, string? firstName, string? lastName, string? address, string? status, SqliteTransaction transaction, SqliteConnection connection)
         {
             try
             {
-                using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-                await connection.OpenAsync();
+
                 var command = connection.CreateCommand();
                 command.CommandText = @"
                 UPDATE Client
@@ -175,11 +176,9 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
+
                 string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -229,11 +228,13 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
-                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
+                string sql = "SELECT Client.Client_Id, Client.FirstName as Imię, Client.LastName as Nazwisko, Email.Email as Mail, Phone.PhoneNumber as \"Numer Telefonu\", Client.Address as Adres, Client.Status FROM Client "
+                           + "LEFT JOIN Email "
+                           + "ON Client.Client_Id = Email.Client_Id "
+                           + "LEFT JOIN PhoneNumber Phone "
+                           + "ON Client.Client_Id = Phone.Client_Id ";
+
                 command.CommandText = sql;
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -324,11 +325,9 @@ namespace bakk_project_task
 
             using var conn = new SqliteConnection(connectionString);
             conn.Open();
-#if DEBUG
-            string sql = "SELECT * FROM Client";
-#else
+
             string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
             sql += " WHERE 1=1";
             sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
             sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
@@ -379,12 +378,9 @@ namespace bakk_project_task
             try
             {
                 using var conn = new SqliteConnection(connectionString);
-                conn.Open();
-#if DEBUG
-                string sql = "SELECT * FROM Client";
-#else
+
                 string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-#endif
+
 
                 sql += " WHERE 1=1";
                 sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
@@ -454,6 +450,52 @@ namespace bakk_project_task
                     MessageBoxIcon.Error);
             }
         }
+        public async Task CommitChanges(long Id ,string? FirstName, string? LastName, string? Address, string? Status, TableController EmailController, TableController PhoneNumberController) 
+        {
+            try
+            {
+                using var connection = new SqliteConnection(this.connectionString);
+                await connection.OpenAsync();
 
+                var command = connection.CreateCommand();
+                command.CommandText = "PRAGMA foreign_keys = ON;";
+                command.ExecuteNonQuery();
+                command.CommandText = "PRAGMA journal_mode=WAL;";
+                command.ExecuteNonQuery();
+
+                using var transaction = connection.BeginTransaction() as SqliteTransaction;
+                if (transaction == null)
+                {
+                    throw new InvalidOperationException("Failed to create a transaction.");
+                }
+
+                if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
+                {
+                    MessageBox.Show("Pola Imię i Nazwisko muszą być wypełnione.");
+                    return;
+                }
+
+                if (Id == -1)
+                {
+                    Id = AddClient(FirstName, LastName,
+                         Address, Status, transaction, connection).GetAwaiter().GetResult();
+                }
+                else
+                {
+                    UpdateClient(Id, FirstName, LastName,
+                         Address, Status, transaction, connection).GetAwaiter().GetResult();
+
+                }
+                transaction.Commit();
+                using var transaction2 = connection.BeginTransaction() as SqliteTransaction;
+                EmailController.SendToDataBase(Id, transaction2, connection).GetAwaiter().GetResult();
+                PhoneNumberController.SendToDataBase(Id, transaction2, connection).GetAwaiter().GetResult();
+                transaction2.Commit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}");
+            }
+        }
     }
 }

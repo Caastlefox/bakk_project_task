@@ -74,6 +74,7 @@ namespace bakk_project_task
 
         private async void AddClient_Click(object sender, EventArgs e)
         {
+
             if (string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName))
             {
                 MessageBox.Show("Pola Imię i Nazwisko muszą być wypełnione.");
@@ -91,13 +92,13 @@ namespace bakk_project_task
             }
             if (Id == -1)
             {
-                await clientsRepository.AddClient(this.FirstName, this.LastName,
-                     this.Address, this.Status);
+                //await clientsRepository.AddClient(this.FirstName, this.LastName,
+                //     this.Address, this.Status);
             }
             else
             {
-                await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                     this.Address, this.Status);
+                //await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
+                 //    this.Address, this.Status);
             }
             this.Close();
         }
