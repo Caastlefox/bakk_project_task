@@ -25,7 +25,7 @@ namespace bakk_project_task
     public class TableController : ITableController
     {
         private readonly string ConnectionString;
-        private readonly List<Entry> ControllerList = [];
+        private List<Entry> ControllerList = [];
         private readonly string TableName;
         private readonly string ParentTable;
         private long ClientId = -1; // Default value for ClientId
@@ -147,7 +147,7 @@ namespace bakk_project_task
                     (
                     reader.GetString(reader.GetOrdinal(TableName)),
                     '\0', 
-                    reader.GetInt32(reader.GetOrdinal($"{TableName}_Id"))
+                    reader.GetInt64(reader.GetOrdinal($"{TableName}_Id"))
                     );
                 ControllerList.Add(entry);
             }
@@ -155,55 +155,82 @@ namespace bakk_project_task
 
         public async Task SendToDataBase(long ClientId)
         {
-            this.ClientId = ClientId;
-            using var connection = new SqliteConnection(ConnectionString);
-            await connection.OpenAsync();
-
-            
-            
-
-            var Command = connection.CreateCommand();
-
-            if (ControllerList.Any(e => e.Tag == 'M'))
+            try
             {
-                Command.CommandText = @$"UPDATE {TableName}
+                this.ClientId = ClientId;
+                using var connection = new SqliteConnection(ConnectionString);
+                await connection.OpenAsync();
+                var Command = connection.CreateCommand();
+
+                if (ControllerList.Any(e => e.Tag == 'M'))
+                {
+                    Command.CommandText = @$"UPDATE {TableName}
                                         SET {TableName} = CASE {TableName}_Id ";
 
-                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN {e.Name}"))
-                                          + $"END WHERE {TableName} IN ("
-                                          + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ");";
+                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN {e.Name}"))
+                                              + $"END WHERE {TableName} IN ("
+                                              + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ");";
 
-                Command.CommandText += "(" + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ")";
+                    Command.CommandText += "(" + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ")";
 #if DEBUG
-                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
-                await Command.ExecuteNonQueryAsync();
-            }
+                    await Command.ExecuteNonQueryAsync();
+                }
 
-            if (ControllerList.Any(e => e.Tag == 'D'))
-            {
-                Command.CommandText = @$"DELETE FROM {TableName} 
+                if (ControllerList.Any(e => e.Tag == 'D'))
+                {
+                    Command.CommandText = @$"DELETE FROM {TableName} 
                                         WHERE {TableName}_Id IN (";
 
-                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'D').Select(e => e.Id))
-                                    + ");";
+                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'D').Select(e => e.Id))
+                                        + ");";
 #if DEBUG
-                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
-                await Command.ExecuteNonQueryAsync();
+                    await Command.ExecuteNonQueryAsync();
+                }
+
+                if (ControllerList.Any(e => e.Tag == 'A'))
+                {
+                    Command.CommandText = @$"INSERT INTO {TableName}
+                                        ({TableName},{ParentTable}_Id) VALUES ";
+                    Command.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
+                                        + ";";
+#if DEBUG
+                    MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif
+                    await Command.ExecuteNonQueryAsync();
+                }
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
 
-            if (ControllerList.Any(e => e.Tag == 'A'))
-            {
-                Command.CommandText = @$"INSERT INTO {TableName}
-                                        ({TableName},{ParentTable}_Id) VALUES ";
-                Command.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {e.Id})"))
-                                    + ";";
-#if DEBUG
-                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-#endif
-                await Command.ExecuteNonQueryAsync();
-            }
         }
 
         public void SendToGridControl(GridControl TableGrid)
