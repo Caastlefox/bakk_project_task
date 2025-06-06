@@ -35,10 +35,7 @@ namespace bakk_project_task
             connection.Open();
 #if CLEAR && DEBUG
             var debugcommand = connection.CreateCommand();
-            debugcommand.CommandText = @"
-                DROP TABLE IF EXISTS Client;
-                ;";
-            debugcommand.ExecuteNonQuery();
+
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS PhoneNumber;
                 ;";
@@ -46,6 +43,10 @@ namespace bakk_project_task
             debugcommand.CommandText = @"
                 DROP TABLE IF EXISTS Email;
                 ;";
+            debugcommand.CommandText = @"
+                DROP TABLE IF EXISTS Client;
+                ;";
+            debugcommand.ExecuteNonQuery();
             debugcommand.ExecuteNonQuery();
 #endif
             var command = connection.CreateCommand();

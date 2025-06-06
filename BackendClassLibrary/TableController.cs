@@ -195,7 +195,7 @@ namespace bakk_project_task
                 {
                     Command.CommandText = @$"INSERT INTO {TableName}
                                         ({TableName},{ParentTable}_Id) VALUES ";
-                    Command.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
+                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
                                         + ";";
 #if DEBUG
                     MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
