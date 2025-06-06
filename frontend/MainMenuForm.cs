@@ -40,7 +40,7 @@ namespace bakk_project_task
             {
                 // Get data from the clicked row
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                int id = Convert.ToInt32(row.Cells["Id"].Value);
+                long id = Convert.ToInt64(row.Cells["Id"].Value);
                 string? FirstName = row.Cells["FirstName"].Value?.ToString();
                 string? LastName = row.Cells["LastName"].Value?.ToString();
                 string? Email = row.Cells["Email"].Value?.ToString();
@@ -90,7 +90,7 @@ namespace bakk_project_task
                 MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            int id = Convert.ToInt32(row.Cells["Id"].Value);
+            long id = Convert.ToInt64(row.Cells["Id"].Value);
 #if DEBUG
             
             string? FirstName = row.Cells["FirstName"].Value?.ToString();
@@ -191,7 +191,7 @@ namespace bakk_project_task
                     MessageBox.Show("No client selected or invalid data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                int id = Convert.ToInt32(row.Cells["Id"].Value);
+                long id = Convert.ToInt64(row.Cells["Id"].Value);
                 await clientsRepository.DeleteClient(id);
                 await this.clientsRepository.LoadClient(dataGridView1);
             }

@@ -291,7 +291,7 @@ namespace bakk_project_task
             blankEmail.Properties.ValueUnchecked = true;
             blankEmail.Size = new Size(200, 20);
             blankEmail.TabIndex = 35;
-            blankEmail.CheckedChanged += blankEmail_CheckedChanged;
+            blankEmail.CheckedChanged += BlankEmail_CheckedChanged;
             // 
             // BlankPhoneCheckEdit
             // 

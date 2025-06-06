@@ -21,7 +21,7 @@ namespace bakk_project_task
     public partial class AddNewClient : Form
     {
 
-        private readonly int? Id = null;
+        private readonly long Id;
         private string? Email = "";
         private string? FirstName = "";
         private string? LastName = "";
@@ -33,10 +33,10 @@ namespace bakk_project_task
         {
             this.clientsRepository = clientsRepository;
             InitializeComponent();
-            this.Id = null;
+            this.Id  = -1;
             
         }
-        public AddNewClient(ClientRepository clientsRepository, int? id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
+        public AddNewClient(ClientRepository clientsRepository, long id, string? firstName, string? lastName, string? email, string? address, string? phoneNumber, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;
@@ -89,15 +89,15 @@ namespace bakk_project_task
                 MessageBox.Show("Proszę podać poprawny numer telefonu.");
                 return;
             }
-            if (Id == null)
+            if (Id == -1)
             {
                 await clientsRepository.AddClient(this.FirstName, this.LastName,
-                     this.Address, this.PhoneNumber, this.Status);
+                     this.Address, this.Status);
             }
             else
             {
                 await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                     this.Address, this.PhoneNumber, this.Status);
+                     this.Address, this.Status);
             }
             this.Close();
         }

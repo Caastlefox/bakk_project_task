@@ -1,4 +1,5 @@
 ﻿using DevExpress.CodeParser;
+using DevExpress.Office;
 using DevExpress.Utils.DPI;
 using DevExpress.Utils.Html.Internal;
 using DevExpress.XtraBars.Customization;
@@ -21,31 +22,13 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bakk_project_task
 {
-    public interface ITableController
-    {
-
-    }
-    public class Entry
-    {
-        public string Name;
-        public char Tag;
-        public int Id;
-        public string EntryName => Name;
-        public Entry(string name, char tag, int id = -1)
-        {
-            this.Id = id;
-            this.Name = name;
-            this.Tag = tag;
-        }
-
-    }
     public class TableController : ITableController
     {
         private readonly string ConnectionString;
-        private List<Entry> ControllerList = new List<Entry>();
-        private string TableName;
-        private string ParentTable;
-        private int ClientId = -1; // Default value for ClientId
+        private readonly List<Entry> ControllerList = [];
+        private readonly string TableName;
+        private readonly string ParentTable;
+        private long ClientId = -1; // Default value for ClientId
         public TableController(string ParentTable, string TableName)
         {
             var conn = ConfigurationManager.ConnectionStrings["SQLiteConnection"]?.ConnectionString;
@@ -81,7 +64,7 @@ namespace bakk_project_task
                 MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Entry entry = new Entry(Name, 'A');
+            var entry = new Entry(Name, 'A');
             ControllerList.Add(entry);
         }
 
@@ -147,7 +130,7 @@ namespace bakk_project_task
             }
         }
 
-        public async Task ReceiveFromDatabase(int Id) 
+        public async Task ReceiveFromDatabase(long Id) 
         {
             this.ClientId = Id;
             ControllerList.Clear();
@@ -170,52 +153,57 @@ namespace bakk_project_task
             }
         }
 
-        public async Task SendToDataBase()
+        public async Task SendToDataBase(long ClientId)
         {
+            this.ClientId = ClientId;
             using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
 
-            var ModifyCommand = connection.CreateCommand();
-            var DeleteCommand = connection.CreateCommand();
-            var AddCommand = connection.CreateCommand();
-#if DEBUG
-            MessageBox.Show("REMINDER THEY HAVE TO HAVE ALL TAGS, DELETE WHEN TEST COMPLETE", "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-#endif
+            
+            
+
+            var Command = connection.CreateCommand();
+
             if (ControllerList.Any(e => e.Tag == 'M'))
             {
-                ModifyCommand.CommandText = @$"UPDATE {TableName}
+                Command.CommandText = @$"UPDATE {TableName}
                                         SET {TableName} = CASE {TableName}_Id ";
 
-                ModifyCommand.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN {e.Name}"))
+                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN {e.Name}"))
                                           + $"END WHERE {TableName} IN ("
                                           + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ");";
 
-                ModifyCommand.CommandText += "(" + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ")";
+                Command.CommandText += "(" + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ")";
+#if DEBUG
+                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif
+                await Command.ExecuteNonQueryAsync();
             }
 
             if (ControllerList.Any(e => e.Tag == 'D'))
             {
-                DeleteCommand.CommandText = @$"DELETE FROM {TableName} 
+                Command.CommandText = @$"DELETE FROM {TableName} 
                                         WHERE {TableName}_Id IN (";
 
-                DeleteCommand.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'D').Select(e => e.Id)) + ");";
+                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'D').Select(e => e.Id))
+                                    + ");";
+#if DEBUG
+                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif
+                await Command.ExecuteNonQueryAsync();
             }
-            
+
             if (ControllerList.Any(e => e.Tag == 'A'))
             {
-                AddCommand.CommandText = @$"INSERT INTO {TableName}
-                                        ({TableName},{ParentTable}_Id) VALUES (";
-                AddCommand.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {e.Id})")) + ";";
-            }
-                
+                Command.CommandText = @$"INSERT INTO {TableName}
+                                        ({TableName},{ParentTable}_Id) VALUES ";
+                Command.CommandText += string.Join("), (", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {e.Id})"))
+                                    + ";";
 #if DEBUG
-            MessageBox.Show(ModifyCommand.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            MessageBox.Show(DeleteCommand.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            MessageBox.Show(AddCommand.CommandText   , "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
-            await ModifyCommand.ExecuteNonQueryAsync();
-            await DeleteCommand.ExecuteNonQueryAsync();
-            await AddCommand.ExecuteNonQueryAsync();
+                await Command.ExecuteNonQueryAsync();
+            }
         }
 
         public void SendToGridControl(GridControl TableGrid)

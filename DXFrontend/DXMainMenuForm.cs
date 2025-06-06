@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using GridView = DevExpress.XtraGrid.Views.Grid.GridView;
 
 namespace bakk_project_task
 {
@@ -31,8 +32,8 @@ namespace bakk_project_task
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
         private readonly ClientRepository clientsRepository;
-        private TableController EmailController;
-        private TableController PhoneNumberController;
+        private readonly TableController EmailController;
+        private readonly TableController PhoneNumberController;
         public DXMainMenuForm(ClientRepository clientsRepository)
         {
             InitializeComponent();
@@ -40,6 +41,7 @@ namespace bakk_project_task
             PhoneNumberController = new TableController("Client", "PhoneNumber");
             this.clientsRepository = clientsRepository;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private async void DXMainMenuForm_Load(object sender, EventArgs e)
         {
@@ -54,11 +56,13 @@ namespace bakk_project_task
                 gridView1.SelectRow(0);         // Select first row
             }
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void AddClientButton_Click(object sender, EventArgs e)
         {
@@ -70,27 +74,23 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void EditClientButton_Click(object sender, EventArgs e)
         {
-            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
-            if (gridView == null || gridView.FocusedRowHandle < 0)
+            var gridView = gridcontrol1.MainView as GridView;
+            if (gridView is null || gridView.FocusedRowHandle < 0)
             {
                 MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+            long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
 #if DEBUG
-            string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
-            string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
-            string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
-            string? PhoneNumber = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
-            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
-            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
+            string? FirstName = gridView.GetFocusedRowCellValue("FirstName") as string;
+            string? LastName = gridView.GetFocusedRowCellValue("LastName") as string;
+            string? Address = gridView.GetFocusedRowCellValue("Address") as string;
+            string? Status = gridView.GetFocusedRowCellValue("Status") as string;
 #else
-            string? FirstName = gridView.GetFocusedRowCellValue("Imię")?.ToString();
-            string? LastName = gridView.GetFocusedRowCellValue("Nazwisko")?.ToString();
-            string? Address = gridView.GetFocusedRowCellValue("Adres")?.ToString();
-            string? PhoneNumber = gridView.GetFocusedRowCellValue("Numer Telefonu")?.ToString();
-            string? Email = gridView.GetFocusedRowCellValue("Mail")?.ToString();
-            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
+            string? FirstName = gridView.GetFocusedRowCellValue("Imię") as string;
+            string? LastName = gridView.GetFocusedRowCellValue("Nazwisko") as string;
+            string? Address = gridView.GetFocusedRowCellValue("Adres") as string;
+            string? Status = gridView.GetFocusedRowCellValue("Status") as string;
 #endif
 
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
@@ -98,10 +98,11 @@ namespace bakk_project_task
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, PhoneNumber, Status);
+            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }
+
         [SupportedOSPlatform("windows6.1")]
         private async void DeleteButton_Click(object sender, EventArgs e)
         {
@@ -121,39 +122,37 @@ namespace bakk_project_task
                     MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+                long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
                 await clientsRepository.DeleteClient(id);
                 await this.clientsRepository.LoadClient(gridcontrol1);
             }
         }
+
         [SupportedOSPlatform("windows6.1")]
         private async void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
             await this.clientsRepository.LoadClient(gridcontrol1);
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
-            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            var gridView = gridcontrol1.MainView as GridView;
             if (gridView == null || gridView.FocusedRowHandle < 0)
             {
                 MessageBox.Show("No client selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            int id = Convert.ToInt32(gridView.GetFocusedRowCellValue("Id"));
+            long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
 #if DEBUG
             string? FirstName = gridView.GetFocusedRowCellValue("FirstName")?.ToString();
             string? LastName = gridView.GetFocusedRowCellValue("LastName")?.ToString();
             string? Address = gridView.GetFocusedRowCellValue("Address")?.ToString();
-            string? PhoneNumber = gridView.GetFocusedRowCellValue("PhoneNumber")?.ToString();
-            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
             string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
 #else
             string? FirstName = gridView.GetFocusedRowCellValue("Imię")?.ToString();
             string? LastName = gridView.GetFocusedRowCellValue("Nazwisko")?.ToString();
             string? Address = gridView.GetFocusedRowCellValue("Adres")?.ToString();
-            string? PhoneNumber = gridView.GetFocusedRowCellValue("Numer Telefonu")?.ToString();
-            string? Email = gridView.GetFocusedRowCellValue("Mail")?.ToString();
             string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
 #endif
             if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
@@ -161,10 +160,11 @@ namespace bakk_project_task
                 MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, PhoneNumber, Status);
+            using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void SearchFirstName_EditValueChanged(object sender, EventArgs e)
         {
@@ -172,37 +172,42 @@ namespace bakk_project_task
 
         }
 
-
         private void Gridcontrol1_Click(object sender, EventArgs e)
         {
 
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void SearchButton_Click(object sender, EventArgs e)
         {
             clientsRepository.SearchClients(this.gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
                 this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void LastNameTextBox_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchLastName = LastNameTextEdit.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void AdressTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchAddress = AddressTextEdit.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchPhoneNumber = PhoneNumberTextEdit.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void EmailTextEdit_EditValueChanged(object sender, EventArgs e)
         {
             this.SearchEmail = EmailTextEdit.Text;
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void StatusCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
@@ -215,6 +220,7 @@ namespace bakk_project_task
                 this.SearchStatus = "Aktualny";
             }
         }
+
         [SupportedOSPlatform("windows6.1")]
         private async void ClearFiltersButton_Click(object sender, EventArgs e)
         {
@@ -230,6 +236,7 @@ namespace bakk_project_task
             blankEmail.Checked = false;
             await clientsRepository.LoadClient(gridcontrol1);
         }
+
         [SupportedOSPlatform("windows6.1")]
         private void BlankPhoneCheckEdit_CheckedChanged(object sender, EventArgs e)
         {
@@ -246,8 +253,9 @@ namespace bakk_project_task
                 this.BlankPhoneNumberFlag = false;
             }
         }
+
         [SupportedOSPlatform("windows6.1")]
-        private void blankEmail_CheckedChanged(object sender, EventArgs e)
+        private void BlankEmail_CheckedChanged(object sender, EventArgs e)
         {
             if (blankEmail.Checked)
             {

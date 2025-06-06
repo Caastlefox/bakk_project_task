@@ -16,15 +16,15 @@ namespace bakk_project_task
 {
     public partial class DXAddNewClient : DevExpress.XtraEditors.XtraForm
     {
-        private readonly int Id = -1;
+        private long Id = -1;
         private string? FirstName = "";
         private string? LastName = "";
         private string? Address = "";
         private string? PhoneNumber = "";
         private string? Status = "Aktualny";
         private readonly ClientRepository clientsRepository;
-        private TableController EmailController;
-        private TableController PhoneNumberController;
+        private readonly TableController EmailController;
+        private readonly TableController PhoneNumberController;
 
         public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController)
         {
@@ -35,7 +35,9 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController, int id, string? firstName, string? lastName, string? address, string? phoneNumber, string? status)
+        public DXAddNewClient(ClientRepository clientsRepository, TableController EmailController, TableController PhoneNumberController,
+            
+            long id, string? firstName, string? lastName, string? address, string? status)
         {
             InitializeComponent();
             this.clientsRepository = clientsRepository;
@@ -44,15 +46,13 @@ namespace bakk_project_task
             this.Id = id;
             this.FirstName = firstName;
             this.LastName = lastName;
-
             this.Address = address;
-            this.PhoneNumber = phoneNumber;
             this.Status = status;
 
             this.FirstNameTextBox.Text = firstName;
             this.LastNameTextBox.Text = lastName;
             this.AddressTextBox.Text = address;
-            this.PhoneNumberTextBox.Text = phoneNumber;
+
             if (status != "Aktualny")
             {
                 StatusCheckEdit.Checked = true;
@@ -64,6 +64,8 @@ namespace bakk_project_task
 
             this.EmailController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
             this.EmailController.SendToGridControl(EmailGridControl);
+            this.PhoneNumberController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
+            this.PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -81,26 +83,21 @@ namespace bakk_project_task
                     MessageBox.Show("Pola Imię i Nazwisko muszą być wypełnione.");
                     return;
                 }
-                //if (!string.IsNullOrWhiteSpace(Email) && !Email.Contains('@'))
-                //{
-                //    MessageBox.Show("Proszę podać poprawny adres e-mail.");
-                //    return;
-                //}
-                if (!string.IsNullOrWhiteSpace(PhoneNumber) && PhoneNumber.Length != 9)
-                {
-                    MessageBox.Show("Proszę podać poprawny numer telefonu.");
-                    return;
-                }
+
                 if (Id == -1)
                 {
-                    await clientsRepository.AddClient(this.FirstName, this.LastName,
-                         this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
+                    Id = await clientsRepository.AddClient(this.FirstName, this.LastName,
+                         this.Address, this.Status);
                 }
                 else
                 {
                     await clientsRepository.UpdateClient(this.Id, this.FirstName, this.LastName,
-                         this.Address, this.PhoneNumber, this.Status).ConfigureAwait(false);
+                         this.Address, this.Status);
+                    
                 }
+                await EmailController.SendToDataBase(Id);
+                await PhoneNumberController.SendToDataBase(Id);
+
                 this.Close();
             }
             catch (Exception ex)
