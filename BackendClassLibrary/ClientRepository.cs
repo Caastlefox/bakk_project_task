@@ -274,6 +274,7 @@ namespace bakk_project_task
                 
                 dataGridView.DataSource = data;
                 dataGridView.MainView.PopulateColumns();
+                
 
                 //MessageBox.Show(result, "Query Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

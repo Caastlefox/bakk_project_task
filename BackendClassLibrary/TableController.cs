@@ -15,6 +15,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -242,7 +243,50 @@ namespace bakk_project_task
         public void ClearControllerList()
         {
             ControllerList.Clear();
-        }   
+        }
+
+        [SupportedOSPlatform("windows6.1")]
+        public async Task DeleteClient(long? id)
+        {
+            try
+            {
+                using var connection = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
+                await connection.OpenAsync();
+                var command = connection.CreateCommand();
+                command.CommandText = @$"
+                DELETE FROM {TableName} WHERE Client_Id = $id;
+            ";
+                command.Parameters.AddWithValue("$id", id);
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
 
     }
 }

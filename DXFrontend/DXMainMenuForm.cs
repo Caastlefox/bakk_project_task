@@ -118,6 +118,8 @@ namespace bakk_project_task
                     return;
                 }
                 long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
+                await EmailController.DeleteClient(id);
+                await PhoneNumberController.DeleteClient(id);
                 await clientsRepository.DeleteClient(id);
                 await this.clientsRepository.LoadClient(gridcontrol1);
             }
