@@ -149,9 +149,11 @@ namespace bakk_project_task
         }
 
 
-        private void Search_Click(object sender, EventArgs e)
+        private async void Search_Click(object sender, EventArgs e)
         {
-            clientsRepository.SearchClients(this.dataGridView1, SearchFirstNameTextBox.Text, SearchLastNameTextBox.Text, SearchAddressTextBox.Text, SearchPhoneNumberTextBox.Text, SearchMailTextBox.Text, SearchStatus,BlankEmailFlag,BlankPhoneNumberFlag);
+            var data = await clientsRepository.SearchClients(SearchFirstNameTextBox.Text, SearchLastNameTextBox.Text, SearchAddressTextBox.Text, SearchPhoneNumberTextBox.Text, SearchMailTextBox.Text, SearchStatus,BlankEmailFlag,BlankPhoneNumberFlag);
+            dataGridView1.DataSource = data;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)

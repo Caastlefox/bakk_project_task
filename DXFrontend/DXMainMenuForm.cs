@@ -168,10 +168,13 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private void SearchButton_Click(object sender, EventArgs e)
+        private async void SearchButton_Click(object sender, EventArgs e)
         {
-            clientsRepository.SearchClients(this.gridcontrol1, this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
-                this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
+            var data = await clientsRepository.SearchClients(this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
+                        this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
+            this.gridcontrol1.DataSource = data;
+            this.gridcontrol1.MainView.PopulateColumns();
+            this.gridcontrol1.Refresh();
         }
 
         [SupportedOSPlatform("windows6.1")]

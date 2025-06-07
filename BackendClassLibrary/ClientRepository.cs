@@ -1,4 +1,5 @@
 ﻿#define CLEAR
+using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraGrid;
 using DevExpress.XtraMap;
 using DevExpress.XtraRichEdit.Model;
@@ -21,16 +22,6 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace bakk_project_task
 {
-    public class Client
-    {
-        public required long? Id { get; set; }
-        public required string? FirstName { get; set; }
-        public required string? LastName { get; set; }
-        public required string? Address { get; set; }
-        public required string? Email { get; set; }
-        public required string? PhoneNumber { get; set; }
-        public required string? Status { get; set; }
-    }
 
     public class ClientRepository : IClientRepository
     {
@@ -188,20 +179,34 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
+                string sql = "SELECT Client.Client_Id, Client.FirstName, Client.LastName, "
+                + "Email.Email,"
+                + " PhoneNumber.PhoneNumber as \"Numer Telefonu\", "
+                + "Client.Address, Client.Status FROM Client "
+                + "LEFT JOIN Email ON Email.Client_Id = Client.Client_Id "
+                + "LEFT JOIN PhoneNumber ON PhoneNumber.Client_Id = Client.Client_Id;";
 
-                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-
-                command.CommandText = sql;
+                List<Client> data = [];
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var client = new Client
+                    {
+                        Id = reader.IsDBNull(0) ? null : reader.GetInt64(0),
+                        FirstName = reader.IsDBNull(1) ? null : reader.GetString(1),
+                        LastName = reader.IsDBNull(2) ? null : reader.GetString(2),
+                        Email = reader.IsDBNull(3) ? null : reader.GetString(3),
+                        PhoneNumber = reader.IsDBNull(4) ? null : reader.GetString(4),
+                        Address = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        Status = reader.IsDBNull(6) ? null : reader.GetString(6)
+                    };
+                    data.Add(client);
 
-                var dt = new DataTable();
-                // await reader.ReadAsync();
+                }
 
-                dt.Load(reader);
 
-                dataGridView.DataSource = dt;
-                Console.WriteLine(dt);
+                dataGridView.DataSource = data;
                 dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
             catch (SqliteException ex)
@@ -344,111 +349,64 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        public void SearchClients(DataGridView dataGridView, string SearchFirstName,
-            string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
-            string SearchEmail, string? SearchStatus,bool blankTelephoneflag = false, bool blankEmailflag = false)
-        {
-
-            using var conn = new SqliteConnection(connectionString);
-            conn.Open();
-
-
-            string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
-
-            sql += " WHERE 1=1";
-            sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
-            sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
-            sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
-            if (blankTelephoneflag)
-            {
-                sql += " AND PhoneNumber = \"\"";
-            }
-            else
-            {
-                sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
-            }
-            if (blankEmailflag)
-            {
-                sql += " AND Email = \"\"";
-            }
-            else
-            {
-                sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
-            }
-            sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
-            using var cmd = new SqliteCommand(sql, conn);
-
-            cmd.Parameters.AddWithValue("$firstname", '%' + SearchFirstName + '%');
-            cmd.Parameters.AddWithValue("$lastname", '%' + SearchLastName + '%');
-            cmd.Parameters.AddWithValue("$email", '%' + SearchEmail + '%' ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$address", '%' + SearchAddress + '%' ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$phonenumber", '%' + SearchPhoneNumber + '%' ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$status", '%' + SearchStatus + '%' ?? (object)DBNull.Value);
-            using var reader = cmd.ExecuteReader();
-
-            // Creates a DataTable to hold the data
-            var dt = new DataTable();
-
-            // Loads data directly from reader
-            dt.Load(reader);
-
-            // Binds data to DataGridView
-            dataGridView.DataSource = dt;
-            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-        [SupportedOSPlatform("windows6.1")]
-        public void SearchClients(GridControl dataGridView, string SearchFirstName,
+        public async Task<List<Client>> SearchClients(string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
             string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
             bool blankTelephoneflag = false)
         {
+            List<Client> data = [];
             try
             {
                 using var conn = new SqliteConnection(connectionString);
-                conn.Open();
+                await conn.OpenAsync();
 
-                string sql = "SELECT Client_Id, FirstName as Imię, LastName as Nazwisko, Email as Mail, PhoneNumber as \"Numer Telefonu\", Address as Adres, Status FROM Client";
+                string sql = "SELECT C.Client_Id, C.FirstName, C.LastName, "
+                            + "E.Email,"
+                            + "P.PhoneNumber as \"Numer Telefonu\", "
+                            + "C.Address, C.Status FROM Client C "
+                            + "LEFT JOIN Email E ON E.Client_Id = C.Client_Id "
+                            + "LEFT JOIN PhoneNumber P ON P.Client_Id = C.Client_Id ";
 
-
-                sql += " WHERE 1=1";
-                sql += string.IsNullOrEmpty(SearchFirstName) ? "" : " AND FirstName LIKE $firstname";
-                sql += string.IsNullOrEmpty(SearchLastName) ? "" : " AND LastName LIKE $lastname";
-                sql += string.IsNullOrEmpty(SearchAddress) ? "" : " AND Address LIKE $address";
+                sql += " WHERE 1=1 ";
+                sql += string.IsNullOrEmpty(SearchFirstName) ? "" : $"AND C.FirstName LIKE \'%{SearchFirstName}%\' ";
+                sql += string.IsNullOrEmpty(SearchLastName) ? "" : $"AND C.LastName LIKE \'%{SearchLastName}%\' ";
+                sql += string.IsNullOrEmpty(SearchAddress) ? "" : $"AND C.Address LIKE \'%{SearchAddress}%\' ";
                 if (blankTelephoneflag)
                 {
-                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? " AND PhoneNumber = \"\"" : "";
-                }
-                {
-                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : " AND PhoneNumber LIKE $phonenumber";
-                }
-                if (blankEmailflag)
-                {
-                    sql += string.IsNullOrEmpty(SearchEmail) ? " AND Email = \"\"": "";
+                    sql += "AND P.PhoneNumber IS NULL OR P.PhoneNumber = \'\' ";
                 }
                 else
                 {
-                    sql += string.IsNullOrEmpty(SearchEmail) ? "" : " AND Email LIKE $email";
+                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : $"AND P.PhoneNumber LIKE \'%{SearchPhoneNumber}%\' ";
                 }
-                sql += string.IsNullOrEmpty(SearchStatus) ? "" : " AND Status LIKE $status";
+                if (blankEmailflag)
+                {
+                    sql += "AND E.Email IS NULL OR E.Email = \'\' ";
+                }
+                else
+                {
+                    sql += string.IsNullOrEmpty(SearchEmail) ? "" : $"AND E.Email LIKE \'%{SearchEmail}%\' ";
+                }
+
+                sql += string.IsNullOrEmpty(SearchStatus) ? "" : $"AND Status LIKE \'%{SearchStatus}%\' ";
+
                 using var cmd = new SqliteCommand(sql, conn);
+                using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var client = new Client
+                    {
+                        Id = reader.IsDBNull(0) ? null : reader.GetInt64(0),
+                        FirstName = reader.IsDBNull(1) ? null : reader.GetString(1),
+                        LastName = reader.IsDBNull(2) ? null : reader.GetString(2),
+                        Email = reader.IsDBNull(3) ? null : reader.GetString(3),
+                        PhoneNumber = reader.IsDBNull(4) ? null : reader.GetString(4),
+                        Address = reader.IsDBNull(5) ? null : reader.GetString(5),
+                        Status = reader.IsDBNull(6) ? null : reader.GetString(6)
+                    };
+                    data.Add(client);
 
-                cmd.Parameters.AddWithValue("$firstname", '%' + SearchFirstName + '%');
-                cmd.Parameters.AddWithValue("$lastname", '%' + SearchLastName + '%');
-                cmd.Parameters.AddWithValue("$email", '%' + SearchEmail + '%' ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("$address", '%' + SearchAddress + '%' ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("$phonenumber", '%' + SearchPhoneNumber + '%' ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("$status", '%' + SearchStatus + '%' ?? (object)DBNull.Value);
-                using var reader = cmd.ExecuteReader();
-
-                // Creates a DataTable to hold the data
-                var dt = new DataTable();
-
-                // Loads data directly from reader
-                dt.Load(reader);
-
-                // Binds data to DataGridView
-                dataGridView.DataSource = dt;
-                dataGridView.MainView.PopulateColumns();
+                }
             }
             catch (SqliteException ex)
             {
@@ -477,7 +435,8 @@ namespace bakk_project_task
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
-        }
+            return data;
 
+        }
     }
 }
