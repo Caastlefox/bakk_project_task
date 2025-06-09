@@ -49,9 +49,9 @@ namespace bakk_project_task
             this.Address = address;
             this.Status = status;
 
-            this.FirstNameTextBox.Text = firstName;
-            this.LastNameTextBox.Text = lastName;
-            this.AddressTextBox.Text = address;
+            this.FirstNameTextBox.Text = this.FirstName;
+            this.LastNameTextBox.Text = this.LastName;
+            this.AddressTextBox.Text = this.Address;
 
             if (status != "Aktualny")
             {
@@ -181,6 +181,16 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void EmailPlusButton_Click(object sender, EventArgs e)
         {
+            if (EmailGridView.GetFocusedRowCellValue("Tag") as char? == 'D')
+            {
+                int rowHandle = EmailGridView.FocusedRowHandle;
+
+                if (rowHandle >= 0)
+                {
+                    EmailGridView.SetRowCellValue(rowHandle, "Tag", '\0');
+                    return;
+                }
+            }
             if (EmailTextBox.Text == "")
             {
                 MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
@@ -225,14 +235,27 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberPlusButton_Click(object sender, EventArgs e)
         {
-            if (PhoneNumberTextBox.Text == "")
+
+            if (PhoneNumberGridView.GetFocusedRowCellValue("Tag") as char? == 'D') 
+            {
+                int rowHandle = PhoneNumberGridView.FocusedRowHandle;
+
+                if (rowHandle >= 0)
+                {
+                    PhoneNumberGridView.SetRowCellValue(rowHandle, "Tag", '\0');
+                    return;
+                }
+            }
+
+            else if (PhoneNumberTextBox.Text == "")
             {
                 MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
                 return;
             }
-            if (PhoneNumberTextBox.Text.Length != 9)
+
+            if (PhoneNumberTextBox.Text.Length != 9 || long.TryParse(PhoneNumberTextBox.Text, out _) == false)
             {
-                MessageBox.Show("Proszę podać poprawny numer telefonu.");
+                MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
                 return;
             }
             else

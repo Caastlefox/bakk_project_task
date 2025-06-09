@@ -82,17 +82,10 @@ namespace bakk_project_task
             }
             long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
 
-            string? FirstName = gridView.GetFocusedRowCellValue("Imię") as string;
-            string? LastName = gridView.GetFocusedRowCellValue("Nazwisko") as string;
-            string? Address = gridView.GetFocusedRowCellValue("Adres") as string;
+            string? FirstName = gridView.GetFocusedRowCellValue("FirstName") as string;
+            string? LastName = gridView.GetFocusedRowCellValue("LastName") as string;
+            string? Address = gridView.GetFocusedRowCellValue("Address") as string;
             string? Status = gridView.GetFocusedRowCellValue("Status") as string;
-
-
-            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
-            {
-                MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();
@@ -142,16 +135,11 @@ namespace bakk_project_task
             }
             long id = Convert.ToInt64(gridView.GetFocusedRowCellValue("Id"));
 
-            string? FirstName = gridView.GetFocusedRowCellValue("Imię")?.ToString();
-            string? LastName = gridView.GetFocusedRowCellValue("Nazwisko")?.ToString();
-            string? Address = gridView.GetFocusedRowCellValue("Adres")?.ToString();
-            string? Status = gridView.GetFocusedRowCellValue("Status")?.ToString();
+            string? FirstName = gridView.GetFocusedRowCellValue("FirstName") as string;
+            string? LastName = gridView.GetFocusedRowCellValue("LastName") as string;
+            string? Address = gridView.GetFocusedRowCellValue("Address") as string;
+            string? Status = gridView.GetFocusedRowCellValue("Status") as string;
 
-            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
-            {
-                MessageBox.Show("First Name or Last Name cannot be empty.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
             using var editForm = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController, id, FirstName, LastName, Address, Status);
             editForm.FormClosed += AddNewClientFormClosed;
             editForm.ShowDialog();

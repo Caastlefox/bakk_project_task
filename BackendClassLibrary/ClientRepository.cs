@@ -180,7 +180,7 @@ namespace bakk_project_task
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
                 string sql = "SELECT Client.Client_Id, Client.FirstName, Client.LastName, "
-                + "Email.Email,"
+                + "Email.Email, "
                 + " PhoneNumber.PhoneNumber as \"Numer Telefonu\", "
                 + "Client.Address, Client.Status FROM Client "
                 + "LEFT JOIN Email ON Email.Client_Id = Client.Client_Id "

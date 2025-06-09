@@ -43,10 +43,10 @@ namespace bakk_project_task
             EmailMinusButton = new DevExpress.XtraEditors.SimpleButton();
             PhoneNumberMinusButton = new DevExpress.XtraEditors.SimpleButton();
             EmailGridControl = new DevExpress.XtraGrid.GridControl();
-            gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            EmailGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             Email = new DevExpress.XtraGrid.Columns.GridColumn();
             PhoneNumberGridControl = new DevExpress.XtraGrid.GridControl();
-            gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            PhoneNumberGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             EmailTextBox = new DevExpress.XtraEditors.TextEdit();
             PhoneNumberTextBox = new DevExpress.XtraEditors.TextEdit();
@@ -55,9 +55,9 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailGridControl).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)EmailGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberGridControl).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)gridView2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberGridView).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).BeginInit();
             SuspendLayout();
@@ -174,22 +174,22 @@ namespace bakk_project_task
             EmailGridControl.DataMember = "Client";
             EmailGridControl.ImeMode = ImeMode.NoControl;
             EmailGridControl.Location = new Point(218, 255);
-            EmailGridControl.MainView = gridView1;
+            EmailGridControl.MainView = EmailGridView;
             EmailGridControl.Name = "EmailGridControl";
             EmailGridControl.Size = new Size(286, 156);
             EmailGridControl.TabIndex = 45;
             EmailGridControl.UseDisabledStatePainter = false;
-            EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView1 });
+            EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { EmailGridView });
             EmailGridControl.Click += EmailGridControl_Click;
             // 
-            // gridView1
+            // EmailGridView
             // 
-            gridView1.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { Email });
-            gridView1.GridControl = EmailGridControl;
-            gridView1.Name = "gridView1";
-            gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
-            gridView1.OptionsView.ShowColumnHeaders = false;
-            gridView1.OptionsView.ShowGroupPanel = false;
+            EmailGridView.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { Email });
+            EmailGridView.GridControl = EmailGridControl;
+            EmailGridView.Name = "EmailGridView";
+            EmailGridView.OptionsSelection.EnableAppearanceHideSelection = false;
+            EmailGridView.OptionsView.ShowColumnHeaders = false;
+            EmailGridView.OptionsView.ShowGroupPanel = false;
             // 
             // Email
             // 
@@ -204,21 +204,21 @@ namespace bakk_project_task
             PhoneNumberGridControl.DataMember = "Client";
             PhoneNumberGridControl.ImeMode = ImeMode.NoControl;
             PhoneNumberGridControl.Location = new Point(218, 52);
-            PhoneNumberGridControl.MainView = gridView2;
+            PhoneNumberGridControl.MainView = PhoneNumberGridView;
             PhoneNumberGridControl.Name = "PhoneNumberGridControl";
             PhoneNumberGridControl.Size = new Size(286, 157);
             PhoneNumberGridControl.TabIndex = 46;
             PhoneNumberGridControl.UseDisabledStatePainter = false;
-            PhoneNumberGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { gridView2 });
+            PhoneNumberGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { PhoneNumberGridView });
             // 
-            // gridView2
+            // PhoneNumberGridView
             // 
-            gridView2.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2 });
-            gridView2.GridControl = PhoneNumberGridControl;
-            gridView2.Name = "gridView2";
-            gridView2.OptionsSelection.EnableAppearanceHideSelection = false;
-            gridView2.OptionsView.ShowColumnHeaders = false;
-            gridView2.OptionsView.ShowGroupPanel = false;
+            PhoneNumberGridView.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] { gridColumn2 });
+            PhoneNumberGridView.GridControl = PhoneNumberGridControl;
+            PhoneNumberGridView.Name = "PhoneNumberGridView";
+            PhoneNumberGridView.OptionsSelection.EnableAppearanceHideSelection = false;
+            PhoneNumberGridView.OptionsView.ShowColumnHeaders = false;
+            PhoneNumberGridView.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn2
             // 
@@ -284,9 +284,9 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)AddressTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)StatusCheckEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailGridControl).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)EmailGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberGridControl).EndInit();
-            ((System.ComponentModel.ISupportInitialize)gridView2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)PhoneNumberGridView).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextBox.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextBox.Properties).EndInit();
             ResumeLayout(false);
@@ -303,9 +303,9 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.SimpleButton EmailMinusButton;
         private DevExpress.XtraEditors.SimpleButton PhoneNumberMinusButton;
         private DevExpress.XtraGrid.GridControl EmailGridControl;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraGrid.Views.Grid.GridView EmailGridView;
         private DevExpress.XtraGrid.GridControl PhoneNumberGridControl;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridView2;
+        private DevExpress.XtraGrid.Views.Grid.GridView PhoneNumberGridView;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
         private DevExpress.XtraEditors.TextEdit EmailTextBox;
         private DevExpress.XtraEditors.TextEdit PhoneNumberTextBox;
