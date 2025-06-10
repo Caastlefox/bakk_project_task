@@ -362,3 +362,9 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Bugs.txt
+/frontend/AddNewClient.cs
+/frontend/AddNewClient.Designer.cs
+/frontend/AddNewClient.resx
+/frontend/MainMenuForm.cs
+/frontend/MainMenuForm.Designer.cs
+/frontend/MainMenuForm.resx

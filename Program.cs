@@ -22,19 +22,11 @@ namespace bakk_project_task
             var clientsRepository = new ClientRepository();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (ConfigurationManager.AppSettings["UseDX"] == "true")
-            {
-                // Use DevExpress UI
-                Application.Run(new DXMainMenuForm(clientsRepository));
-                //DevExpress.Skins.SkinManager.EnableFormSkins();
-                //DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Office 2019 Colorful");
-                //skins
-            }
-            else
-            {
-                // Use standard Windows Forms UI
-                Application.Run(new MainMenuForm(clientsRepository));
-            }
+
+                
+            Application.Run(new DXMainMenuForm(clientsRepository));
+            DevExpress.Skins.SkinManager.EnableFormSkins();
+            DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Office 2019 Colorful");
             
         }
     }
