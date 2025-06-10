@@ -1,6 +1,10 @@
 ﻿using DevExpress.XtraBars.Customization;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraExport.Helpers;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraVerticalGrid;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -45,9 +49,8 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private async void DXMainMenuForm_Load(object sender, EventArgs e)
         {
-            await clientsRepository.LoadClient(gridcontrol1);
-            StatusCheckEdit.Checked = false;
-            gridcontrol1.Refresh();
+            gridcontrol1.DataSource = await this.clientsRepository.LoadClient();
+            gridcontrol1.MainView.PopulateColumns();
 
 
             if (gridView1.RowCount > 0)
@@ -55,9 +58,18 @@ namespace bakk_project_task
                 gridView1.FocusedRowHandle = 0; // Focus first row
                 gridView1.SelectRow(0);         // Select first row
             }
-        }
 
-        [SupportedOSPlatform("windows6.1")]
+            var memo = new RepositoryItemMemoEdit();
+            memo.WordWrap = true;
+            gridcontrol1.RepositoryItems.Add(memo);
+            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView != null)
+            {
+                gridView.Columns["Email"].ColumnEdit = memo;
+                gridView.Columns["PhoneNumber"].ColumnEdit = memo;
+            }
+        }
+            [SupportedOSPlatform("windows6.1")]
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -114,17 +126,20 @@ namespace bakk_project_task
                 await EmailController.DeleteClient(id);
                 await PhoneNumberController.DeleteClient(id);
                 await clientsRepository.DeleteClient(id);
-                await this.clientsRepository.LoadClient(gridcontrol1);
+                
+                gridcontrol1.DataSource = await this.clientsRepository.LoadClient();
+                gridcontrol1.MainView.PopulateColumns();
+
             }
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
+        private void AddNewClientFormClosed(object? sender, FormClosedEventArgs e)
         {
-            await this.clientsRepository.LoadClient(gridcontrol1);
+            if (sender == null) { return; }
+            DXMainMenuForm_Load(sender, e);
         }
-
-        [SupportedOSPlatform("windows6.1")]
+            [SupportedOSPlatform("windows6.1")]
         private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
             var gridView = gridcontrol1.MainView as GridView;
@@ -205,7 +220,7 @@ namespace bakk_project_task
         }
 
         [SupportedOSPlatform("windows6.1")]
-        private async void ClearFiltersButton_Click(object sender, EventArgs e)
+        private void ClearFiltersButton_Click(object sender, EventArgs e)
         {
 
             FirstNameTextEdit.Text = "";
@@ -217,7 +232,8 @@ namespace bakk_project_task
             SearchStatus = "";
             BlankPhoneCheckEdit.Checked = false;
             blankEmail.Checked = false;
-            await clientsRepository.LoadClient(gridcontrol1);
+            DXMainMenuForm_Load(sender,e);
+
         }
 
         [SupportedOSPlatform("windows6.1")]

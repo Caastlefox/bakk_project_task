@@ -2,9 +2,12 @@
 using DevExpress.DataAccess.Sql;
 using DevExpress.DataProcessing.InMemoryDataProcessor;
 using DevExpress.Xpo.DB.Helpers;
+using DevExpress.XtraExport.Helpers;
 using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraMap;
 using DevExpress.XtraRichEdit.Model;
+using DevExpress.XtraVerticalGrid;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,7 @@ using System.Security.AccessControl;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -266,8 +270,9 @@ LEFT JOIN (
             }
         }
         [SupportedOSPlatform("windows6.1")]
-        public async Task LoadClient(GridControl dataGridView)
+        public async Task<List<Client>> LoadClient()
         {
+            List<Client> data = [];
             try
             {
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
@@ -275,37 +280,31 @@ LEFT JOIN (
                 var command = conn.CreateCommand();
 
                 string sql = @"SELECT 
-    C.Client_Id, 
-    C.FirstName, 
+    C.Client_Id,
+    C.FirstName,
     C.LastName,
-    EP.Emails,
-    EP.PhoneNumbers AS ""Numer Telefonu"",
-    C.Address, 
+    E.Emails,
+    P.PhoneNumbers AS ""Numer Telefonu"",
+    C.Address,
     C.Status
 FROM Client C
-LEFT JOIN(
-    SELECT
-        P.Entry_Id AS Entry_Id,
-        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
-        GROUP_CONCAT(DISTINCT P.PhoneNumber) AS PhoneNumbers
-    FROM PhoneNumber P
-    LEFT JOIN Email E ON P.Entry_Id = E.Entry_Id
-    GROUP BY P.Entry_Id
-
-    UNION
-
-    SELECT
-        E.Entry_Id AS Entry_Id,
-        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
-        NULL AS PhoneNumbers
-    FROM Email E
-    LEFT JOIN PhoneNumber P ON E.Entry_Id = P.Entry_Id
-    WHERE P.Entry_Id IS NULL
-    GROUP BY E.Entry_Id
-) AS EP ON EP.Entry_Id = C.Client_Id; 
+LEFT JOIN (
+    SELECT 
+        Client_Id,
+        GROUP_CONCAT(DISTINCT Email) AS Emails
+    FROM Email
+    GROUP BY Client_Id
+) AS E ON E.Client_Id = C.Client_Id
+LEFT JOIN (
+    SELECT 
+        Client_Id,
+        GROUP_CONCAT(DISTINCT PhoneNumber) AS PhoneNumbers
+    FROM PhoneNumber
+    GROUP BY Client_Id
+) AS P ON P.Client_Id = C.Client_Id; 
 ";
                 command.CommandText = sql;
-                List<Client> data = [];
+                
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
 
@@ -323,12 +322,16 @@ LEFT JOIN(
                         Address     = reader.IsDBNull(5) ? null : reader.GetString(5),
                         Status      = reader.IsDBNull(6) ? null : reader.GetString(6)
                     };
+                    if (client.Email != null) {
+                        client.Email = client.Email.Replace(",", Environment.NewLine);
+                    }
+                    if (client.PhoneNumber != null)
+                    {
+                        client.PhoneNumber = client.PhoneNumber.Replace(",", Environment.NewLine);
+                    }
                     data.Add(client);
 
                 }
-                
-                dataGridView.DataSource = data;
-                dataGridView.MainView.PopulateColumns();
                 
 
                 //MessageBox.Show(result, "Query Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -360,6 +363,7 @@ LEFT JOIN(
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+            return data;
         }
         [SupportedOSPlatform("windows6.1")]
         public async Task DeleteClient(long? id)
@@ -416,13 +420,30 @@ LEFT JOIN(
                 using var conn = new SqliteConnection(connectionString);
                 await conn.OpenAsync();
 
-                string sql = "SELECT C.Client_Id, C.FirstName, C.LastName, "
-                            + "E.Email,"
-                            + "P.PhoneNumber as \"Numer Telefonu\", "
-                            + "C.Address, C.Status FROM Client C "
-                            + "LEFT JOIN Email E ON E.Client_Id = C.Client_Id "
-                            + "LEFT JOIN PhoneNumber P ON P.Client_Id = C.Client_Id ";
-
+                string sql = @"SELECT 
+    C.Client_Id,
+    C.FirstName,
+    C.LastName,
+    E.Emails,
+    P.PhoneNumbers AS ""Numer Telefonu"",
+    C.Address,
+    C.Status
+FROM Client C
+LEFT JOIN (
+    SELECT 
+        Client_Id,
+        GROUP_CONCAT(DISTINCT Email) AS Emails
+    FROM Email
+    GROUP BY Client_Id
+) AS E ON E.Client_Id = C.Client_Id
+LEFT JOIN (
+    SELECT 
+        Client_Id,
+        GROUP_CONCAT(DISTINCT PhoneNumber) AS PhoneNumbers
+    FROM PhoneNumber
+    GROUP BY Client_Id
+) AS P ON P.Client_Id = C.Client_Id 
+";
                 sql += " WHERE 1=1 ";
                 sql += string.IsNullOrEmpty(SearchFirstName) ? "" : $"AND C.FirstName LIKE \'%{SearchFirstName}%\' ";
                 sql += string.IsNullOrEmpty(SearchLastName) ? "" : $"AND C.LastName LIKE \'%{SearchLastName}%\' ";

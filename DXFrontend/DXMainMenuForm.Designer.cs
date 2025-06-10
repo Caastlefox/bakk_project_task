@@ -49,6 +49,7 @@ namespace bakk_project_task
             gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             LastNameTextEdit = new TextEdit();
@@ -61,6 +62,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemMemoEdit1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).BeginInit();
@@ -147,6 +149,7 @@ namespace bakk_project_task
             gridcontrol1.Location = new Point(30, 112);
             gridcontrol1.MainView = gridView1;
             gridcontrol1.Name = "gridcontrol1";
+            gridcontrol1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] { repositoryItemMemoEdit1 });
             gridcontrol1.Size = new Size(813, 400);
             gridcontrol1.TabIndex = 0;
             gridcontrol1.UseDisabledStatePainter = false;
@@ -161,6 +164,7 @@ namespace bakk_project_task
             gridView1.Name = "gridView1";
             gridView1.OptionsBehavior.Editable = false;
             gridView1.OptionsSelection.EnableAppearanceHideSelection = false;
+            gridView1.OptionsView.RowAutoHeight = true;
             gridView1.OptionsView.ShowGroupPanel = false;
             // 
             // gridColumn2
@@ -193,10 +197,17 @@ namespace bakk_project_task
             // 
             // gridColumn6
             // 
+            gridColumn6.AppearanceCell.Options.UseTextOptions = true;
+            gridColumn6.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             gridColumn6.Caption = "gridColumn6";
+            gridColumn6.ColumnEdit = repositoryItemMemoEdit1;
             gridColumn6.Name = "gridColumn6";
             gridColumn6.Visible = true;
             gridColumn6.VisibleIndex = 4;
+            // 
+            // repositoryItemMemoEdit1
+            // 
+            repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
             // 
             // gridColumn7
             // 
@@ -352,6 +363,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)repositoryItemMemoEdit1).EndInit();
             ((System.ComponentModel.ISupportInitialize)LastNameTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)AddressTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)EmailTextEdit.Properties).EndInit();
@@ -387,6 +399,7 @@ namespace bakk_project_task
         private CheckEdit blankEmail;
         private CheckEdit BlankPhoneCheckEdit;
         private TextEdit PhoneNumberTextEdit;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
     }
 }
 

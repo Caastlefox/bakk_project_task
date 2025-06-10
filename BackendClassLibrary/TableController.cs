@@ -133,27 +133,59 @@ namespace bakk_project_task
             }
         }
 
-        public async Task ReceiveFromDatabase(long Id) 
+        public async Task ReceiveFromDatabase(long Id)
         {
-            this.ParentId = Id;
-            ControllerList.Clear();
-            using var connection = new SqliteConnection(ConnectionString);
-            await connection.OpenAsync();
-            var sql = $"SELECT * FROM {TableName} WHERE {TableName}_Id = {ParentId}";
-            using var cmd = new SqliteCommand(sql, connection);
-            using var reader = await cmd.ExecuteReaderAsync();
-
-            var dt = new DataTable();
-            while (await reader.ReadAsync())
+            try
             {
-                var entry = new Entry
-                    (
-                    reader.GetString(0),
-                    '\0', 
-                    reader.GetInt64(1),
-                    reader.GetInt64(2) 
-                    );
-                ControllerList.Add(entry);
+                this.ParentId = Id;
+                ControllerList.Clear();
+                using var connection = new SqliteConnection(ConnectionString);
+                await connection.OpenAsync();
+                var sql = $"SELECT {TableName}, {TableName}_Id, Entry_Id FROM {TableName} WHERE {ParentTable}_Id = {ParentId}";
+                using var cmd = new SqliteCommand(sql, connection);
+                using var reader = await cmd.ExecuteReaderAsync();
+
+
+                while (await reader.ReadAsync())
+                {
+                    var entry = new Entry
+                        (
+                        reader.IsDBNull(0) ? "" : reader.GetString(0),
+                        '\0',
+                        reader.IsDBNull(1) ? 0 : reader.GetInt64(1),
+                        reader.IsDBNull(2) ? 0 : reader.GetInt64(2)
+                        );
+                    ControllerList.Add(entry);
+
+
+                }
+            }
+            catch (SqliteException ex)
+            {
+                MessageBox.Show(
+                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
+                    "SQLite Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Connection state issues
+                MessageBox.Show(
+                    $"Invalid operation: {ex.Message}",
+                    "Operation Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+            }
+            catch (Exception ex)
+            {
+                // All other errors
+                MessageBox.Show(
+                    $"Unexpected error: {ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
