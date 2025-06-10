@@ -49,7 +49,6 @@ namespace bakk_project_task
                     {TableName}_Id INTEGER PRIMARY KEY AUTOINCREMENT,                   
                     {TableName} TEXT,
                     {ParentTable}_Id INTEGER,   
-                    Entry_Id INTEGER,
                     FOREIGN KEY ({ParentTable}_Id) REFERENCES {ParentTable}({ParentTable}_Id)
                 );";
             command.ExecuteNonQuery();
@@ -67,7 +66,7 @@ namespace bakk_project_task
                 MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var entry = new Entry(Name, 'A',-1);
+            var entry = new Entry(Name, 'A');
             ControllerList.Add(entry);
         }
 
@@ -108,6 +107,7 @@ namespace bakk_project_task
 
         public void EditElement(string OldEntryName, string NewEntryName)
         {
+
             Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == OldEntryName);
             if (entrytoedit == null)
             {
@@ -141,7 +141,7 @@ namespace bakk_project_task
                 ControllerList.Clear();
                 using var connection = new SqliteConnection(ConnectionString);
                 await connection.OpenAsync();
-                var sql = $"SELECT {TableName}, {TableName}_Id, Entry_Id FROM {TableName} WHERE {ParentTable}_Id = {ParentId}";
+                var sql = $"SELECT {TableName}, {TableName}_Id FROM {TableName} WHERE {ParentTable}_Id = {ParentId}";
                 using var cmd = new SqliteCommand(sql, connection);
                 using var reader = await cmd.ExecuteReaderAsync();
 
@@ -152,8 +152,7 @@ namespace bakk_project_task
                         (
                         reader.IsDBNull(0) ? "" : reader.GetString(0),
                         '\0',
-                        reader.IsDBNull(1) ? 0 : reader.GetInt64(1),
-                        reader.IsDBNull(2) ? 0 : reader.GetInt64(2)
+                        reader.IsDBNull(1) ? 0 : reader.GetInt64(1)
                         );
                     ControllerList.Add(entry);
 
@@ -205,11 +204,9 @@ namespace bakk_project_task
                     Command.CommandText = @$"UPDATE {TableName}
                                         SET {TableName} = CASE {TableName}_Id ";
 
-                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN {e.Name}"))
-                                              + $"END WHERE {TableName} IN ("
+                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => $"WHEN {e.Id} THEN '{e.Name}' "))
+                                              + $"END WHERE {TableName}_Id IN ("
                                               + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ");";
-
-                    Command.CommandText += "(" + string.Join(",", ControllerList.Where(e => e.Tag == 'M').Select(e => e.Id)) + ")";
 #if DEBUG
                     MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
@@ -253,31 +250,7 @@ namespace bakk_project_task
                     }
 
                     
-                }
-
-
-                int j = 1;
-                for (int i = 0; i < ControllerList.Count; i++)
-                {
-                    if (ControllerList[i].Tag == 'D')
-                    {
-                        continue;
                     }
-                    ControllerList[i].EntryId = j;
-                    j++;
-                }
-
-                Command.CommandText = @$"UPDATE {TableName}
-                                      SET Entry_Id = CASE ";
-                Command.CommandText += string.Join(" ", ControllerList.Where(e => e.Tag != 'D').Select(e => $"WHEN {e.Id} THEN {e.EntryId} "));
-                Command.CommandText += @$" END 
-                                        WHERE {ParentTable}_Id IN (";
-                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag != 'D').Select(e => e.Id));
-                Command.CommandText += ");";
-#if DEBUG
-                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-#endif     
-                await Command.ExecuteNonQueryAsync();
             }
             catch (SqliteException ex)
             {

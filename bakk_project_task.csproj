@@ -9,6 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="frontend\**" />
+    <EmbeddedResource Remove="frontend\**" />
+    <None Remove="frontend\**" />
     <Compile Remove="main2.cs" />
     <Compile Remove="Model.cs" />
   </ItemGroup>
