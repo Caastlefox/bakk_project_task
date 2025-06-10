@@ -1,4 +1,6 @@
-﻿#define CLEAR
+﻿//#define CLEAR
+using DevExpress.DataAccess.Sql;
+using DevExpress.DataProcessing.InMemoryDataProcessor;
 using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraGrid;
 using DevExpress.XtraMap;
@@ -36,7 +38,7 @@ namespace bakk_project_task
             connectionString = conn;
             using var connection = new SqliteConnection(connectionString);
             connection.Open();
-#if CLEAR && DEBUG
+#if CLEAR
             var debugcommand = connection.CreateCommand();
 
             debugcommand.CommandText = @"
@@ -85,7 +87,7 @@ namespace bakk_project_task
                 command.Parameters.AddWithValue("$status", status);
                 await command.ExecuteNonQueryAsync();
                 command.CommandText = "SELECT last_insert_rowid();";
-                var result = command.ExecuteScalar();
+                var result = (long?)(await command.ExecuteScalarAsync());
                 if (result == null)
                 {
                     throw new InvalidOperationException("Failed to retrieve the last inserted row ID.");
@@ -179,12 +181,38 @@ namespace bakk_project_task
                 using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
-                string sql = "SELECT Client.Client_Id, Client.FirstName, Client.LastName, "
-                + "Email.Email, "
-                + " PhoneNumber.PhoneNumber as \"Numer Telefonu\", "
-                + "Client.Address, Client.Status FROM Client "
-                + "LEFT JOIN Email ON Email.Client_Id = Client.Client_Id "
-                + "LEFT JOIN PhoneNumber ON PhoneNumber.Client_Id = Client.Client_Id;";
+                string sql = @"
+SELECT 
+    C.Client_Id, 
+    C.FirstName, 
+    C.LastName,
+    EP.Emails,
+    EP.PhoneNumbers AS ""Numer Telefonu"",
+    C.Address, 
+    C.Status
+FROM Client C
+LEFT JOIN (
+    SELECT 
+        P.Entry_Id AS Entry_Id,
+        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
+        GROUP_CONCAT(DISTINCT P.PhoneNumber) AS PhoneNumbers
+    FROM PhoneNumber P
+    LEFT JOIN Email E ON P.Entry_Id = E.Entry_Id
+    GROUP BY P.Entry_Id
+
+    UNION
+
+    SELECT 
+        E.Entry_Id AS Entry_Id,
+        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
+        NULL AS PhoneNumbers
+    FROM Email E
+    LEFT JOIN PhoneNumber P ON E.Entry_Id = P.Entry_Id
+    WHERE P.Entry_Id IS NULL
+    GROUP BY E.Entry_Id
+) AS EP ON EP.Entry_Id = C.Client_Id;  -- adjust join key as needed
+";
+
 
                 List<Client> data = [];
                 using var cmd = new SqliteCommand(sql, conn);
@@ -246,16 +274,43 @@ namespace bakk_project_task
                 await conn.OpenAsync();
                 var command = conn.CreateCommand();
 
-                string sql = "SELECT Client.Client_Id, Client.FirstName, Client.LastName, "
-                           + "Email.Email," 
-                           + " PhoneNumber.PhoneNumber as \"Numer Telefonu\", "
-                           + "Client.Address, Client.Status FROM Client "
-                           + "LEFT JOIN Email ON Email.Client_Id = Client.Client_Id "
-                           + "LEFT JOIN PhoneNumber ON PhoneNumber.Client_Id = Client.Client_Id;";
+                string sql = @"SELECT 
+    C.Client_Id, 
+    C.FirstName, 
+    C.LastName,
+    EP.Emails,
+    EP.PhoneNumbers AS ""Numer Telefonu"",
+    C.Address, 
+    C.Status
+FROM Client C
+LEFT JOIN(
+    SELECT
+        P.Entry_Id AS Entry_Id,
+        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
+        GROUP_CONCAT(DISTINCT P.PhoneNumber) AS PhoneNumbers
+    FROM PhoneNumber P
+    LEFT JOIN Email E ON P.Entry_Id = E.Entry_Id
+    GROUP BY P.Entry_Id
+
+    UNION
+
+    SELECT
+        E.Entry_Id AS Entry_Id,
+        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
+        NULL AS PhoneNumbers
+    FROM Email E
+    LEFT JOIN PhoneNumber P ON E.Entry_Id = P.Entry_Id
+    WHERE P.Entry_Id IS NULL
+    GROUP BY E.Entry_Id
+) AS EP ON EP.Entry_Id = C.Client_Id; 
+";
                 command.CommandText = sql;
                 List<Client> data = [];
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
+
+
+
                 while (await reader.ReadAsync()) 
                 {
                     var client = new Client

@@ -2,6 +2,7 @@
 using DevExpress.Office;
 using DevExpress.Utils.DPI;
 using DevExpress.Utils.Html.Internal;
+using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraBars.Customization;
 using DevExpress.XtraGrid;
 using DevExpress.XtraPrinting.Native;
@@ -29,7 +30,7 @@ namespace bakk_project_task
         private List<Entry> ControllerList = [];
         private readonly string TableName;
         private readonly string ParentTable;
-        private long ClientId = -1; // Default value for ClientId
+        private long ParentId = -1; // Default value for ClientId
         public TableController(string ParentTable, string TableName)
         {
             var conn = ConfigurationManager.ConnectionStrings["SQLiteConnection"]?.ConnectionString;
@@ -47,7 +48,8 @@ namespace bakk_project_task
                 CREATE TABLE IF NOT EXISTS {TableName}(
                     {TableName}_Id INTEGER PRIMARY KEY AUTOINCREMENT,                   
                     {TableName} TEXT,
-                    {ParentTable}_Id INTEGER,
+                    {ParentTable}_Id INTEGER,   
+                    Entry_Id INTEGER,
                     FOREIGN KEY ({ParentTable}_Id) REFERENCES {ParentTable}({ParentTable}_Id)
                 );";
             command.ExecuteNonQuery();
@@ -65,7 +67,7 @@ namespace bakk_project_task
                 MessageBox.Show("Entry already exists in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var entry = new Entry(Name, 'A');
+            var entry = new Entry(Name, 'A',-1);
             ControllerList.Add(entry);
         }
 
@@ -133,11 +135,11 @@ namespace bakk_project_task
 
         public async Task ReceiveFromDatabase(long Id) 
         {
-            this.ClientId = Id;
+            this.ParentId = Id;
             ControllerList.Clear();
             using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            var sql = $"SELECT * FROM {TableName} WHERE {TableName}_Id = {ClientId}";
+            var sql = $"SELECT * FROM {TableName} WHERE {TableName}_Id = {ParentId}";
             using var cmd = new SqliteCommand(sql, connection);
             using var reader = await cmd.ExecuteReaderAsync();
 
@@ -146,19 +148,22 @@ namespace bakk_project_task
             {
                 var entry = new Entry
                     (
-                    reader.GetString(reader.GetOrdinal(TableName)),
+                    reader.GetString(0),
                     '\0', 
-                    reader.GetInt64(reader.GetOrdinal($"{TableName}_Id"))
+                    reader.GetInt64(1),
+                    reader.GetInt64(2) 
                     );
                 ControllerList.Add(entry);
             }
         }
 
-        public async Task SendToDataBase(long ClientId)
+        public async Task SendToDataBase(long ParentId)
         {
             try
             {
-                this.ClientId = ClientId;
+                if (!ControllerList.Any()) { return; }
+                this.ParentId = ParentId;
+
                 using var connection = new SqliteConnection(ConnectionString);
                 await connection.OpenAsync();
                 var Command = connection.CreateCommand();
@@ -192,17 +197,55 @@ namespace bakk_project_task
                     await Command.ExecuteNonQueryAsync();
                 }
 
+                List<long> InsertedRowIds = [];
                 if (ControllerList.Any(e => e.Tag == 'A'))
                 {
-                    Command.CommandText = @$"INSERT INTO {TableName}
+                    foreach (var item in ControllerList.Where(e => e.Tag == 'A'))
+                    {
+                        Command.CommandText = @$"INSERT INTO {TableName}
                                         ({TableName},{ParentTable}_Id) VALUES ";
-                    Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag == 'A').Select(e => $"('{e.Name}', {ClientId})"))
-                                        + ";";
+                        Command.CommandText += $"(\'{item.Name}\',{ParentId})";
 #if DEBUG
-                    MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-#endif
-                    await Command.ExecuteNonQueryAsync();
+                        MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif     
+                        await Command.ExecuteNonQueryAsync();
+  
+                        Command.CommandText = "SELECT last_insert_rowid();";
+                        var lastid = (long?)Command.ExecuteScalar();
+                        if (lastid == null)
+                        {
+                            MessageBox.Show("Failed to retrieve last inserted row ID.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            continue;
+                        }
+                        item.Id = lastid.Value;
+                    }
+
+                    
                 }
+
+
+                int j = 1;
+                for (int i = 0; i < ControllerList.Count; i++)
+                {
+                    if (ControllerList[i].Tag == 'D')
+                    {
+                        continue;
+                    }
+                    ControllerList[i].EntryId = j;
+                    j++;
+                }
+
+                Command.CommandText = @$"UPDATE {TableName}
+                                      SET Entry_Id = CASE ";
+                Command.CommandText += string.Join(" ", ControllerList.Where(e => e.Tag != 'D').Select(e => $"WHEN {e.Id} THEN {e.EntryId} "));
+                Command.CommandText += @$" END 
+                                        WHERE {ParentTable}_Id IN (";
+                Command.CommandText += string.Join(",", ControllerList.Where(e => e.Tag != 'D').Select(e => e.Id));
+                Command.CommandText += ");";
+#if DEBUG
+                MessageBox.Show(Command.CommandText, "Debug Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif     
+                await Command.ExecuteNonQueryAsync();
             }
             catch (SqliteException ex)
             {
@@ -254,7 +297,7 @@ namespace bakk_project_task
                 await connection.OpenAsync();
                 var command = connection.CreateCommand();
                 command.CommandText = @$"
-                DELETE FROM {TableName} WHERE Client_Id = $id;
+                DELETE FROM {TableName} WHERE {ParentTable}_Id = $id;
             ";
                 command.Parameters.AddWithValue("$id", id);
                 await command.ExecuteNonQueryAsync();
