@@ -67,6 +67,8 @@ namespace bakk_project_task
             {
                 gridView.Columns["Email"].ColumnEdit = memo;
                 gridView.Columns["PhoneNumber"].ColumnEdit = memo;
+                gridView.Columns["Email"].AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+                gridView.Columns["PhoneNumber"].AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
             }
         }
             [SupportedOSPlatform("windows6.1")]
@@ -179,7 +181,18 @@ namespace bakk_project_task
                         this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
             this.gridcontrol1.DataSource = data;
             this.gridcontrol1.MainView.PopulateColumns();
-            this.gridcontrol1.Refresh();
+
+            var memo = new RepositoryItemMemoEdit();
+            memo.WordWrap = true;
+            gridcontrol1.RepositoryItems.Add(memo);
+            var gridView = gridcontrol1.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
+            if (gridView != null)
+            {
+                gridView.Columns["Email"].ColumnEdit = memo;
+                gridView.Columns["PhoneNumber"].ColumnEdit = memo;
+                gridView.Columns["Email"].AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+                gridView.Columns["PhoneNumber"].AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+            }
         }
 
         [SupportedOSPlatform("windows6.1")]

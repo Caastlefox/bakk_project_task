@@ -114,6 +114,14 @@ namespace bakk_project_task
                 MessageBox.Show("Entry not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (NewEntryName == "") 
+            {
+                entrytoedit.Name = NewEntryName;
+                entrytoedit.Tag = 'D';
+                return;
+            }
+
             switch (entrytoedit.Tag)
             {
                 case '\0':
@@ -250,7 +258,7 @@ namespace bakk_project_task
                     }
 
                     
-                    }
+                }
             }
             catch (SqliteException ex)
             {

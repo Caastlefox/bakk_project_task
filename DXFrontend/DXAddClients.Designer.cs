@@ -190,6 +190,7 @@ namespace bakk_project_task
             EmailGridView.OptionsSelection.EnableAppearanceHideSelection = false;
             EmailGridView.OptionsView.ShowColumnHeaders = false;
             EmailGridView.OptionsView.ShowGroupPanel = false;
+            EmailGridView.CellValueChanged += EmailGridView_CellValueChanged;
             // 
             // Email
             // 
@@ -219,6 +220,7 @@ namespace bakk_project_task
             PhoneNumberGridView.OptionsSelection.EnableAppearanceHideSelection = false;
             PhoneNumberGridView.OptionsView.ShowColumnHeaders = false;
             PhoneNumberGridView.OptionsView.ShowGroupPanel = false;
+            PhoneNumberGridView.CellValueChanged += PhoneNumberGridView_CellValueChanged;
             // 
             // gridColumn2
             // 

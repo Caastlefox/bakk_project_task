@@ -177,98 +177,7 @@ namespace bakk_project_task
             }
         }
 
-        [SupportedOSPlatform("windows6.1")]
-        public async Task LoadClient(DataGridView dataGridView)
-        {
-            try
-            {
-                using var conn = new SqliteConnection(ConfigurationManager.ConnectionStrings["SQLiteConnection"].ConnectionString);
-                await conn.OpenAsync();
-                var command = conn.CreateCommand();
-                string sql = @"
-SELECT 
-    C.Client_Id, 
-    C.FirstName, 
-    C.LastName,
-    EP.Emails,
-    EP.PhoneNumbers AS ""Numer Telefonu"",
-    C.Address, 
-    C.Status
-FROM Client C
-LEFT JOIN (
-    SELECT 
-        P.Entry_Id AS Entry_Id,
-        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
-        GROUP_CONCAT(DISTINCT P.PhoneNumber) AS PhoneNumbers
-    FROM PhoneNumber P
-    LEFT JOIN Email E ON P.Entry_Id = E.Entry_Id
-    GROUP BY P.Entry_Id
-
-    UNION
-
-    SELECT 
-        E.Entry_Id AS Entry_Id,
-        GROUP_CONCAT(DISTINCT E.Email) AS Emails,
-        NULL AS PhoneNumbers
-    FROM Email E
-    LEFT JOIN PhoneNumber P ON E.Entry_Id = P.Entry_Id
-    WHERE P.Entry_Id IS NULL
-    GROUP BY E.Entry_Id
-) AS EP ON EP.Entry_Id = C.Client_Id;  -- adjust join key as needed
-";
-
-
-                List<Client> data = [];
-                using var cmd = new SqliteCommand(sql, conn);
-                using var reader = await cmd.ExecuteReaderAsync();
-                while (await reader.ReadAsync())
-                {
-                    var client = new Client
-                    {
-                        Id = reader.IsDBNull(0) ? null : reader.GetInt64(0),
-                        FirstName = reader.IsDBNull(1) ? null : reader.GetString(1),
-                        LastName = reader.IsDBNull(2) ? null : reader.GetString(2),
-                        Email = reader.IsDBNull(3) ? null : reader.GetString(3),
-                        PhoneNumber = reader.IsDBNull(4) ? null : reader.GetString(4),
-                        Address = reader.IsDBNull(5) ? null : reader.GetString(5),
-                        Status = reader.IsDBNull(6) ? null : reader.GetString(6)
-                    };
-                    data.Add(client);
-
-                }
-
-
-                dataGridView.DataSource = data;
-                dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            }
-            catch (SqliteException ex)
-            {
-                MessageBox.Show(
-                    $"SQLite Error Code: {ex.SqliteErrorCode}\n{ex.Message}",
-                    "SQLite Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Connection state issues
-                MessageBox.Show(
-                    $"Invalid operation: {ex.Message}",
-                    "Operation Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-            }
-            catch (Exception ex)
-            {
-                // All other errors
-                MessageBox.Show(
-                    $"Unexpected error: {ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-        }
+        
         [SupportedOSPlatform("windows6.1")]
         public async Task<List<Client>> LoadClient()
         {
@@ -420,7 +329,8 @@ LEFT JOIN (
                 using var conn = new SqliteConnection(connectionString);
                 await conn.OpenAsync();
 
-                string sql = @"SELECT 
+
+string sql = @"SELECT 
     C.Client_Id,
     C.FirstName,
     C.LastName,
@@ -442,7 +352,7 @@ LEFT JOIN (
         GROUP_CONCAT(DISTINCT PhoneNumber) AS PhoneNumbers
     FROM PhoneNumber
     GROUP BY Client_Id
-) AS P ON P.Client_Id = C.Client_Id 
+) AS P ON P.Client_Id = C.Client_Id
 ";
                 sql += " WHERE 1=1 ";
                 sql += string.IsNullOrEmpty(SearchFirstName) ? "" : $"AND C.FirstName LIKE \'%{SearchFirstName}%\' ";
@@ -450,22 +360,22 @@ LEFT JOIN (
                 sql += string.IsNullOrEmpty(SearchAddress) ? "" : $"AND C.Address LIKE \'%{SearchAddress}%\' ";
                 if (blankTelephoneflag)
                 {
-                    sql += "AND P.PhoneNumber IS NULL OR P.PhoneNumber = \'\' ";
+                    sql += "AND P.PhoneNumbers IS NULL OR P.PhoneNumbers = \'\' ";
                 }
                 else
                 {
-                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : $"AND P.PhoneNumber LIKE \'%{SearchPhoneNumber}%\' ";
+                    sql += string.IsNullOrEmpty(SearchPhoneNumber) ? "" : $"AND P.PhoneNumbers LIKE \'%{SearchPhoneNumber}%\' ";
                 }
                 if (blankEmailflag)
                 {
-                    sql += "AND E.Email IS NULL OR E.Email = \'\' ";
+                    sql += "AND E.Emails IS NULL OR E.Emails = \'\' ";
                 }
                 else
                 {
-                    sql += string.IsNullOrEmpty(SearchEmail) ? "" : $"AND E.Email LIKE \'%{SearchEmail}%\' ";
+                    sql += string.IsNullOrEmpty(SearchEmail) ? "" : $"AND E.Emails LIKE \'%{SearchEmail}%\' ";
                 }
 
-                sql += string.IsNullOrEmpty(SearchStatus) ? "" : $"AND Status LIKE \'%{SearchStatus}%\' ";
+                sql += string.IsNullOrEmpty(SearchStatus) ? "" : $"AND Status LIKE \'%{SearchStatus}%\'; ";
 
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -481,9 +391,18 @@ LEFT JOIN (
                         Address = reader.IsDBNull(5) ? null : reader.GetString(5),
                         Status = reader.IsDBNull(6) ? null : reader.GetString(6)
                     };
+                    if (client.Email != null)
+                    {
+                        client.Email = client.Email.Replace(",", Environment.NewLine);
+                    }
+                    if (client.PhoneNumber != null)
+                    {
+                        client.PhoneNumber = client.PhoneNumber.Replace(",", Environment.NewLine);
+                    }
                     data.Add(client);
 
                 }
+
             }
             catch (SqliteException ex)
             {

@@ -1,6 +1,7 @@
 ﻿using DevExpress.Charts.Model;
 using DevExpress.CodeParser;
 using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -236,7 +237,7 @@ namespace bakk_project_task
         private void PhoneNumberPlusButton_Click(object sender, EventArgs e)
         {
 
-            if (PhoneNumberGridView.GetFocusedRowCellValue("Tag") as char? == 'D') 
+            if (PhoneNumberGridView.GetFocusedRowCellValue("Tag") as char? == 'D')
             {
                 int rowHandle = PhoneNumberGridView.FocusedRowHandle;
 
@@ -283,6 +284,19 @@ namespace bakk_project_task
         {
             EmailController.ClearControllerList();
             PhoneNumberController.ClearControllerList();
+        }
+
+        private void EmailGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
+            string oldValue = ((ColumnView)sender).GetFocusedRowCellValue(fieldName).ToString()!;
+            string newValue = e.Value.ToString()!;
+            EmailController.EditElement(oldValue, newValue);
+        }
+
+        private void PhoneNumberGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+
         }
     }
 }

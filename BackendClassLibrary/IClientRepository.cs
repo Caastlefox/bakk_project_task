@@ -6,7 +6,7 @@ namespace bakk_project_task
     {
         Task<long> AddClient(string firstName, string lastName, string address, string status);
         Task UpdateClient(long? id, string firstName, string lastName, string address, string status);
-        Task LoadClient(DataGridView dataGridView);
+        Task<List<Client>> LoadClient();
         Task DeleteClient(long? id);
         Task<List<Client>> SearchClients( string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber,
