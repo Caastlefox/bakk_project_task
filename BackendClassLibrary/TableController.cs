@@ -105,10 +105,10 @@ namespace bakk_project_task
             }
         }
 
-        public void EditElement(string OldEntryName, string NewEntryName)
+        public void EditElementTag(string NewEntryName )
         {
-
-            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == OldEntryName);
+            // since
+            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == NewEntryName);
             if (entrytoedit == null)
             {
                 MessageBox.Show("Entry not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -117,7 +117,7 @@ namespace bakk_project_task
 
             if (NewEntryName == "") 
             {
-                entrytoedit.Name = NewEntryName;
+
                 entrytoedit.Tag = 'D';
                 return;
             }
@@ -125,14 +125,12 @@ namespace bakk_project_task
             switch (entrytoedit.Tag)
             {
                 case '\0':
-                    entrytoedit.Name = NewEntryName;
+
                     entrytoedit.Tag = 'M';
                     return;
                 case 'M':
-                    entrytoedit.Name = NewEntryName;
                     return;
                 case 'A':
-                    entrytoedit.Name = NewEntryName;
                     return;
 #if DEBUG
                 default:

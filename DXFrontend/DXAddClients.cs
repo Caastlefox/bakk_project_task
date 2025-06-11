@@ -289,14 +289,29 @@ namespace bakk_project_task
         private void EmailGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
-            string oldValue = ((ColumnView)sender).GetFocusedRowCellValue(fieldName).ToString()!;
+            string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            EmailController.EditElement(oldValue, newValue);
+            if (!newValue.Contains('@'))
+            {
+                ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
+                MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                return;
+            }
+            EmailController.EditElementTag(newValue);
         }
 
         private void PhoneNumberGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
-
+            string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
+            string oldValue = e.OldValue.ToString()!;
+            string newValue = e.Value.ToString()!;
+            if (newValue.Length != 9)
+            {
+                ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
+                MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
+                return;
+            }
+            PhoneNumberController.EditElementTag(newValue);
         }
     }
 }
