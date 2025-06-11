@@ -4,6 +4,7 @@ using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraExport.Helpers;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraVerticalGrid;
 using Microsoft.Data.Sqlite;
 using System;
@@ -33,6 +34,8 @@ namespace bakk_project_task
         private string SearchPhoneNumber = "";
         private string SearchEmail = "";
         private string SearchStatus = "";
+        private bool ManyPhonesFlag = false;
+        private bool ManyEmailsFlag = false;
         private bool BlankPhoneNumberFlag;
         private bool BlankEmailFlag;
         private readonly ClientRepository clientsRepository;
@@ -71,7 +74,7 @@ namespace bakk_project_task
                 gridView.Columns["PhoneNumber"].AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
             }
         }
-            [SupportedOSPlatform("windows6.1")]
+        [SupportedOSPlatform("windows6.1")]
         private void Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -80,7 +83,7 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void AddClientButton_Click(object sender, EventArgs e)
         {
-            using var form = new DXAddNewClient(clientsRepository,EmailController,PhoneNumberController);
+            using var form = new DXAddNewClient(clientsRepository, EmailController, PhoneNumberController);
             form.FormClosed += AddNewClientFormClosed;
             form.ShowDialog(this);
         }
@@ -128,7 +131,7 @@ namespace bakk_project_task
                 await EmailController.DeleteClient(id);
                 await PhoneNumberController.DeleteClient(id);
                 await clientsRepository.DeleteClient(id);
-                
+
                 gridcontrol1.DataSource = await this.clientsRepository.LoadClient();
                 gridcontrol1.MainView.PopulateColumns();
 
@@ -141,7 +144,7 @@ namespace bakk_project_task
             if (sender == null) { return; }
             DXMainMenuForm_Load(sender, e);
         }
-            [SupportedOSPlatform("windows6.1")]
+        [SupportedOSPlatform("windows6.1")]
         private void Gridcontrol1_DoubleClick(object sender, EventArgs e)
         {
             var gridView = gridcontrol1.MainView as GridView;
@@ -177,8 +180,9 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private async void SearchButton_Click(object sender, EventArgs e)
         {
-            var data = await clientsRepository.SearchClients(this.SearchFirstName, this.SearchLastName, this.SearchAddress, 
-                        this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus,this.BlankEmailFlag,this.BlankPhoneNumberFlag);
+            var data = await clientsRepository.SearchClients(this.SearchFirstName, this.SearchLastName, this.SearchAddress,
+                        this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus, this.BlankEmailFlag, this.BlankPhoneNumberFlag
+                        ,this.ManyEmailsFlag, this.ManyPhonesFlag);
             this.gridcontrol1.DataSource = data;
             this.gridcontrol1.MainView.PopulateColumns();
 
@@ -245,7 +249,9 @@ namespace bakk_project_task
             SearchStatus = "";
             BlankPhoneCheckEdit.Checked = false;
             blankEmail.Checked = false;
-            DXMainMenuForm_Load(sender,e);
+            ManyEmails.Checked = false;
+            ManyPhones.Checked = false;
+            DXMainMenuForm_Load(sender, e);
 
         }
 
@@ -257,11 +263,15 @@ namespace bakk_project_task
                 this.PhoneNumberTextEdit.Text = "";
                 this.SearchPhoneNumber = "";
                 PhoneNumberTextEdit.Enabled = false;
+                ManyPhones.Checked = false;
+                ManyPhones.Enabled = false;
+                this.ManyPhonesFlag = false;
                 this.BlankPhoneNumberFlag = true;
             }
             else
             {
                 PhoneNumberTextEdit.Enabled = true;
+                ManyPhones.Enabled = true;
                 this.BlankPhoneNumberFlag = false;
             }
         }
@@ -274,12 +284,40 @@ namespace bakk_project_task
                 this.EmailTextEdit.Text = "";
                 this.SearchEmail = "";
                 EmailTextEdit.Enabled = false;
+                ManyEmails.Checked = false;
+                ManyEmails.Enabled = false;
+                this.ManyEmailsFlag = false;
                 this.BlankEmailFlag = true;
             }
             else
             {
+                ManyEmails.Enabled = true;
                 EmailTextEdit.Enabled = true;
                 this.BlankEmailFlag = false;
+            }
+        }
+
+        private void ManyPhones_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ManyPhones.Checked)
+            {
+                this.ManyPhonesFlag = true;
+            }
+            else
+            {
+                this.ManyPhonesFlag = false;
+            }
+        }
+
+        private void ManyEmails_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ManyEmails.Checked)
+            {
+                this.ManyEmailsFlag = true;
+            }
+            else
+            {
+                this.ManyEmailsFlag = false;
             }
         }
     }

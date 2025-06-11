@@ -11,6 +11,7 @@ namespace bakk_project_task
         Task<List<Client>> SearchClients( string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber,
             string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
-            bool blankTelephoneflag = false);
+            bool blankTelephoneflag = false, bool manyEmailFlag = false,
+            bool manyPhoneFlag = false);
     }
 }

@@ -59,6 +59,8 @@ namespace bakk_project_task
             blankEmail = new CheckEdit();
             BlankPhoneCheckEdit = new CheckEdit();
             PhoneNumberTextEdit = new TextEdit();
+            ManyPhones = new CheckEdit();
+            ManyEmails = new CheckEdit();
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -70,6 +72,8 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)blankEmail.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)BlankPhoneCheckEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ManyPhones.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ManyEmails.Properties).BeginInit();
             SuspendLayout();
             // 
             // DeleteButton
@@ -300,7 +304,7 @@ namespace bakk_project_task
             blankEmail.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             blankEmail.Properties.ValueChecked = false;
             blankEmail.Properties.ValueUnchecked = true;
-            blankEmail.Size = new Size(200, 20);
+            blankEmail.Size = new Size(79, 20);
             blankEmail.TabIndex = 35;
             blankEmail.CheckedChanged += BlankEmail_CheckedChanged;
             // 
@@ -318,7 +322,7 @@ namespace bakk_project_task
             BlankPhoneCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             BlankPhoneCheckEdit.Properties.ValueChecked = false;
             BlankPhoneCheckEdit.Properties.ValueUnchecked = true;
-            BlankPhoneCheckEdit.Size = new Size(200, 20);
+            BlankPhoneCheckEdit.Size = new Size(86, 20);
             BlankPhoneCheckEdit.TabIndex = 36;
             BlankPhoneCheckEdit.CheckedChanged += BlankPhoneCheckEdit_CheckedChanged;
             // 
@@ -337,11 +341,49 @@ namespace bakk_project_task
             PhoneNumberTextEdit.TabIndex = 7;
             PhoneNumberTextEdit.EditValueChanged += PhoneNumberTextEdit_EditValueChanged;
             // 
+            // ManyPhones
+            // 
+            ManyPhones.EditValue = null;
+            ManyPhones.Location = new Point(328, -2);
+            ManyPhones.Name = "ManyPhones";
+            ManyPhones.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            ManyPhones.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            ManyPhones.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            ManyPhones.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            ManyPhones.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            ManyPhones.Properties.Caption = "Wiele Telefonów";
+            ManyPhones.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            ManyPhones.Properties.ValueChecked = false;
+            ManyPhones.Properties.ValueUnchecked = true;
+            ManyPhones.Size = new Size(108, 20);
+            ManyPhones.TabIndex = 37;
+            ManyPhones.CheckedChanged += ManyPhones_CheckedChanged;
+            // 
+            // ManyEmails
+            // 
+            ManyEmails.EditValue = null;
+            ManyEmails.Location = new Point(527, -2);
+            ManyEmails.Name = "ManyEmails";
+            ManyEmails.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            ManyEmails.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            ManyEmails.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            ManyEmails.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            ManyEmails.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            ManyEmails.Properties.Caption = "Wiele Emaili";
+            ManyEmails.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            ManyEmails.Properties.ValueChecked = false;
+            ManyEmails.Properties.ValueUnchecked = true;
+            ManyEmails.Size = new Size(108, 20);
+            ManyEmails.TabIndex = 38;
+            ManyEmails.CheckedChanged += ManyEmails_CheckedChanged;
+            // 
             // DXMainMenuForm
             // 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(869, 573);
+            Controls.Add(ManyEmails);
+            Controls.Add(ManyPhones);
             Controls.Add(BlankPhoneCheckEdit);
             Controls.Add(blankEmail);
             Controls.Add(StatusCheckEdit);
@@ -371,6 +413,8 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)blankEmail.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)BlankPhoneCheckEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ManyPhones.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ManyEmails.Properties).EndInit();
             ResumeLayout(false);
 
         }
@@ -400,6 +444,8 @@ namespace bakk_project_task
         private CheckEdit BlankPhoneCheckEdit;
         private TextEdit PhoneNumberTextEdit;
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
+        private CheckEdit ManyPhones;
+        private CheckEdit ManyEmails;
     }
 }
 

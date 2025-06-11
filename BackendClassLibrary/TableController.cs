@@ -47,7 +47,7 @@ namespace bakk_project_task
             command.CommandText = @$"
                 CREATE TABLE IF NOT EXISTS {TableName}(
                     {TableName}_Id INTEGER PRIMARY KEY AUTOINCREMENT,                   
-                    {TableName} TEXT,
+                    {TableName} TEXT NOT NULL,
                     {ParentTable}_Id INTEGER,   
                     FOREIGN KEY ({ParentTable}_Id) REFERENCES {ParentTable}({ParentTable}_Id)
                 );";

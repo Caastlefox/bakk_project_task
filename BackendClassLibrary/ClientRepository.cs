@@ -321,7 +321,7 @@ LEFT JOIN (
         public async Task<List<Client>> SearchClients(string SearchFirstName,
             string SearchLastName, string SearchAddress, string SearchPhoneNumber, 
             string SearchEmail, string? SearchStatus, bool blankEmailflag = false,
-            bool blankTelephoneflag = false)
+            bool blankTelephoneflag = false, bool manyEmailFlag = false, bool manyPhoneFlag = false)
         {
             List<Client> data = [];
             try
@@ -374,8 +374,21 @@ LEFT JOIN (
                 {
                     sql += string.IsNullOrEmpty(SearchEmail) ? "" : $"AND E.Emails LIKE \'%{SearchEmail}%\' ";
                 }
+                if (manyEmailFlag)
+                {
+                    sql += $"AND C.Client_Id IN " 
+                        +  $"(SELECT Client_Id FROM Email "
+                        +  $"GROUP BY Client_Id HAVING COUNT(*) > 1) ";
+                }
+                if (manyPhoneFlag)
+                {
+                    sql += $"AND C.Client_Id IN "
+                        + $"(SELECT Client_Id FROM PhoneNumber "
+                        + $"GROUP BY Client_Id HAVING COUNT(*) > 1) ";
+                    
+                }
 
-                sql += string.IsNullOrEmpty(SearchStatus) ? "" : $"AND Status LIKE \'%{SearchStatus}%\'; ";
+                sql += string.IsNullOrEmpty(SearchStatus) ? "" : $"AND Status LIKE \'%{SearchStatus}%\';";
 
                 using var cmd = new SqliteCommand(sql, conn);
                 using var reader = await cmd.ExecuteReaderAsync();

@@ -291,10 +291,10 @@ namespace bakk_project_task
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            if (!newValue.Contains('@'))
+            if (!newValue.Contains('@') && newValue.Length != 0)
             {
                 ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
-                MessageBox.Show("Proszę podać poprawny adres e-mail.");
+                MessageBox.Show("Adres e-mail powinien posiadać.");
                 return;
             }
             EmailController.EditElementTag(newValue);
@@ -305,7 +305,7 @@ namespace bakk_project_task
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            if (newValue.Length != 9)
+            if (newValue.Length != 9 && newValue.Length != 0)// beware of ||, causes stack overflow
             {
                 ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
                 MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
