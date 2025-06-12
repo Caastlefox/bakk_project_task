@@ -61,6 +61,7 @@ namespace bakk_project_task
             PhoneNumberTextEdit = new TextEdit();
             ManyPhones = new CheckEdit();
             ManyEmails = new CheckEdit();
+            ActualCheckEdit = new CheckEdit();
             ((System.ComponentModel.ISupportInitialize)FirstNameTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridcontrol1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridView1).BeginInit();
@@ -74,6 +75,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ManyPhones.Properties).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ManyEmails.Properties).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ActualCheckEdit.Properties).BeginInit();
             SuspendLayout();
             // 
             // DeleteButton
@@ -286,7 +288,7 @@ namespace bakk_project_task
             StatusCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             StatusCheckEdit.Properties.ValueChecked = false;
             StatusCheckEdit.Properties.ValueUnchecked = true;
-            StatusCheckEdit.Size = new Size(200, 20);
+            StatusCheckEdit.Size = new Size(79, 20);
             StatusCheckEdit.TabIndex = 34;
             StatusCheckEdit.CheckedChanged += StatusCheckEdit_CheckedChanged;
             // 
@@ -377,11 +379,30 @@ namespace bakk_project_task
             ManyEmails.TabIndex = 38;
             ManyEmails.CheckedChanged += ManyEmails_CheckedChanged;
             // 
+            // ActualCheckEdit
+            // 
+            ActualCheckEdit.EditValue = null;
+            ActualCheckEdit.Location = new Point(527, 76);
+            ActualCheckEdit.Name = "ActualCheckEdit";
+            ActualCheckEdit.Properties.AppearanceDisabled.BackColor = Color.LightGray;
+            ActualCheckEdit.Properties.AppearanceDisabled.ForeColor = Color.DarkGray;
+            ActualCheckEdit.Properties.AppearanceDisabled.Options.UseBackColor = true;
+            ActualCheckEdit.Properties.AppearanceDisabled.Options.UseForeColor = true;
+            ActualCheckEdit.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
+            ActualCheckEdit.Properties.Caption = "Aktualny";
+            ActualCheckEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            ActualCheckEdit.Properties.ValueChecked = false;
+            ActualCheckEdit.Properties.ValueUnchecked = true;
+            ActualCheckEdit.Size = new Size(108, 20);
+            ActualCheckEdit.TabIndex = 39;
+            ActualCheckEdit.CheckedChanged += ActualCheckEdit_CheckedChanged;
+            // 
             // DXMainMenuForm
             // 
             AutoScaleDimensions = new SizeF(6F, 13F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(869, 573);
+            Controls.Add(ActualCheckEdit);
             Controls.Add(ManyEmails);
             Controls.Add(ManyPhones);
             Controls.Add(BlankPhoneCheckEdit);
@@ -415,6 +436,7 @@ namespace bakk_project_task
             ((System.ComponentModel.ISupportInitialize)PhoneNumberTextEdit.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)ManyPhones.Properties).EndInit();
             ((System.ComponentModel.ISupportInitialize)ManyEmails.Properties).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ActualCheckEdit.Properties).EndInit();
             ResumeLayout(false);
 
         }
@@ -446,6 +468,7 @@ namespace bakk_project_task
         private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
         private CheckEdit ManyPhones;
         private CheckEdit ManyEmails;
+        private CheckEdit ActualCheckEdit;
     }
 }
 

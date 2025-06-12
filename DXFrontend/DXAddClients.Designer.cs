@@ -180,7 +180,6 @@ namespace bakk_project_task
             EmailGridControl.TabIndex = 45;
             EmailGridControl.UseDisabledStatePainter = false;
             EmailGridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] { EmailGridView });
-            EmailGridControl.Click += EmailGridControl_Click;
             // 
             // EmailGridView
             // 

@@ -148,7 +148,7 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void PhoneNumberTextBox_EditValueChanged(object sender, EventArgs e)
         {
-            this.PhoneNumber = PhoneNumberTextBox.Text;
+            //this.PhoneNumber = PhoneNumberTextBox.Text;
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -163,7 +163,7 @@ namespace bakk_project_task
             var gridView = PhoneNumberGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
             if (gridView == null || gridView.FocusedRowHandle < 0)
             {
-                MessageBox.Show("Zaznacz Dane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Żadne dane nie zostały zaznaczone.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var PhoneNumber = (gridView.GetFocusedRow() as Entry)?.Name;
@@ -220,7 +220,7 @@ namespace bakk_project_task
             var gridView = EmailGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
             if (gridView == null || gridView.FocusedRowHandle < 0)
             {
-                MessageBox.Show("Zaznacz Dane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Żadne dane nie zostały zaznaczone.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var Email = (gridView.GetFocusedRow() as Entry)?.Name;
@@ -266,18 +266,6 @@ namespace bakk_project_task
                 PhoneNumberTextBox.Text = "";
             }
             PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
-        }
-
-        private void EmailGridControl_Click(object sender, EventArgs e)
-        {
-            var gridView = EmailGridControl.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
-            if (gridView == null || gridView.FocusedRowHandle < 0)
-            {
-                MessageBox.Show("ZaznaczDane.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            string? Email = gridView.GetFocusedRowCellValue("Email")?.ToString();
-
         }
 
         private void DXAddNewClient_FormClosed(object sender, FormClosedEventArgs e)

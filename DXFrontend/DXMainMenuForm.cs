@@ -181,7 +181,7 @@ namespace bakk_project_task
         {
             var data = await clientsRepository.SearchClients(this.SearchFirstName, this.SearchLastName, this.SearchAddress,
                         this.SearchPhoneNumber, this.SearchEmail, this.SearchStatus, this.BlankEmailFlag, this.BlankPhoneNumberFlag
-                        ,this.ManyEmailsFlag, this.ManyPhonesFlag);
+                        , this.ManyEmailsFlag, this.ManyPhonesFlag);
             this.gridcontrol1.DataSource = data;
             this.gridcontrol1.MainView.PopulateColumns();
 
@@ -228,10 +228,11 @@ namespace bakk_project_task
             if (StatusCheckEdit.Checked)
             {
                 this.SearchStatus = "Potencjalny";
+                ActualCheckEdit.Checked = false;
             }
-            else
+            if (ActualCheckEdit.Checked == StatusCheckEdit.Checked)
             {
-                this.SearchStatus = "Aktualny";
+                this.SearchStatus = "";
             }
         }
 
@@ -317,6 +318,19 @@ namespace bakk_project_task
             else
             {
                 this.ManyEmailsFlag = false;
+            }
+        }
+
+        private void ActualCheckEdit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ActualCheckEdit.Checked)
+            {
+                this.SearchStatus = "Aktualny";
+                StatusCheckEdit.Checked = false;
+            }
+            if (ActualCheckEdit.Checked == StatusCheckEdit.Checked)
+            {
+                this.SearchStatus = "";
             }
         }
     }
