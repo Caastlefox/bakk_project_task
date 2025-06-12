@@ -246,7 +246,7 @@ namespace bakk_project_task
             PhoneNumberTextEdit.Text = "";
             EmailTextEdit.Text = "";
             StatusCheckEdit.Checked = false;
-            SearchStatus = "";
+            ActualCheckEdit.Checked = false;
             BlankPhoneCheckEdit.Checked = false;
             blankEmail.Checked = false;
             ManyEmails.Checked = false;

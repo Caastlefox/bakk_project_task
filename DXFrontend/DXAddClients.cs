@@ -306,10 +306,9 @@ namespace bakk_project_task
         {
 
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
-
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            if (long.TryParse(newValue, out _) == false) 
+            if (long.TryParse(newValue, out _) == false && newValue != "") 
             {
                 ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
                 MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
