@@ -1,15 +1,17 @@
 ﻿using System.ComponentModel;
 
-namespace bakk_project_task
+namespace bakk_project_task 
 {
-    public class Entry(string name, char tag, long id = -1)
+    public class Entry(string name, char tag, long id = -1) : INotifyPropertyChanged
     {
         public string Name { get; set; } = name;
         public char Tag { get; set; } = tag;
         [Browsable(false)]
         public long Id { get; set; } = id;
-        [Browsable(false)]
-        public string EntryName => Name;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
 }

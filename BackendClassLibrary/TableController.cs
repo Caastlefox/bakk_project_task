@@ -11,6 +11,7 @@ using DevExpress.XtraRichEdit.Import.OpenXml;
 using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
@@ -27,7 +28,7 @@ namespace bakk_project_task
     public class TableController : ITableController
     {
         private readonly string ConnectionString;
-        private List<Entry> ControllerList = [];
+        private BindingList<Entry> ControllerList = new BindingList<Entry>();
         private readonly string TableName;
         private readonly string ParentTable;
         private long ParentId = -1; // Default value for ClientId
@@ -105,38 +106,16 @@ namespace bakk_project_task
             }
         }
 
-        public void EditElementTag(string NewEntryName )
+        public void ChangeTag(string Name, char Tag)
         {
-            // since
-            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == NewEntryName);
+            Entry? entrytoedit = ControllerList.FirstOrDefault(t => t.Name == Name);
             if (entrytoedit == null)
             {
                 MessageBox.Show("Entry not found in the list.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            entrytoedit.Tag = Tag;
 
-            if (NewEntryName == "") 
-            {
-
-                entrytoedit.Tag = 'D';
-                return;
-            }
-
-            switch (entrytoedit.Tag)
-            {
-                case '\0':
-
-                    entrytoedit.Tag = 'M';
-                    return;
-                case 'M':
-                    return;
-                case 'A':
-                    return;
-#if DEBUG
-                default:
-                    throw new ArgumentException("Tag can only be 'M', 'A' or '\\0' here");
-#endif
-            }
         }
 
         public async Task ReceiveFromDatabase(long Id)

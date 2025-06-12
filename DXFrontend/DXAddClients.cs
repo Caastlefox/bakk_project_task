@@ -2,6 +2,7 @@
 using DevExpress.CodeParser;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraRichEdit.Tables.Native;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,10 +64,7 @@ namespace bakk_project_task
                 StatusCheckEdit.Checked = false;
             }
 
-            this.EmailController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
-            this.EmailController.SendToGridControl(EmailGridControl);
-            this.PhoneNumberController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
-            this.PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
+
         }
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -110,7 +108,10 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void AddNewClient_Load(object sender, EventArgs e)
         {
-
+            this.EmailController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
+            this.EmailController.SendToGridControl(EmailGridControl);
+            this.PhoneNumberController.ReceiveFromDatabase(Id).GetAwaiter().GetResult();
+            this.PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -182,25 +183,26 @@ namespace bakk_project_task
         [SupportedOSPlatform("windows6.1")]
         private void EmailPlusButton_Click(object sender, EventArgs e)
         {
-            if (EmailGridView.GetFocusedRowCellValue("Tag") as char? == 'D')
-            {
-                int rowHandle = EmailGridView.FocusedRowHandle;
+            char Tag = Convert.ToChar(EmailGridView.GetFocusedRowCellValue("Tag"));
 
-                if (rowHandle >= 0)
-                {
-                    EmailGridView.SetRowCellValue(rowHandle, "Tag", '\0');
-                    return;
-                }
+            if (Tag == 'D')
+            {
+                string Name = Convert.ToString(EmailGridView.GetFocusedRowCellValue("Name")) ?? "";
+                EmailGridView.PostEditor();               // Commit editor changes
+                EmailGridView.UpdateCurrentRow();
+                EmailController.ChangeTag(Name, '\0');
+                EmailController.SendToGridControl(EmailGridControl);
+                return;
             }
+
             if (EmailTextBox.Text == "")
             {
                 MessageBox.Show("Proszę najpierw wpisać adres e-mail.");
-                return;
+
             }
-            if (!EmailTextBox.Text.Contains('@'))
+            else if (!EmailTextBox.Text.Contains('@'))
             {
                 MessageBox.Show("Proszę podać poprawny adres e-mail.");
-                return;
             }
             else
             {
@@ -208,6 +210,8 @@ namespace bakk_project_task
                 EmailController.SendToGridControl(EmailGridControl);
                 EmailTextBox.Text = "";
             }
+            
+
         }
 
         [SupportedOSPlatform("windows6.1")]
@@ -237,35 +241,31 @@ namespace bakk_project_task
         private void PhoneNumberPlusButton_Click(object sender, EventArgs e)
         {
 
-            if (PhoneNumberGridView.GetFocusedRowCellValue("Tag") as char? == 'D')
+            char Tag = Convert.ToChar(PhoneNumberGridView.GetFocusedRowCellValue("Tag"));
+            
+            if (Tag == 'D')
             {
-                int rowHandle = PhoneNumberGridView.FocusedRowHandle;
-
-                if (rowHandle >= 0)
-                {
-                    PhoneNumberGridView.SetRowCellValue(rowHandle, "Tag", '\0');
-                    return;
-                }
+                string Name = Convert.ToString(PhoneNumberGridView.GetFocusedRowCellValue("Name")) ?? "";
+                PhoneNumberGridView.PostEditor();               // Commit editor changes
+                PhoneNumberGridView.UpdateCurrentRow();
+                PhoneNumberController.ChangeTag(Name, '\0');
+                return;
             }
 
-            else if (PhoneNumberTextBox.Text == "")
+            if (PhoneNumberTextBox.Text == "")
             {
                 MessageBox.Show("Proszę najpierw wpisać numer telefonu.");
-                return;
             }
-
-            if (PhoneNumberTextBox.Text.Length != 9 || long.TryParse(PhoneNumberTextBox.Text, out _) == false)
+            else if (PhoneNumberTextBox.Text.Length != 9 || long.TryParse(PhoneNumberTextBox.Text, out _) == false)
             {
                 MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
-                return;
             }
             else
             {
                 PhoneNumberController.AddElement(PhoneNumberTextBox.Text);
-                PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
                 PhoneNumberTextBox.Text = "";
-
             }
+            PhoneNumberController.SendToGridControl(PhoneNumberGridControl);
         }
 
         private void EmailGridControl_Click(object sender, EventArgs e)
@@ -289,29 +289,48 @@ namespace bakk_project_task
         private void EmailGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
+            if (fieldName != "Name") { return; }
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            if (!newValue.Contains('@') && newValue.Length != 0)
+            if (!newValue.Contains('@') && newValue.Length != 0)// beware of ||, causes stack overflow
             {
                 ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
                 MessageBox.Show("Adres e-mail powinien posiadać.");
                 return;
             }
-            EmailController.EditElementTag(newValue);
+            if (newValue.Length == 0)
+            {
+                EmailController.ChangeTag(newValue, 'D');
+                return;
+            }
+            EmailController.ChangeTag(newValue,'M');
         }
 
         private void PhoneNumberGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
+            if (fieldName != "Name") { return; }
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
-            if (newValue.Length != 9 && newValue.Length != 0)// beware of ||, causes stack overflow
+            switch (newValue.Length)
             {
-                ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
-                MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
-                return;
+                case (9):
+                    {
+                        PhoneNumberController.ChangeTag(newValue, 'M');
+                        break;
+                    }
+                case (0):
+                    {
+                        PhoneNumberController.ChangeTag(newValue, 'D');
+                        break;
+                    }
+                default:
+                    {
+                        ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
+                        MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
+                        return;
+                    }
             }
-            PhoneNumberController.EditElementTag(newValue);
         }
     }
 }

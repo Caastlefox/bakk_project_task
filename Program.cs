@@ -22,11 +22,8 @@ namespace bakk_project_task
             var clientsRepository = new ClientRepository();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-                
             Application.Run(new DXMainMenuForm(clientsRepository));
-            DevExpress.Skins.SkinManager.EnableFormSkins();
-            DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Office 2019 Colorful");
+
             
         }
     }
