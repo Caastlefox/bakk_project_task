@@ -132,8 +132,7 @@ namespace bakk_project_task
                 await PhoneNumberController.DeleteClient(id);
                 await clientsRepository.DeleteClient(id);
 
-                gridcontrol1.DataSource = await this.clientsRepository.LoadClient();
-                gridcontrol1.MainView.PopulateColumns();
+                DXMainMenuForm_Load(sender, e);
 
             }
         }
