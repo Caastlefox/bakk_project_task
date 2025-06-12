@@ -289,29 +289,48 @@ namespace bakk_project_task
         private void EmailGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
-            if (fieldName != "Name") { return; }
+
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
             if (!newValue.Contains('@') && newValue.Length != 0)// beware of ||, causes stack overflow
             {
                 ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
-                MessageBox.Show("Adres e-mail powinien posiadać.");
+                MessageBox.Show("Adres e-mail powinien posiadać znak @.");
                 return;
             }
-            if (newValue.Length == 0)
+            if (Convert.ToChar(((ColumnView)sender).GetRowCellValue(e.RowHandle, "Tag")) == 'A')
+            {
+                return;
+            }
+            else if (newValue.Length == 0)
             {
                 EmailController.ChangeTag(newValue, 'D');
                 return;
             }
-            EmailController.ChangeTag(newValue,'M');
+            else 
+            { 
+                EmailController.ChangeTag(newValue, 'M'); 
+            }
+            
         }
 
         private void PhoneNumberGridView_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
+
             string fieldName = ((ColumnView)sender).FocusedColumn.FieldName;
-            if (fieldName != "Name") { return; }
+
             string oldValue = e.OldValue.ToString()!;
             string newValue = e.Value.ToString()!;
+            if (long.TryParse(newValue, out _) == false) 
+            {
+                ((ColumnView)sender).SetRowCellValue(e.RowHandle, e.Column, oldValue);
+                MessageBox.Show("Proszę podać numer telefonu składający się z 9 cyfr.");
+                return;
+            }
+            if ( Convert.ToChar(((ColumnView)sender).GetRowCellValue(e.RowHandle, "Tag")) == 'A')
+            {
+                return;
+            }
             switch (newValue.Length)
             {
                 case (9):
